@@ -1,0 +1,31 @@
+# ===========================================
+# GHOST in the SHELL — 推奨 .gitignore
+# ===========================================
+
+# --- AI連携ワークフロー関連 ---
+
+# タスク実行時に SHELL が生成する一時的な成果物
+# 必要に応じてコメントを外して使用してください
+# .ai-tasks/tasks/*.tmp
+
+# SHELL が疎通テスト等で生成する一時ファイル
+.ai-tasks/hello_world.txt
+
+# --- Antigravity (Gemini) ---
+# Antigravity のシステム内部ディレクトリ
+.gemini/
+
+# --- エディタ・OS ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# --- Node.js（必要に応じて有効化） ---
+# node_modules/
+# dist/
+# .env
+# .env.local
