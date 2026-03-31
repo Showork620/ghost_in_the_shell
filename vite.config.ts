@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const repositoryBase = '/awssaa_in_the_ghost/';
+const repositoryBase = '/ghost_in_the_shell/';
 const env =
   (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env ?? {};
 

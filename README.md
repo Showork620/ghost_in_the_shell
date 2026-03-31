@@ -18,7 +18,7 @@ npm run dev
 
 - GitHub Pages 用のワークフローは `.github/workflows/deploy-pages.yml` に追加済みです。
 - GitHub 側で Pages の Build and deployment を `GitHub Actions` に設定すれば、`main` ブランチへの push でデプロイできます。
-- Pages 配下では `vite.config.ts` が `/awssaa_in_the_ghost/` を自動ベースパスとして使います。
+- Pages 配下では `vite.config.ts` が `/ghost_in_the_shell/` を自動ベースパスとして使います。
 
 ---
 
