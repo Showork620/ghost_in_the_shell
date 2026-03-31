@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dictionaryData from './data/generated/dictionary.json';
 import { Flashcard } from './components/Flashcard';
 import { STORAGE_KEYS, defaultFlags } from './lib/storage';
@@ -6,6 +6,7 @@ import './styles.css';
 import type {
   CardFlagState,
   DictionaryCard,
+  FilterFlagKey,
   FilterMode,
   FlagKey,
   MatchMode,
@@ -15,7 +16,7 @@ type PersistedFilters = {
   query: string;
   categories: string[];
   tags: string[];
-  flags: FlagKey[];
+  flags: FilterFlagKey[];
   groupMode: FilterMode;
   tagMode: MatchMode;
   flagMode: MatchMode;
@@ -45,29 +46,31 @@ const defaultFilters: PersistedFilters = {
 
 function App() {
   const [flagState, setFlagState] = useState<Record<string, CardFlagState>>({});
+  const [noteState, setNoteState] = useState<Record<string, string>>({});
   const [query, setQuery] = useState(defaultFilters.query);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(defaultFilters.categories);
   const [selectedTags, setSelectedTags] = useState<string[]>(defaultFilters.tags);
-  const [selectedFlags, setSelectedFlags] = useState<FlagKey[]>(defaultFilters.flags);
+  const [selectedFlags, setSelectedFlags] = useState<FilterFlagKey[]>(defaultFilters.flags);
   const [groupMode, setGroupMode] = useState<FilterMode>(defaultFilters.groupMode);
   const [tagMode, setTagMode] = useState<MatchMode>(defaultFilters.tagMode);
   const [flagMode, setFlagMode] = useState<MatchMode>(defaultFilters.flagMode);
   const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
   const [installStatus, setInstallStatus] = useState<'ready' | 'dismissed' | 'accepted'>('ready');
   const [isHydrated, setIsHydrated] = useState(false);
-  const [isHeroOpen, setIsHeroOpen] = useState(true);
-  const [isFiltersOpen, setIsFiltersOpen] = useState(true);
-  const heroPopoverRef = useRef<HTMLElement | null>(null);
-  const filtersPopoverRef = useRef<HTMLElement | null>(null);
-  const heroButtonRef = useRef<HTMLButtonElement | null>(null);
-  const filtersButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [isHeroOpen, setIsHeroOpen] = useState(false);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   useEffect(() => {
     const savedFlags = window.localStorage.getItem(STORAGE_KEYS.flags);
     const savedFilters = window.localStorage.getItem(STORAGE_KEYS.filters);
+    const savedNotes = window.localStorage.getItem(STORAGE_KEYS.notes);
 
     if (savedFlags) {
       setFlagState(JSON.parse(savedFlags) as Record<string, CardFlagState>);
+    }
+
+    if (savedNotes) {
+      setNoteState(JSON.parse(savedNotes) as Record<string, string>);
     }
 
     if (savedFilters) {
@@ -91,6 +94,14 @@ function App() {
 
     window.localStorage.setItem(STORAGE_KEYS.flags, JSON.stringify(flagState));
   }, [flagState, isHydrated]);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    window.localStorage.setItem(STORAGE_KEYS.notes, JSON.stringify(noteState));
+  }, [isHydrated, noteState]);
 
   useEffect(() => {
     if (!isHydrated) {
@@ -123,26 +134,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target as Node;
-
-      if (
-        isHeroOpen &&
-        !heroPopoverRef.current?.contains(target) &&
-        !heroButtonRef.current?.contains(target)
-      ) {
-        setIsHeroOpen(false);
-      }
-
-      if (
-        isFiltersOpen &&
-        !filtersPopoverRef.current?.contains(target) &&
-        !filtersButtonRef.current?.contains(target)
-      ) {
-        setIsFiltersOpen(false);
-      }
-    };
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsHeroOpen(false);
@@ -150,17 +141,25 @@ function App() {
       }
     };
 
-    document.addEventListener('pointerdown', handlePointerDown);
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isHeroOpen || isFiltersOpen ? 'hidden' : '';
+
+    return () => {
+      document.body.style.overflow = '';
     };
   }, [isFiltersOpen, isHeroOpen]);
 
   const filteredCards = cards.filter((card) => {
     const cardFlags = flagState[card.id] ?? defaultFlags();
+    const hasNote = (noteState[card.id] ?? '').trim().length > 0;
+    const isUnmarked = !cardFlags.reviewLater && !cardFlags.unknown && !hasNote;
     const searchableText = [
       card.title,
       card.category,
@@ -195,10 +194,13 @@ function App() {
     }
 
     if (selectedFlags.length > 0) {
+      const matchesFlag = (flag: FilterFlagKey) =>
+        flag === 'hasNote' ? hasNote : flag === 'unmarked' ? isUnmarked : cardFlags[flag];
+
       activeResults.push(
         flagMode === 'all'
-          ? selectedFlags.every((flag) => cardFlags[flag])
-          : selectedFlags.some((flag) => cardFlags[flag]),
+          ? selectedFlags.every((flag) => matchesFlag(flag))
+          : selectedFlags.some((flag) => matchesFlag(flag)),
       );
     }
 
@@ -252,7 +254,6 @@ function App() {
       <div className="topbar-wrap">
         <header className="topbar">
           <button
-            ref={heroButtonRef}
             type="button"
             className={`topbar-button ${isHeroOpen ? 'is-active' : ''}`}
             onClick={() => {
@@ -260,7 +261,7 @@ function App() {
               setIsFiltersOpen(false);
             }}
             aria-expanded={isHeroOpen}
-            aria-controls="hero-popover"
+            aria-controls="hero-overlay"
           >
             Hero
           </button>
@@ -269,7 +270,6 @@ function App() {
             <strong>ポケット単語帳</strong>
           </div>
           <button
-            ref={filtersButtonRef}
             type="button"
             className={`topbar-button ${isFiltersOpen ? 'is-active' : ''}`}
             onClick={() => {
@@ -277,7 +277,7 @@ function App() {
               setIsHeroOpen(false);
             }}
             aria-expanded={isFiltersOpen}
-            aria-controls="filters-popover"
+            aria-controls="filters-overlay"
           >
             絞り込み
             {activeFilterCount > 0 && <span className="topbar-badge">{activeFilterCount}</span>}
@@ -285,62 +285,97 @@ function App() {
         </header>
 
         {isHeroOpen && (
-          <section
-            ref={heroPopoverRef}
-            className="popover-panel hero-popover"
-            id="hero-popover"
-          >
-            <div className="hero">
-              <div className="hero-copy">
-                <p className="eyebrow">AWS SAA 2026</p>
-                <h1>ポケット単語帳</h1>
-                <p className="hero-text">
-                  <code>study-memo/AWSSAA_Dictionary_2026.md</code> をカード化し、スマホで反復できるようにした学習用PWAです。
-                </p>
-              </div>
-
-              <div className="hero-stats">
-                <div className="stat-card">
-                  <span className="stat-label">全カード</span>
-                  <strong>{stats.total}</strong>
-                </div>
-                <div className="stat-card">
-                  <span className="stat-label">表示中</span>
-                  <strong>{stats.filtered}</strong>
-                </div>
-                <div className="stat-card">
-                  <span className="stat-label">後で確認</span>
-                  <strong>{stats.reviewLater}</strong>
-                </div>
-                <div className="stat-card">
-                  <span className="stat-label">知らない</span>
-                  <strong>{stats.unknown}</strong>
+          <div className="overlay-screen" role="dialog" aria-modal="true" aria-labelledby="hero-title">
+            <button
+              type="button"
+              className="overlay-backdrop"
+              aria-label="Hero を閉じる"
+              onClick={() => setIsHeroOpen(false)}
+            />
+            <section className="overlay-panel hero-overlay-panel" id="hero-overlay">
+              <button
+                type="button"
+                className="overlay-close overlay-close-corner"
+                aria-label="Hero を閉じる"
+                onClick={() => setIsHeroOpen(false)}
+              >
+                ×
+              </button>
+              <div className="overlay-header">
+                <div>
+                  <p className="eyebrow">Overview</p>
+                  <h2 id="hero-title">Hero</h2>
                 </div>
               </div>
 
-              {installPrompt && installStatus === 'ready' && (
-                <button type="button" className="install-button" onClick={handleInstall}>
-                  ホーム画面に追加
-                </button>
-              )}
-            </div>
-          </section>
+              <div className="hero">
+                <div className="hero-copy">
+                  <p className="eyebrow">AWS SAA 2026</p>
+                  <h1>ポケット単語帳</h1>
+                  <p className="hero-text">
+                    <code>study-memo/AWSSAA_Dictionary_2026.md</code> をカード化し、スマホで反復できるようにした学習用PWAです。
+                  </p>
+                </div>
+
+                <div className="hero-stats">
+                  <div className="stat-card">
+                    <span className="stat-label">全カード</span>
+                    <strong>{stats.total}</strong>
+                  </div>
+                  <div className="stat-card">
+                    <span className="stat-label">表示中</span>
+                    <strong>{stats.filtered}</strong>
+                  </div>
+                  <div className="stat-card">
+                    <span className="stat-label">後で確認</span>
+                    <strong>{stats.reviewLater}</strong>
+                  </div>
+                  <div className="stat-card">
+                    <span className="stat-label">知らない</span>
+                    <strong>{stats.unknown}</strong>
+                  </div>
+                </div>
+
+                {installPrompt && installStatus === 'ready' && (
+                  <button type="button" className="install-button" onClick={handleInstall}>
+                    ホーム画面に追加
+                  </button>
+                )}
+              </div>
+            </section>
+          </div>
         )}
 
         {isFiltersOpen && (
-          <aside
-            ref={filtersPopoverRef}
-            className="popover-panel filters-popover filters-panel"
-            id="filters-popover"
+          <div className="overlay-screen" role="dialog" aria-modal="true" aria-labelledby="filters-title">
+            <button
+              type="button"
+              className="overlay-backdrop"
+              aria-label="絞り込みを閉じる"
+              onClick={() => setIsFiltersOpen(false)}
+            />
+            <aside className="overlay-panel filters-overlay-panel filters-panel" id="filters-overlay">
+          <button
+            type="button"
+            className="overlay-close overlay-close-corner"
+            aria-label="絞り込みを閉じる"
+            onClick={() => setIsFiltersOpen(false)}
           >
-          <div className="panel-heading">
-            <div>
+            ×
+          </button>
+          <div className="overlay-header filters-overlay-header">
+            <div className="overlay-title-group">
               <p className="eyebrow">Filter Studio</p>
-              <h2>絞り込み</h2>
+              <div className="overlay-title-line">
+                <h2 id="filters-title">絞り込み</h2>
+              </div>
             </div>
-            <button type="button" className="ghost-button" onClick={resetFilters}>
-              リセット
-            </button>
+            <div className="overlay-actions">
+              <span className="result-count-chip">表示 {stats.filtered} 件</span>
+              <button type="button" className="ghost-button" onClick={resetFilters}>
+                リセット
+              </button>
+            </div>
           </div>
 
           <label className="search-field">
@@ -380,18 +415,40 @@ function App() {
 
           <section className="filter-group">
             <div className="group-header">
-              <h3>カテゴリ</h3>
-              <span className="helper-chip">{selectedCategories.length}件選択</span>
+              <h3>フラグ</h3>
+              <div className="segmented-control compact">
+                <button
+                  type="button"
+                  className={flagMode === 'any' ? 'is-active' : ''}
+                  onClick={() => setFlagMode('any')}
+                >
+                  OR
+                </button>
+                <button
+                  type="button"
+                  className={flagMode === 'all' ? 'is-active' : ''}
+                  onClick={() => setFlagMode('all')}
+                >
+                  AND
+                </button>
+              </div>
             </div>
             <div className="chip-grid">
-              {allCategories.map((category) => (
+              {[
+                ['reviewLater', '後で確認'],
+                ['unknown', '知らない'],
+                ['hasNote', 'メモあり'],
+                ['unmarked', 'ノーマーク'],
+              ].map(([key, label]) => (
                 <button
-                  key={category}
+                  key={key}
                   type="button"
-                  className={selectedCategories.includes(category) ? 'chip is-active' : 'chip'}
-                  onClick={() => setSelectedCategories(toggleValue(selectedCategories, category))}
+                  className={selectedFlags.includes(key as FilterFlagKey) ? 'chip is-active' : 'chip'}
+                  onClick={() =>
+                    setSelectedFlags(toggleValue(selectedFlags, key as FilterFlagKey))
+                  }
                 >
-                  {category}
+                  {label}
                 </button>
               ))}
             </div>
@@ -433,43 +490,24 @@ function App() {
 
           <section className="filter-group">
             <div className="group-header">
-              <h3>フラグ</h3>
-              <div className="segmented-control compact">
-                <button
-                  type="button"
-                  className={flagMode === 'any' ? 'is-active' : ''}
-                  onClick={() => setFlagMode('any')}
-                >
-                  OR
-                </button>
-                <button
-                  type="button"
-                  className={flagMode === 'all' ? 'is-active' : ''}
-                  onClick={() => setFlagMode('all')}
-                >
-                  AND
-                </button>
-              </div>
+              <h3>カテゴリ</h3>
+              <span className="helper-chip">{selectedCategories.length}件選択</span>
             </div>
             <div className="chip-grid">
-              {[
-                ['reviewLater', '後で確認'],
-                ['unknown', '知らない'],
-              ].map(([key, label]) => (
+              {allCategories.map((category) => (
                 <button
-                  key={key}
+                  key={category}
                   type="button"
-                  className={selectedFlags.includes(key as FlagKey) ? 'chip is-active' : 'chip'}
-                  onClick={() =>
-                    setSelectedFlags(toggleValue(selectedFlags, key as FlagKey))
-                  }
+                  className={selectedCategories.includes(category) ? 'chip is-active' : 'chip'}
+                  onClick={() => setSelectedCategories(toggleValue(selectedCategories, category))}
                 >
-                  {label}
+                  {category}
                 </button>
               ))}
             </div>
           </section>
         </aside>
+          </div>
         )}
       </div>
 
@@ -487,8 +525,12 @@ function App() {
                   key={card.id}
                   card={card}
                   flags={flagState[card.id] ?? defaultFlags()}
+                  note={noteState[card.id] ?? ''}
                   onFlagChange={(cardId, nextFlags) =>
                     setFlagState((current) => ({ ...current, [cardId]: nextFlags }))
+                  }
+                  onNoteChange={(cardId, nextNote) =>
+                    setNoteState((current) => ({ ...current, [cardId]: nextNote }))
                   }
                 />
               ))}

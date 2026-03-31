@@ -16,6 +16,7 @@ export type CardFlagState = {
 };
 
 export type FlagKey = keyof CardFlagState;
+export type FilterFlagKey = FlagKey | 'hasNote' | 'unmarked';
 
 export type FilterMode = 'and' | 'or';
 export type MatchMode = 'any' | 'all';
