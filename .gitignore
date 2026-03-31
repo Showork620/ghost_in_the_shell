@@ -29,3 +29,5 @@ node_modules/
 dist/
 .env
 .env.local
+vite.config.js
+*.tsbuildinfo
