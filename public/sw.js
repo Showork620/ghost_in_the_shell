@@ -1,4 +1,4 @@
-const CACHE_NAME = 'awssaa-cards-v1';
+const CACHE_NAME = 'awssaa-cards-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -28,6 +28,26 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') {
+    return;
+  }
+
+  const requestUrl = new URL(event.request.url);
+  const isSameOrigin = requestUrl.origin === self.location.origin;
+
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match(self.registration.scope))),
+    );
+    return;
+  }
+
+  if (!isSameOrigin) {
     return;
   }
 
