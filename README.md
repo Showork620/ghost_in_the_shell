@@ -1,3 +1,27 @@
+# AWS SAA Cards
+
+`study-memo/AWSSAA_Dictionary_2026.md` を元にした、スマホ向けの単語帳Webアプリです。React + Vite 構成で、カード反転、`後で確認` / `知らない` フラグ、カテゴリ・タグ・フラグによる複合絞り込み、PWA対応を入れています。
+
+フロントエンド構成の詳細は `docs/aws-saa-cards-frontend-structure.md` を参照してください。
+
+## App Commands
+
+```bash
+npm install
+npm run dev
+```
+
+- 辞書データは `npm run dev` / `npm run build` の前に `scripts/build-dictionary.mjs` で自動生成されます。
+- 生成JSONは `src/data/generated/dictionary.json` に出力されます。
+
+## Deploy
+
+- GitHub Pages 用のワークフローは `.github/workflows/deploy-pages.yml` に追加済みです。
+- GitHub 側で Pages の Build and deployment を `GitHub Actions` に設定すれば、`main` ブランチへの push でデプロイできます。
+- Pages 配下では `vite.config.ts` が `/awssaa_in_the_ghost/` を自動ベースパスとして使います。
+
+---
+
 # GHOST in the SHELL — AI連携ワークフロー テンプレート
 
 > GHOST（Antigravity / Gemini）と SHELL（Claude Code）の連携ルール・ディレクトリ構成を

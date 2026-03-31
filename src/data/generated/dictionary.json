@@ -1,0 +1,2033 @@
+[
+  {
+    "title": "AMI (Amazon Machine Image)",
+    "category": "コンピューティング",
+    "tags": [
+      "#Pilot Light",
+      "#運用上の優秀性",
+      "#EC2"
+    ],
+    "summary": "EC2 インスタンスを起動するためのテンプレート。OS、ミドルウェア、アプリ設定を含めて再利用できる。",
+    "examPoint": "パイロットライトやバックアップ後の再構築では、最新のゴールデン AMI を別リージョンへコピーしておく設計が定番。EC2 Image Builder と組み合わせた自動更新も押さえる。",
+    "useCase": "Web サーバ群の標準化、同一構成の大量起動、DR 時の迅速な再展開。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "a89d1e3ce962"
+  },
+  {
+    "title": "Amazon API Gateway",
+    "category": "アプリケーション統合",
+    "tags": [
+      "#サーバーレス",
+      "#パフォーマンス効率",
+      "#セキュリティ"
+    ],
+    "summary": "REST / HTTP / WebSocket API を公開・保護・制御するフルマネージドサービス。",
+    "examPoint": "Lambda と組み合わせたサーバーレス API、スロットリング、認証連携、キャッシュによる低レイテンシ化が頻出。WAF や Cognito と連携できる点も問われやすい。",
+    "useCase": "モバイルアプリの API、BFF、Webhook 受付、サーバーレスな業務 API。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "eeca79857420"
+  },
+  {
+    "title": "Amazon AppFlow",
+    "category": "アプリケーション統合",
+    "tags": [
+      "#データ転送",
+      "#運用上の優秀性"
+    ],
+    "summary": "Salesforce や Slack などの SaaS と AWS 間でデータを安全に転送するサービス。",
+    "examPoint": "SaaS 連携は AppFlow、オンプレやファイル同期は DataSync、DB 移行は SCT/DMS 系という切り分けが重要。SAA では主役より比較選択肢として出やすい。",
+    "useCase": "Salesforce から S3 へのデータ連携、SaaS データの定期取り込み。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "dc2fef485ebb"
+  },
+  {
+    "title": "AWS Application Recovery Controller (ARC)",
+    "category": "DR・可用性",
+    "tags": [
+      "#Multi Site",
+      "#信頼性"
+    ],
+    "summary": "マルチリージョン構成でフェイルオーバーの安全性を高めるためのレディネスチェックとルーティングコントロールを提供する。",
+    "examPoint": "2026 時点でも「自動ではなく安全に切り替えたい DR」の選択肢として有効。Route 53 だけでは足りない、誤切替防止や事前検証が必要な設計で差がつく。",
+    "useCase": "金融系や基幹系の手動フェイルオーバー制御、ゲームデイ訓練、複数リージョンの DR 運用。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "c1b4fff9198c"
+  },
+  {
+    "title": "ARN",
+    "category": "AWS 共通概念",
+    "tags": [
+      "#セキュリティ",
+      "#IAM"
+    ],
+    "summary": "AWS リソースを一意に識別する名前。",
+    "examPoint": "IAM ポリシーの `Resource` 指定で頻出。サービスごとに形式が違うため、「どこまで絞れるか」を見る問題がある。",
+    "useCase": "ポリシー記述、イベントターゲット指定、リソース識別。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "c08253896572"
+  },
+  {
+    "title": "AWS Artifact",
+    "category": "セキュリティ・コンプライアンス",
+    "tags": [
+      "#セキュリティ",
+      "#コンプライアンス"
+    ],
+    "summary": "AWS の各種コンプライアンスレポートや契約文書を取得できるサービス。",
+    "examPoint": "「監査証跡を作る」サービスではなく、「AWS 側の監査レポートを入手する」サービス。CloudTrail や Config との混同に注意。",
+    "useCase": "SOC 報告書の提出、監査対応、規制業界の証跡確認。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "b782ca691d1f"
+  },
+  {
+    "title": "Amazon Athena",
+    "category": "分析",
+    "tags": [
+      "#サーバーレス",
+      "#コスト最適化",
+      "#パフォーマンス効率"
+    ],
+    "summary": "S3 上のデータに SQL を直接実行できるサーバーレス分析サービス。",
+    "examPoint": "CloudTrail、ALB、VPC Flow Logs などを低コストに分析する定番。Glue Data Catalog と組み合わせる設計が頻出。",
+    "useCase": "ログ分析、簡易データレイク分析、レポート作成前の ad-hoc クエリ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "59b398871c21"
+  },
+  {
+    "title": "Amazon Aurora",
+    "category": "データベース",
+    "tags": [
+      "#信頼性",
+      "#パフォーマンス効率",
+      "#Warmup Standby"
+    ],
+    "summary": "MySQL / PostgreSQL 互換のマネージド RDB。分散ストレージと複数 AZ への自動耐障害設計が特徴。",
+    "examPoint": "Aurora は RDS より高可用・高性能寄り。リードレプリカ台数、フェイルオーバー、Serverless、Global Database との使い分けが重要。",
+    "useCase": "高トラフィックな業務 DB、SaaS の基幹 DB、グローバル読取を伴うアプリ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "c5c4bcf8bf0f"
+  },
+  {
+    "title": "Aurora Global Database",
+    "category": "データベース",
+    "tags": [
+      "#Multi Site",
+      "#信頼性",
+      "#マルチリージョン"
+    ],
+    "summary": "Aurora クラスタを複数リージョンへ拡張する機能。2026 時点の公式ドキュメントでは、プライマリ 1 リージョンに対して最大 10 個のセカンダリクラスタを持てる。",
+    "examPoint": "クロスリージョン DR の定番。RDS のクロスリージョンリードレプリカより短い RPO / RTO を狙いやすく、RDS Multi-AZ が同一リージョン HA である点との区別が必須。",
+    "useCase": "多地域 DR、グローバル読取、低遅延な海外参照系。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "a21f5f489321"
+  },
+  {
+    "title": "AWS Backup",
+    "category": "バックアップ",
+    "tags": [
+      "#Backup&Restore",
+      "#信頼性",
+      "#コンプライアンス"
+    ],
+    "summary": "複数 AWS サービスのバックアップを一元的に定義・実行・保持管理するフルマネージドサービス。",
+    "examPoint": "「複数サービスを一括でバックアップしたい」なら第一候補。クロスリージョン/クロスアカウントコピーと Vault Lock の組み合わせが 2026 でも重要。",
+    "useCase": "EBS、RDS、EFS、DynamoDB、FSx などの統合バックアップ運用。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "ab7368751267"
+  },
+  {
+    "title": "AWS Budgets",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化"
+    ],
+    "summary": "予算額を設定し、超過見込みや超過時に通知するサービス。",
+    "examPoint": "Cost Explorer は分析、Budgets はしきい値監視という役割差を問う問題が定番。コスト停止装置ではない点にも注意。",
+    "useCase": "月額予算管理、部門ごとの支出アラート、PoC の費用見張り。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "40f82d6d831a"
+  },
+  {
+    "title": "AWS CDK",
+    "category": "IaC",
+    "tags": [
+      "#運用上の優秀性",
+      "#IaC"
+    ],
+    "summary": "TypeScript や Python などでインフラを定義し、CloudFormation を生成するフレームワーク。",
+    "examPoint": "CloudFormation の上位レイヤーとして理解しておけば十分。IaC の文脈で登場しても、実体は CloudFormation ベースと整理すると迷いにくい。",
+    "useCase": "アプリチーム主導の IaC、再利用可能な構成部品のコード化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "4da2c4fdd186"
+  },
+  {
+    "title": "AWS Certificate Manager (ACM)",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#暗号化"
+    ],
+    "summary": "SSL/TLS 証明書の発行、配置、更新を管理するサービス。",
+    "examPoint": "ALB、CloudFront、API Gateway で HTTPS を簡単に有効化する定番。秘密鍵管理を自前で持ちたくない時の正解になりやすい。",
+    "useCase": "Web サイトの HTTPS 化、API の TLS 証明書管理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "186084dd07ea"
+  },
+  {
+    "title": "AWS CloudFormation",
+    "category": "IaC",
+    "tags": [
+      "#運用上の優秀性",
+      "#IaC",
+      "#Backup&Restore"
+    ],
+    "summary": "AWS リソースを YAML / JSON テンプレートで定義し、再現可能な環境を作るサービス。",
+    "examPoint": "変更セット、ドリフト検出、スタックの再現性が基本。DR では環境再構築手段として強いが、コントロールプレーン依存である点まで理解すると精度が上がる。",
+    "useCase": "標準環境の量産、開発/本番の差分削減、災害時の再作成。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "6144c6f4e954"
+  },
+  {
+    "title": "CloudFormation StackSets",
+    "category": "IaC",
+    "tags": [
+      "#運用上の優秀性",
+      "#IaC",
+      "#マルチアカウント"
+    ],
+    "summary": "CloudFormation スタックを複数アカウント・複数リージョンへ一括展開する機能。",
+    "examPoint": "Organizations と組み合わせた標準展開、DR リージョンへの横展開、ガバナンスの初期配布で登場しやすい。",
+    "useCase": "監査用ロールの全アカウント配布、DR ベースラインの一括展開。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "cca599c922f7"
+  },
+  {
+    "title": "Amazon CloudFront",
+    "category": "ネットワーク・コンテンツ配信",
+    "tags": [
+      "#パフォーマンス効率",
+      "#コスト最適化",
+      "#信頼性"
+    ],
+    "summary": "世界中のエッジロケーションからコンテンツを配信する CDN。",
+    "examPoint": "CloudFront は L7 配信とキャッシュ、Global Accelerator は L4 最適経路と固定 IP という差分が鉄板。オリジンフェイルオーバーや署名付き URL も出やすい。",
+    "useCase": "画像/動画配信、静的サイト高速化、グローバル Web 配信。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "921f7c700989"
+  },
+  {
+    "title": "AWS CloudHSM",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#コンプライアンス"
+    ],
+    "summary": "専有 HSM 上で暗号鍵を管理するサービス。",
+    "examPoint": "2026 でも「厳格な鍵管理/FIPS 要件」なら KMS ではなく CloudHSM。KMS より運用負荷が高い代わりに専有性が高い。",
+    "useCase": "厳格な規制要件、専有 HSM が必要な暗号基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "9e68dbe397f8"
+  },
+  {
+    "title": "AWS CloudTrail",
+    "category": "監査",
+    "tags": [
+      "#セキュリティ",
+      "#監査",
+      "#運用上の優秀性"
+    ],
+    "summary": "AWS API コールの監査証跡を記録するサービス。",
+    "examPoint": "誰が何をしたかは CloudTrail、リソース状態がどう変わったかは Config。全リージョン有効化と S3 集約はほぼ定番のベストプラクティス。",
+    "useCase": "操作履歴監査、不正操作の追跡、コンプライアンス証跡。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "8f7e6ad81a1d"
+  },
+  {
+    "title": "Amazon CloudWatch",
+    "category": "モニタリング",
+    "tags": [
+      "#運用上の優秀性",
+      "#信頼性",
+      "#パフォーマンス効率"
+    ],
+    "summary": "メトリクス、ログ、アラーム、ダッシュボードを統合的に扱う監視サービス。",
+    "examPoint": "Auto Scaling のトリガー、SQS の深さ監視、ログ集約、メトリクスフィルターが典型。CloudWatch Logs と CloudTrail の役割差も重要。",
+    "useCase": "CPU アラーム、アプリログ集約、運用ダッシュボード、障害通知。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "9dae94b56d62"
+  },
+  {
+    "title": "CloudWatch Logs",
+    "category": "モニタリング",
+    "tags": [
+      "#運用上の優秀性",
+      "#ログ管理"
+    ],
+    "summary": "CloudWatch のログ集約機能。アプリや OS、各種 AWS サービスのログを保存・検索・分析できる。",
+    "examPoint": "アプリ実行ログの保存先として頻出。CloudTrail は API 監査、CloudWatch Logs はアプリ/システムログという使い分けを明確にする。",
+    "useCase": "Lambda ログ、EC2 アプリログ、監視アラート用ログ収集。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "886b7826665f"
+  },
+  {
+    "title": "Amazon Cognito",
+    "category": "認証・認可",
+    "tags": [
+      "#セキュリティ",
+      "#サーバーレス"
+    ],
+    "summary": "アプリ利用者向けの認証基盤。ユーザープールと ID プールを提供する。",
+    "examPoint": "ユーザープールは認証、ID プールは AWS リソースへの一時認証情報付与という整理が必須。外部 IdP 連携と STS も絡む。",
+    "useCase": "Web アプリのログイン、モバイルアプリの認証、SNS ログイン連携。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "d5552aa3d3a5"
+  },
+  {
+    "title": "AWS CodeBuild",
+    "category": "DevOps",
+    "tags": [
+      "#運用上の優秀性",
+      "#CI/CD"
+    ],
+    "summary": "ソースコードのビルドとテストを実行するマネージドサービス。",
+    "examPoint": "SAA では深掘りされにくいが、CI/CD 全体像の比較問題で登場する。CodePipeline の一部として理解すれば十分。",
+    "useCase": "コンテナビルド、自動テスト、アーティファクト生成。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "58a849e245ae"
+  },
+  {
+    "title": "AWS CodeDeploy",
+    "category": "DevOps",
+    "tags": [
+      "#運用上の優秀性",
+      "#CI/CD"
+    ],
+    "summary": "EC2、Lambda、ECS へのデプロイを自動化するサービス。",
+    "examPoint": "ブルー/グリーン、ローリング、カナリアの差分を問う補助論点として出やすい。主役ではなく運用自動化の比較枠。",
+    "useCase": "段階的リリース、無停止更新、自動ロールバック。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "41dfaccab53d"
+  },
+  {
+    "title": "AWS CodePipeline",
+    "category": "DevOps",
+    "tags": [
+      "#運用上の優秀性",
+      "#CI/CD"
+    ],
+    "summary": "ソース取得からビルド、テスト、デプロイまでをつなぐパイプラインサービス。",
+    "examPoint": "運用上の優秀性の文脈で「変更を安全に自動化する」選択肢として理解すれば十分。各ステージの連携役。",
+    "useCase": "継続的デリバリー、承認付き本番反映、自動テスト付きリリース。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "26090a5e53de"
+  },
+  {
+    "title": "AWS Compute Optimizer",
+    "category": "最適化",
+    "tags": [
+      "#コスト最適化",
+      "#パフォーマンス効率"
+    ],
+    "summary": "利用実績を分析して EC2、EBS、Lambda などの最適サイズを推奨するサービス。",
+    "examPoint": "Trusted Advisor は広く点検、Compute Optimizer はライトサイジングに特化という使い分けが頻出。過剰プロビジョニング対策の本命。",
+    "useCase": "EC2 のサイズ見直し、EBS タイプ見直し、Lambda メモリ調整。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "82e9220939f5"
+  },
+  {
+    "title": "AWS Config",
+    "category": "構成管理",
+    "tags": [
+      "#セキュリティ",
+      "#コンプライアンス",
+      "#運用上の優秀性"
+    ],
+    "summary": "リソース構成の変更履歴を記録し、Config ルールで準拠性を評価するサービス。",
+    "examPoint": "CloudTrail と違い、Config は構成状態の追跡が中心。非準拠検知から自動修復まで含む設計が問われやすい。",
+    "useCase": "暗号化必須ルールの監視、S3 公開設定の検知、構成ドリフトの把握。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "3162078fc5d6"
+  },
+  {
+    "title": "AWS Control Tower",
+    "category": "ガバナンス",
+    "tags": [
+      "#セキュリティ",
+      "#運用上の優秀性",
+      "#マルチアカウント"
+    ],
+    "summary": "マルチアカウント環境の初期構築とガードレール適用を自動化するサービス。",
+    "examPoint": "Organizations にランディングゾーン運用を足したものとして理解すると整理しやすい。SCP や監査アカウント設計と一緒に問われる。",
+    "useCase": "複数アカウントの標準化、セキュアな初期セットアップ、統制強化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "b45936d528db"
+  },
+  {
+    "title": "AWS Cost Anomaly Detection",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化"
+    ],
+    "summary": "機械学習で異常なコスト増加を検知して通知するサービス。",
+    "examPoint": "Budgets は固定しきい値、Anomaly Detection は通常パターンからの逸脱検知。急な NAT Gateway コスト増などのシナリオと相性が良い。",
+    "useCase": "想定外課金の早期発見、障害や設定ミス由来の請求急増監視。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "609f2e9810a4"
+  },
+  {
+    "title": "AWS Cost and Usage Report (CUR)",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化"
+    ],
+    "summary": "最も粒度の細かいコスト・利用データを出力するレポート。",
+    "examPoint": "詳細分析が必要なら CUR が正解。Cost Explorer より生データ寄りという違いを押さえる。",
+    "useCase": "部門別原価分析、独自 BI への連携、細粒度請求分析。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "d9262a66214f"
+  },
+  {
+    "title": "AWS Cost Explorer",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化"
+    ],
+    "summary": "コストの可視化、傾向分析、将来予測を行うサービス。",
+    "examPoint": "予算アラートは Budgets、詳細生データは CUR、普段の可視化は Cost Explorer という整理が鉄板。",
+    "useCase": "月次コスト確認、サービス別コスト分析、節約候補の把握。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "be08d7467c88"
+  },
+  {
+    "title": "Amazon Data Firehose",
+    "category": "データ転送",
+    "tags": [
+      "#パフォーマンス効率",
+      "#運用上の優秀性"
+    ],
+    "summary": "ストリーミングデータを自動バッファリングしながら S3、Redshift、OpenSearch などへ配信するサービス。",
+    "examPoint": "Kinesis Data Streams は自前処理、Firehose は配信先までのマネージド搬送。WAF ログやアプリログの保存先として出やすい。",
+    "useCase": "ログ集約、クリックストリーム転送、監査ログの S3 保存。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "fb977242782c"
+  },
+  {
+    "title": "Amazon Data Lifecycle Manager (DLM)",
+    "category": "バックアップ",
+    "tags": [
+      "#Backup&Restore",
+      "#運用上の優秀性"
+    ],
+    "summary": "EBS スナップショットや AMI の作成・保持・削除を自動化するサービス。",
+    "examPoint": "EBS の世代管理をシンプルに自動化したい場合の正解。フルバックアップではなく増分スナップショット前提で出る。",
+    "useCase": "日次スナップショット、AMI 世代管理、保管期間の自動化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "a83cc404dc68"
+  },
+  {
+    "title": "AWS DataSync",
+    "category": "移行・転送",
+    "tags": [
+      "#データ転送",
+      "#移行"
+    ],
+    "summary": "オンプレミスや他クラウドから AWS ストレージへ高速転送・同期するサービス。",
+    "examPoint": "ネットワーク経由の大量ファイル同期は DataSync、物理搬送は Snow Family、ハイブリッド常設は Storage Gateway という切り分けが重要。",
+    "useCase": "NAS から S3/EFS/FSx への移行、定期同期、バックアップ転送。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "82c3a0d5e860"
+  },
+  {
+    "title": "Amazon Detective",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#調査"
+    ],
+    "summary": "GuardDuty などの検出を起点に、関連するセキュリティイベントの因果関係を可視化するサービス。",
+    "examPoint": "検知は GuardDuty、調査は Detective、集約は Security Hub と整理すると混乱しない。",
+    "useCase": "インシデント調査、侵害経路の可視化、原因分析。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "7a693349df32"
+  },
+  {
+    "title": "AWS Direct Connect",
+    "category": "ネットワーク",
+    "tags": [
+      "#ネットワーク",
+      "#パフォーマンス効率"
+    ],
+    "summary": "オンプレミスと AWS を専用線で接続するサービス。",
+    "examPoint": "Site-to-Site VPN より安定・低遅延・高帯域。高価だが本番基幹接続で選ばれやすい。冗長化設計もよく問われる。",
+    "useCase": "基幹システム接続、大容量転送、安定したハイブリッド接続。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "62a6b68d8538"
+  },
+  {
+    "title": "AWS Directory Service",
+    "category": "認証・ディレクトリ",
+    "tags": [
+      "#セキュリティ",
+      "#ハイブリッド"
+    ],
+    "summary": "Active Directory と AWS を連携させるマネージドディレクトリサービス。",
+    "examPoint": "AWS Managed Microsoft AD、AD Connector、Simple AD の違いが重要。Windows ベースの認証統合問題でよく出る。",
+    "useCase": "AD 認証のクラウド延伸、FSx for Windows 連携、社内 Windows 認証統合。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "d104de266583"
+  },
+  {
+    "title": "Amazon DocumentDB",
+    "category": "データベース",
+    "tags": [
+      "#パフォーマンス効率",
+      "#移行"
+    ],
+    "summary": "MongoDB 互換 API を持つマネージドドキュメントデータベース。",
+    "examPoint": "「MongoDB 互換のマネージドサービス」がキーワード。 DynamoDB とはデータモデルが違うため、JSON 風ドキュメント互換性を求める場面で選ぶ。",
+    "useCase": "MongoDB ワークロードの AWS 移行、ドキュメント中心アプリ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "8964124e9b3f"
+  },
+  {
+    "title": "Amazon DynamoDB",
+    "category": "データベース",
+    "tags": [
+      "#信頼性",
+      "#パフォーマンス効率",
+      "#サーバーレス"
+    ],
+    "summary": "ミリ秒台の低レイテンシで動作するフルマネージド NoSQL データベース。",
+    "examPoint": "オンデマンド/プロビジョンド、PITR、Streams、DAX、Global Tables の組み合わせが頻出。高スケール・マルチ AZ は前提知識として扱う。",
+    "useCase": "セッション、ゲームランキング、IoT 状態管理、高スループットなキー値アクセス。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "54863632d137"
+  },
+  {
+    "title": "DynamoDB Accelerator (DAX)",
+    "category": "データベース",
+    "tags": [
+      "#パフォーマンス効率",
+      "#キャッシュ"
+    ],
+    "summary": "DynamoDB 向けのインメモリキャッシュ。読み取りレイテンシをさらに短縮する。",
+    "examPoint": "マイクロ秒単位の読取高速化が必要な時に有効。ただし強整合読み取りが必要な要件とは相性が悪い。",
+    "useCase": "高速ランキング、入札、瞬間的な参照負荷が高い読取中心ワークロード。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "f8f58d586778"
+  },
+  {
+    "title": "DynamoDB Global Tables",
+    "category": "データベース",
+    "tags": [
+      "#Multi Site",
+      "#信頼性",
+      "#マルチリージョン"
+    ],
+    "summary": "DynamoDB のマルチリージョン・マルチアクティブ複製機能。2026 時点の公式では MREC と MRSC の整合性モードがある。",
+    "examPoint": "NoSQL の多地域 DR では第一候補。各リージョンで読み書きでき、昇格操作が不要という点が Aurora Global Database と大きく異なる。",
+    "useCase": "グローバルサービス、リージョン障害に強いユーザープロファイル、世界分散アプリ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "02d0319b73c8"
+  },
+  {
+    "title": "DynamoDB Streams",
+    "category": "イベント駆動",
+    "tags": [
+      "#サーバーレス",
+      "#運用上の優秀性"
+    ],
+    "summary": "DynamoDB テーブルの変更履歴を時系列で保持し、Lambda などへ連携できる機能。",
+    "examPoint": "変更イベントのリアクティブ処理に使う。監査用の CloudTrail とは目的が違う点が問われやすい。",
+    "useCase": "更新イベント通知、派生テーブル更新、非同期連携。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "2068e88aaa57"
+  },
+  {
+    "title": "Amazon EBS",
+    "category": "ストレージ",
+    "tags": [
+      "#パフォーマンス効率",
+      "#信頼性",
+      "#EC2"
+    ],
+    "summary": "EC2 向けのブロックストレージ。単一 AZ に属するが、AZ 内で高耐久に設計されている。",
+    "examPoint": "gp3 と io2 の使い分け、EBS は複数 EC2 共有向きではないこと、スナップショットが増分バックアップであることが基本。",
+    "useCase": "OS ディスク、DB ディスク、低レイテンシなブロックストレージ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "6bab7c4514a3"
+  },
+  {
+    "title": "EBS Snapshot",
+    "category": "バックアップ",
+    "tags": [
+      "#Backup&Restore",
+      "#EBS",
+      "#バックアップ"
+    ],
+    "summary": "EBS ボリュームのバックアップ。初回フル、以降増分で保存される。",
+    "examPoint": "クロスリージョンコピー、AMI 作成の元、DLM 自動化が典型論点。ボリューム障害対策と DR の両方で登場する。",
+    "useCase": "EC2 のバックアップ、DR 用コピー、定期復元ポイント作成。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "f7a92e992e57"
+  },
+  {
+    "title": "Amazon EC2",
+    "category": "コンピューティング",
+    "tags": [
+      "#信頼性",
+      "#パフォーマンス効率",
+      "#コスト最適化"
+    ],
+    "summary": "AWS 上の仮想サーバー。インスタンスタイプ、購入オプション、AZ 配置を柔軟に選べる。",
+    "examPoint": "Auto Scaling、ELB、EBS、IAM ロールとの組み合わせが基礎。要件からインスタンスファミリーや購入モデルを選ぶ問題が多い。",
+    "useCase": "Web サーバ、業務アプリ、バッチ、レガシー移行先。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "aa08ee1815b0"
+  },
+  {
+    "title": "EC2 Auto Scaling",
+    "category": "コンピューティング",
+    "tags": [
+      "#信頼性",
+      "#コスト最適化",
+      "#Warmup Standby"
+    ],
+    "summary": "EC2 台数を需要に応じて自動増減する機能。",
+    "examPoint": "CloudWatch アラーム連携、ターゲット追跡、スケジュール、最小容量 0 のパイロットライト設計が頻出。DR と通常運用の両方で出る。",
+    "useCase": "負荷変動のある Web サーバ、ウォームスタンバイ環境、夜間停止を伴う開発環境。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "b27eee8ce46c"
+  },
+  {
+    "title": "EC2 Spot Instances",
+    "category": "コンピューティング",
+    "tags": [
+      "#コスト最適化",
+      "#EC2"
+    ],
+    "summary": "余剰キャパシティを大幅割引で利用できる EC2 の購入オプション。",
+    "examPoint": "中断されてもよいバッチや CI/CD に向く。 2 分前通知がある一方、停止耐性のない本番 DB には不向きという判断が重要。",
+    "useCase": "バッチ処理、レンダリング、検証環境、分散ワーカー。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "bdaa2a18d3ea"
+  },
+  {
+    "title": "Amazon ECS",
+    "category": "コンテナ",
+    "tags": [
+      "#運用上の優秀性",
+      "#パフォーマンス効率"
+    ],
+    "summary": "AWS ネイティブなコンテナオーケストレーションサービス。",
+    "examPoint": "EKS より学習コストが低く、Fargate と組み合わせやすい。 `taskRoleArn` と `executionRoleArn` の違いも周辺知識として有効。",
+    "useCase": "マイクロサービス、バッチコンテナ、AWS 中心のコンテナ基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "d2d2d3568b03"
+  },
+  {
+    "title": "Amazon EFS",
+    "category": "ストレージ",
+    "tags": [
+      "#信頼性",
+      "#パフォーマンス効率",
+      "#共有ストレージ"
+    ],
+    "summary": "マルチ AZ で利用できる NFS ベースのフルマネージド共有ファイルストレージ。",
+    "examPoint": "EBS と違って複数 EC2 から同時マウントできる。2026 時点の公式では、レプリケーション後の RPO は多くのファイルシステムで 15 分が目安。",
+    "useCase": "共有アップロード領域、CMS、複数 Linux サーバからの共通ファイル参照。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "3dc383c4231c"
+  },
+  {
+    "title": "Amazon EKS",
+    "category": "コンテナ",
+    "tags": [
+      "#運用上の優秀性",
+      "#パフォーマンス効率"
+    ],
+    "summary": "マネージド Kubernetes サービス。",
+    "examPoint": "HPA が Pod 数、Cluster Autoscaler がノード数を増減する役割分担が重要。ECS と EKS の比較問題で出やすい。",
+    "useCase": "Kubernetes ベースの既存資産活用、コンテナ標準化、マルチクラウド志向の基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "817fe3520176"
+  },
+  {
+    "title": "Amazon ElastiCache",
+    "category": "データベース",
+    "tags": [
+      "#パフォーマンス効率",
+      "#信頼性",
+      "#キャッシュ"
+    ],
+    "summary": "Redis / Memcached ベースのマネージドインメモリキャッシュ。",
+    "examPoint": "Redis はレプリカ・フェイルオーバー・バックアップあり、Memcached はシンプルなキャッシュ専用。キャッシュ戦略もあわせて問われる。",
+    "useCase": "セッション管理、商品一覧キャッシュ、DB 負荷軽減。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "c15219ffeea2"
+  },
+  {
+    "title": "ElastiCache Global Datastore",
+    "category": "データベース",
+    "tags": [
+      "#Multi Site",
+      "#信頼性",
+      "#マルチリージョン"
+    ],
+    "summary": "ElastiCache for Redis のクロスリージョン複製機能。",
+    "examPoint": "キャッシュ層やセッション層の DR で登場する。DB 本体の DR とは役割が違うため、Aurora / DynamoDB と混同しないこと。",
+    "useCase": "グローバルセッション管理、リージョン障害時のキャッシュ継続。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "57a3069c710c"
+  },
+  {
+    "title": "AWS Elastic Beanstalk",
+    "category": "PaaS",
+    "tags": [
+      "#運用上の優秀性"
+    ],
+    "summary": "アプリケーションコードを渡すと、EC2、ELB、Auto Scaling などをまとめて構成してくれる PaaS。",
+    "examPoint": "「インフラ詳細よりデプロイ簡便性を優先」する時の選択肢。 Lambda ほどサーバーレスではない点が比較ポイント。",
+    "useCase": "小〜中規模 Web アプリの迅速立ち上げ、既存コードの簡単デプロイ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "48aa91135b36"
+  },
+  {
+    "title": "AWS Elastic Disaster Recovery (DRS)",
+    "category": "DR・移行",
+    "tags": [
+      "#Pilot Light",
+      "#信頼性",
+      "#移行"
+    ],
+    "summary": "サーバーのブロックレベル継続レプリケーションで AWS への DR を実現するサービス。",
+    "examPoint": "オンプレ/他クラウドから AWS への DR で頻出。旧 CloudEndure 系の後継として、低コストなステージング + フェイルオーバー時拡張という考え方が重要。",
+    "useCase": "サーバ単位の DR、データセンター移行、災害時の迅速起動。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "786073f18479"
+  },
+  {
+    "title": "Elastic IP",
+    "category": "ネットワーク",
+    "tags": [
+      "#ネットワーク",
+      "#コスト最適化"
+    ],
+    "summary": "AWS 上で固定的に使えるパブリック IPv4 アドレス。",
+    "examPoint": "使っていない Elastic IP に課金が発生する点は定番。高可用化手段そのものではなく、アドレス固定用途。",
+    "useCase": "固定送信元 IP、NAT インスタンス、移行時の一時的なアドレス固定。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "445e06f9a4b1"
+  },
+  {
+    "title": "Elastic Load Balancing (ELB)",
+    "category": "ネットワーク",
+    "tags": [
+      "#信頼性",
+      "#パフォーマンス効率"
+    ],
+    "summary": "複数ターゲットへトラフィックを分散するロードバランサ群の総称。",
+    "examPoint": "ALB は HTTP/HTTPS の L7、NLB は TCP/UDP の L4、Gateway Load Balancer は仮想アプライアンス向け。ヘルスチェックとマルチ AZ が基本論点。",
+    "useCase": "Web 負荷分散、マイクロサービス入口、低遅延 TCP/UDP 分散。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "80ddb681f673"
+  },
+  {
+    "title": "Amazon EMR",
+    "category": "分析",
+    "tags": [
+      "#パフォーマンス効率",
+      "#ビッグデータ"
+    ],
+    "summary": "Hadoop、Spark などを使う大規模データ処理基盤。",
+    "examPoint": "Athena より柔軟だが運用負荷が高い。大規模分散処理、カスタム分析基盤、Hadoop エコシステム利用なら EMR。",
+    "useCase": "バッチ分析、Spark ジョブ、データレイク変換基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "9964ccb846c7"
+  },
+  {
+    "title": "Amazon EventBridge",
+    "category": "イベント駆動",
+    "tags": [
+      "#サーバーレス",
+      "#運用上の優秀性"
+    ],
+    "summary": "AWS サービスや SaaS、独自アプリのイベントをルールベースでルーティングするサービス。",
+    "examPoint": "ポーリングを避けるイベント駆動設計の中心。 CloudWatch Events の後継として理解しておけばよい。",
+    "useCase": "セキュリティ検知から自動修復、スケジュール実行、イベント連携。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "06f1e2380365"
+  },
+  {
+    "title": "AWS Fargate",
+    "category": "コンテナ",
+    "tags": [
+      "#サーバーレス",
+      "#コスト最適化",
+      "#運用上の優秀性"
+    ],
+    "summary": "ECS / EKS で利用できるサーバーレスコンピュート実行基盤。",
+    "examPoint": "EC2 管理不要で vCPU / メモリ単位課金。可変負荷でコンテナを簡単運用したい場面の正解になりやすい。",
+    "useCase": "小規模コンテナ基盤、バッチコンテナ、運用負荷を抑えたマイクロサービス。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "6715030bd6e8"
+  },
+  {
+    "title": "AWS Firewall Manager",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#ガバナンス"
+    ],
+    "summary": "複数アカウントにまたがる WAF、Shield Advanced、Security Group などのポリシーを一元管理するサービス。",
+    "examPoint": "トラフィック検査そのものをするのは WAF / Network Firewall。Firewall Manager はその統制レイヤー。",
+    "useCase": "Organizations 全体でのセキュリティルール標準化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "24704a466336"
+  },
+  {
+    "title": "Amazon FSx",
+    "category": "ストレージ",
+    "tags": [
+      "#共有ストレージ",
+      "#Windows",
+      "#ハイブリッド"
+    ],
+    "summary": "Windows File Server、NetApp ONTAP、Lustre など用途別ファイルシステムを提供するサービス群。",
+    "examPoint": "SMB と AD が必要なら FSx for Windows、NFS 高性能/HPC なら FSx for Lustre、企業ファイル機能なら ONTAP と整理すると選びやすい。",
+    "useCase": "Windows ファイルサーバ移行、HPC、エンタープライズ NAS。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "3748105e7ef9"
+  },
+  {
+    "title": "AWS Global Accelerator",
+    "category": "ネットワーク",
+    "tags": [
+      "#パフォーマンス効率",
+      "#信頼性",
+      "#マルチリージョン"
+    ],
+    "summary": "Anycast の固定 IP と AWS グローバルネットワークを使い、最適なリージョンやエンドポイントへトラフィックを導くサービス。",
+    "examPoint": "CloudFront と違いキャッシュではなく通信経路最適化。DNS TTL に依存しない高速フェイルオーバーも重要。",
+    "useCase": "グローバルな API、ゲーム、金融系トラフィック、高速フェイルオーバー。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "e494799573ca"
+  },
+  {
+    "title": "AWS Glue",
+    "category": "分析",
+    "tags": [
+      "#運用上の優秀性",
+      "#ETL"
+    ],
+    "summary": "データ検出、変換、カタログ化を行うサーバーレス ETL サービス。",
+    "examPoint": "Athena とセットで出やすく、Glue Data Catalog がメタデータ管理の中心。ETL が必要なら Athena 単体では足りない。",
+    "useCase": "S3 データ整形、ログ ETL、データレイクのカタログ管理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "b98e101dc700"
+  },
+  {
+    "title": "AWS Graviton",
+    "category": "コンピューティング",
+    "tags": [
+      "#コスト最適化",
+      "#パフォーマンス効率",
+      "#持続可能性"
+    ],
+    "summary": "AWS 独自の ARM ベースプロセッサ。",
+    "examPoint": "2026 でも「コスト性能比改善」の代表例。アーキテクチャ互換性に問題がなければ、EC2 や RDS の節約策として出やすい。",
+    "useCase": "Linux 系 Web アプリ、コンテナ、コスト重視の一般計算。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "e548df889dbd"
+  },
+  {
+    "title": "Amazon GuardDuty",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#検知"
+    ],
+    "summary": "AWS ログをもとに脅威を自動検出するマネージドサービス。",
+    "examPoint": "有効化が簡単で「まず検知したい」時の定番。WAF や Shield のようにブロック主体ではなく検知主体である点が重要。",
+    "useCase": "不審 API、異常 DNS、侵害兆候の可視化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "043fc98b000c"
+  },
+  {
+    "title": "AWS Health Dashboard",
+    "category": "運用管理",
+    "tags": [
+      "#運用上の優秀性",
+      "#監視"
+    ],
+    "summary": "AWS 側の障害・メンテナンス・影響イベントを通知するサービス。",
+    "examPoint": "自社アプリ監視の CloudWatch とは別物。AWS 側起因のイベントを知りたい場面で正解になる。",
+    "useCase": "メンテナンス通知確認、障害影響の把握、運用周知。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "aebda8d16d23"
+  },
+  {
+    "title": "IAM",
+    "category": "認証・認可",
+    "tags": [
+      "#セキュリティ",
+      "#アクセス制御"
+    ],
+    "summary": "AWS リソースへのアクセス権限をユーザー、ロール、ポリシーで制御する基盤サービス。",
+    "examPoint": "デフォルト拒否、明示的 Deny 優先、ロール利用、クロスアカウント AssumeRole が最重要。キーワードは最小権限。",
+    "useCase": "EC2 から S3 アクセス、管理者権限の制御、他アカウント連携。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "d4ade53b8fb0"
+  },
+  {
+    "title": "IAM Identity Center",
+    "category": "認証・認可",
+    "tags": [
+      "#セキュリティ",
+      "#マルチアカウント"
+    ],
+    "summary": "AWS アカウントやアプリへのシングルサインオンを一元管理するサービス。",
+    "examPoint": "Organizations と組み合わせたマルチアカウント運用の標準選択肢。SAML フェデレーションとも結び付けて理解する。",
+    "useCase": "企業 SSO、複数 AWS アカウントへの統合ログイン、権限セット管理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "873d9995634f"
+  },
+  {
+    "title": "Identity Pool (ID プール)",
+    "category": "認可",
+    "tags": [
+      "#Cognito",
+      "#STS"
+    ],
+    "summary": "Cognito で認証済み/未認証ユーザーへ AWS 一時認証情報を払い出す機能。",
+    "examPoint": "ユーザープールで認証し、ID プールで AWS リソースアクセス権を与える流れが典型。",
+    "useCase": "アプリ利用者に S3 直接アップロードを許可する時など。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "77491833ecb3"
+  },
+  {
+    "title": "Amazon Inspector",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#脆弱性管理"
+    ],
+    "summary": "EC2 やコンテナイメージの脆弱性を検出するサービス。",
+    "examPoint": "構成監査は Config、脅威検知は GuardDuty、脆弱性検出は Inspector と役割を区別する。",
+    "useCase": "OS パッケージ脆弱性確認、イメージスキャン、継続的な脆弱性管理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "7417f2c347a0"
+  },
+  {
+    "title": "Amazon Kinesis Data Streams",
+    "category": "ストリーミング",
+    "tags": [
+      "#パフォーマンス効率",
+      "#リアルタイム処理"
+    ],
+    "summary": "リアルタイムデータストリームを取り込み、自前のコンシューマで処理できるサービス。",
+    "examPoint": "Firehose は配信、Data Streams は独自リアルタイム処理という違いが重要。リアルタイムスコアリングや IoT でよく登場する。",
+    "useCase": "センサーデータ、アクセスログの即時処理、不正検知。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "de7b0a585a96"
+  },
+  {
+    "title": "AWS KMS",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#暗号化"
+    ],
+    "summary": "暗号鍵を作成・保管・利用制御するマネージド KMS。",
+    "examPoint": "キーポリシーと IAM の両方が絡むこと、S3/EBS/RDS/Secrets Manager との統合が基本。CloudHSM との差も重要。",
+    "useCase": "保存データ暗号化、アプリ秘密鍵管理、監査付き鍵利用。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "300938a3efda"
+  },
+  {
+    "title": "AWS Lake Formation",
+    "category": "分析",
+    "tags": [
+      "#データレイク",
+      "#セキュリティ"
+    ],
+    "summary": "データレイクの構築とアクセス制御を簡素化するサービス。",
+    "examPoint": "Glue Data Catalog と並んで出やすい。S3 上のデータレイクに対する権限統制を一元化したい時の選択肢。",
+    "useCase": "複数部門が使うデータレイク、細かいアクセス制御付き分析基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "4ba4bfd335fa"
+  },
+  {
+    "title": "AWS Lambda",
+    "category": "サーバーレス",
+    "tags": [
+      "#サーバーレス",
+      "#運用上の優秀性",
+      "#コスト最適化"
+    ],
+    "summary": "イベント駆動でコードを実行するサーバーレスコンピュート。",
+    "examPoint": "API Gateway、S3、EventBridge、DynamoDB Streams との連携が頻出。短時間処理、アイドル課金なし、運用負荷低減がキーワード。",
+    "useCase": "画像変換、通知処理、イベント駆動自動化、軽量 API バックエンド。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "0b7a6b9bc54e"
+  },
+  {
+    "title": "Amazon Macie",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#データ保護"
+    ],
+    "summary": "S3 内の機密データを検出・可視化するサービス。",
+    "examPoint": "「S3 の個人情報や機微情報を探したい」なら Macie。WAF や GuardDuty と用途が全く違う。",
+    "useCase": "PII 検出、機密データ棚卸し、S3 の情報漏えい対策。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "eefcc034d911"
+  },
+  {
+    "title": "NAT Gateway",
+    "category": "ネットワーク",
+    "tags": [
+      "#ネットワーク",
+      "#コスト最適化"
+    ],
+    "summary": "プライベートサブネットからインターネットへのアウトバウンド通信を可能にするマネージド NAT。",
+    "examPoint": "高可用だがデータ処理課金が重くなりやすい。S3/DynamoDB 向けは VPC エンドポイントで代替するとコストを抑えやすい。",
+    "useCase": "パッチ取得、外部 API 呼び出し、私設サブネットからの外向き通信。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "fd41d542945a"
+  },
+  {
+    "title": "Amazon MQ",
+    "category": "メッセージング",
+    "tags": [
+      "#移行",
+      "#アプリケーション統合"
+    ],
+    "summary": "ActiveMQ / RabbitMQ の互換性を保ったマネージドメッセージブローカー。",
+    "examPoint": "レガシーメッセージブローカー移行なら MQ、AWS ネイティブな疎結合なら SQS/SNS と判断する。",
+    "useCase": "既存 JMS ベースシステムの移行、RabbitMQ 互換運用。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "42b3948520dd"
+  },
+  {
+    "title": "AWS Network Firewall",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#ネットワーク"
+    ],
+    "summary": "VPC レベルでトラフィックを検査するマネージドファイアウォール。",
+    "examPoint": "SG/NACL より高度な検査、WAF より下位レイヤの制御。どこに置くか、何を見たいかで選ぶ。",
+    "useCase": "東西/南北トラフィック検査、IDS/IPS 的な制御、VPC 境界保護。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "91e62012c84d"
+  },
+  {
+    "title": "Amazon OpenSearch Service",
+    "category": "分析",
+    "tags": [
+      "#パフォーマンス効率",
+      "#検索"
+    ],
+    "summary": "ログ分析や全文検索向けのマネージド検索サービス。",
+    "examPoint": "検索やリアルタイムログ分析なら OpenSearch、データウェアハウス集計なら Redshift。用途差で選ばせる問題が出やすい。",
+    "useCase": "アプリ全文検索、運用ログ分析、可観測性基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "5f2af888b0ff"
+  },
+  {
+    "title": "AWS Organizations",
+    "category": "ガバナンス",
+    "tags": [
+      "#セキュリティ",
+      "#コスト最適化",
+      "#マルチアカウント"
+    ],
+    "summary": "複数 AWS アカウントを組織単位で管理するサービス。",
+    "examPoint": "SCP、OU、一括請求、RI/Savings Plans 共有が主要論点。Identity Center や Control Tower とセットで問われる。",
+    "useCase": "開発/本番分離、部門別アカウント管理、統制強化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "5d73f39fc7a9"
+  },
+  {
+    "title": "Systems Manager Parameter Store",
+    "category": "構成管理",
+    "tags": [
+      "#セキュリティ",
+      "#運用上の優秀性"
+    ],
+    "summary": "アプリ設定値やシークレットを階層構造で保存できる機能。",
+    "examPoint": "Secrets Manager との違いは、自動ローテーションや DB 認証情報管理の強さ。コストを抑えた設定管理では Parameter Store が有力。",
+    "useCase": "アプリ設定、簡易シークレット保存、環境変数集中管理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "72a9a2eb51fb"
+  },
+  {
+    "title": "AWS Pricing Calculator",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化"
+    ],
+    "summary": "AWS 構成の概算費用を見積もるツール。",
+    "examPoint": "実績分析は Cost Explorer、事前見積もりは Pricing Calculator。移行前の概算で選ばせる問題に出る。",
+    "useCase": "導入前見積もり、提案書作成、構成比較。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "45b944db5a04"
+  },
+  {
+    "title": "AWS PrivateLink",
+    "category": "ネットワーク",
+    "tags": [
+      "#セキュリティ",
+      "#ネットワーク"
+    ],
+    "summary": "インターフェイス VPC エンドポイント経由で AWS サービスや独自サービスへ私設接続する仕組み。",
+    "examPoint": "PrivateLink はインターフェイス型 VPC エンドポイントの基盤。S3/DynamoDB の無料ゲートウェイ型とは別物。",
+    "useCase": "SaaS の私設公開、インターネット非経由のサービス接続、共有サービス基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "94e53f8bd898"
+  },
+  {
+    "title": "Amazon QuickSight",
+    "category": "分析",
+    "tags": [
+      "#分析",
+      "#可視化"
+    ],
+    "summary": "AWS データソースを可視化する BI サービス。",
+    "examPoint": "SAA では周辺知識寄りだが、Athena・Redshift・S3 分析結果をダッシュボード化する流れで出ることがある。",
+    "useCase": "KPI ダッシュボード、分析結果の共有、運用可視化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "6d3eb082d797"
+  },
+  {
+    "title": "Reserved Instances (RI)",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化"
+    ],
+    "summary": "1 年または 3 年の利用コミットにより割引を受ける購入オプション。",
+    "examPoint": "安定稼働する EC2 / RDS / ElastiCache / Redshift に有効。Savings Plans より柔軟性が低い代わりに、条件次第で有利。",
+    "useCase": "長期間止まらない本番 DB、定常負荷のアプリサーバ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "8f74bcef37dc"
+  },
+  {
+    "title": "Amazon RDS",
+    "category": "データベース",
+    "tags": [
+      "#信頼性",
+      "#Warmup Standby",
+      "#パフォーマンス効率"
+    ],
+    "summary": "MySQL、PostgreSQL などをマネージドで運用できるリレーショナルデータベースサービス。",
+    "examPoint": "Multi-AZ は HA、リードレプリカはスケール/DR 補助、Aurora とは特性が違う。自動バックアップと PITR も頻出。",
+    "useCase": "業務トランザクション DB、既存 RDB 移行、一般的な Web アプリ DB。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "49524aa56edb"
+  },
+  {
+    "title": "Amazon RDS Multi-AZ DB Cluster",
+    "category": "データベース",
+    "tags": [
+      "#信頼性",
+      "#高可用性"
+    ],
+    "summary": "同一リージョン 3 AZ に writer 1 台と readable standby 2 台を配置する RDS の高可用性構成。",
+    "examPoint": "2026 時点の公式でも「同一リージョンの HA」であり、クロスリージョン DR ではない。読取容量も増やせるが、用途の本質は可用性向上。",
+    "useCase": "AZ 障害対策、低停止時間の業務 DB、同一リージョン内の高可用構成。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "54b51ca2bbce"
+  },
+  {
+    "title": "Amazon RDS Proxy",
+    "category": "データベース",
+    "tags": [
+      "#パフォーマンス効率",
+      "#信頼性"
+    ],
+    "summary": "RDS / Aurora への接続をプールし、接続集中を緩和するプロキシ。",
+    "examPoint": "2026 時点の公式でもマルチ AZ に高可用展開される。Lambda など短命接続が多いアプリの DB 接続爆発対策として出やすい。",
+    "useCase": "Lambda からの大量接続、接続数上限対策、フェイルオーバー時の接続安定化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "4689761bf10e"
+  },
+  {
+    "title": "Amazon Redshift",
+    "category": "分析",
+    "tags": [
+      "#パフォーマンス効率",
+      "#データウェアハウス"
+    ],
+    "summary": "列指向・MPP ベースのデータウェアハウスサービス。",
+    "examPoint": "大量集計や分析基盤なら Redshift、ログ検索なら OpenSearch、S3 直接 SQL は Athena と切り分ける。",
+    "useCase": "BI 集計、経営分析、データマート。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "eeac5ed1e11c"
+  },
+  {
+    "title": "Amazon Route 53",
+    "category": "ネットワーク",
+    "tags": [
+      "#信頼性",
+      "#Multi Site",
+      "#グローバル"
+    ],
+    "summary": "DNS、ドメイン登録、ヘルスチェック、ルーティングポリシーを提供するサービス。",
+    "examPoint": "フェイルオーバー、レイテンシ、加重、地理的ルーティングを要件から選べるようにする。DR 問題の登場頻度が非常に高い。",
+    "useCase": "DNS 管理、リージョン切替、Blue/Green 流量制御。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "0c16f93c12bc"
+  },
+  {
+    "title": "RPO",
+    "category": "DR 指標",
+    "tags": [
+      "#Backup&Restore"
+    ],
+    "summary": "どこまでのデータ損失を許容するかを表す目標値。",
+    "examPoint": "RTO とセットで必ず問われる。 Aurora Global Database、CRR、Backup 戦略との対応付けが重要。",
+    "useCase": "DR 戦略選定、バックアップ設計、業務要件整理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "21a0cf7f2202"
+  },
+  {
+    "title": "RTO",
+    "category": "DR 指標",
+    "tags": [
+      "#Backup&Restore"
+    ],
+    "summary": "復旧までに許容できる停止時間を表す目標値。",
+    "examPoint": "マルチサイトが最短、バックアップ&リストアが最長という基本整理が重要。設問の要求から DR 戦略を選ばせる軸になる。",
+    "useCase": "DR 戦略選定、復旧手順設計、SLA 定義。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "3210ebe04160"
+  },
+  {
+    "title": "Amazon S3",
+    "category": "ストレージ",
+    "tags": [
+      "#信頼性",
+      "#コスト最適化",
+      "#Backup&Restore"
+    ],
+    "summary": "高耐久なオブジェクトストレージ。多様なストレージクラスとライフサイクル機能を持つ。",
+    "examPoint": "バージョニング、ライフサイクル、CRR、署名付き URL、ストレージクラス選択が定番。デフォルトの耐久性と可用性の意味も理解する。",
+    "useCase": "バックアップ、ログ保存、静的コンテンツ配信、データレイク。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "7b11a4234011"
+  },
+  {
+    "title": "S3 Cross-Region Replication (CRR)",
+    "category": "ストレージ",
+    "tags": [
+      "#Multi Site",
+      "#マルチリージョン"
+    ],
+    "summary": "S3 オブジェクトを別リージョンのバケットへ自動複製する機能。",
+    "examPoint": "バージョニングが必須。2026 時点でも S3 Replication Time Control により 15 分以内複製の SLA を伴う設計が重要論点。",
+    "useCase": "静的アセット DR、ログの別リージョン退避、コンプライアンス複製。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "9502be8041e2"
+  },
+  {
+    "title": "S3 Intelligent-Tiering",
+    "category": "ストレージ",
+    "tags": [
+      "#コスト最適化",
+      "#ストレージ"
+    ],
+    "summary": "アクセスパターンに応じてオブジェクトを自動でコスト効率のよい層へ移すストレージクラス。",
+    "examPoint": "2026 時点の公式では 30 日未アクセスで IA、90 日で Archive Instant Access などへ自動遷移。アクセス予測が難しいデータの定番解。",
+    "useCase": "アクセス頻度が読めないログ、データレイク、長期保管データ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "236140aa11c3"
+  },
+  {
+    "title": "Amazon S3 Transfer Acceleration",
+    "category": "データ転送",
+    "tags": [
+      "#パフォーマンス効率",
+      "#グローバル"
+    ],
+    "summary": "CloudFront のエッジネットワークを使い、遠距離からの S3 アップロードを高速化する機能。",
+    "examPoint": "世界中の拠点から S3 へ高速アップロードしたい場面で有効。配信高速化の CloudFront と用途が逆向き。",
+    "useCase": "海外拠点からの大容量アップロード、グローバルなデータ収集。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "7dea86992ad8"
+  },
+  {
+    "title": "Savings Plans",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化"
+    ],
+    "summary": "一定の利用コミットメントに対して幅広いコンピュート料金を割引する料金モデル。",
+    "examPoint": "2026 でも RI より柔軟な節約策として重要。 Compute Savings Plans と Instance Savings Plans の柔軟性差を押さえる。",
+    "useCase": "長期運用する EC2/Fargate/Lambda のコスト削減、変動のある本番基盤。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "d5c7f00a8470"
+  },
+  {
+    "title": "AWS SAM",
+    "category": "IaC",
+    "tags": [
+      "#サーバーレス",
+      "#IaC"
+    ],
+    "summary": "サーバーレスアプリを簡潔に定義・デプロイする CloudFormation 拡張。",
+    "examPoint": "Lambda、API Gateway、DynamoDB などの構成を簡単に表す枠組みとして理解しておけば十分。",
+    "useCase": "サーバーレス API の IaC、開発用テンプレート管理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "e18428f61a64"
+  },
+  {
+    "title": "AWS Schema Conversion Tool (SCT)",
+    "category": "移行",
+    "tags": [
+      "#移行",
+      "#データベース"
+    ],
+    "summary": "異種 DB 間のスキーマ変換を支援するツール。",
+    "examPoint": "データ移行そのものではなく、異種 DB のスキーマ変換支援が役割。移行シナリオの比較問題で出る。",
+    "useCase": "Oracle から PostgreSQL への移行準備、異種 DB 変換。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "e02705521615"
+  },
+  {
+    "title": "AWS Secrets Manager",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#データ保護"
+    ],
+    "summary": "DB パスワードや API キーなどのシークレットを安全に保存・ローテーションするサービス。",
+    "examPoint": "自動ローテーションが必要なら Secrets Manager が第一候補。Parameter Store との差は頻出。",
+    "useCase": "RDS 認証情報、外部 API キー、機密設定値の保管。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "b0cae7423e9c"
+  },
+  {
+    "title": "AWS Security Hub",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#統合管理"
+    ],
+    "summary": "複数セキュリティサービスの検出結果を集約するダッシュボード。",
+    "examPoint": "検知を自分でするサービスではなく、結果の統合と優先順位付けに強い。Organizations 配下での統合管理とも相性が良い。",
+    "useCase": "GuardDuty/Inspector/Macie の統合表示、セキュリティ運用センター。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "5a54a65130a0"
+  },
+  {
+    "title": "AWS Service Catalog",
+    "category": "ガバナンス",
+    "tags": [
+      "#運用上の優秀性",
+      "#標準化"
+    ],
+    "summary": "承認済みの AWS リソースセットをカタログ化し、セルフサービス提供できるサービス。",
+    "examPoint": "標準テンプレート配布やセルフサービス統制の文脈で出る。Service Catalog 自体が監査をするわけではない。",
+    "useCase": "承認済み VPC の配布、標準開発環境のセルフサービス提供。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "02a61b08c70f"
+  },
+  {
+    "title": "AWS Service Quotas",
+    "category": "ガバナンス",
+    "tags": [
+      "#信頼性",
+      "#運用上の優秀性"
+    ],
+    "summary": "AWS サービスごとの利用上限を確認・管理するサービス。",
+    "examPoint": "上限超過による障害予防の観点で Trusted Advisor と並んで出ることがある。性能改善サービスではなく、上限制御の可視化役。",
+    "useCase": "リソース上限監視、事前のクォータ引き上げ申請、運用リスク管理。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "79b8aa62a2a6"
+  },
+  {
+    "title": "AWS Shield",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#ネットワーク"
+    ],
+    "summary": "DDoS 攻撃から保護するサービス。",
+    "examPoint": "Standard は自動適用、Advanced は強化保護と DRT 支援が付く。WAF は L7 攻撃対策、Shield は DDoS 対策。",
+    "useCase": "公開 Web サービスの DDoS 防御、ミッションクリティカル API の保護。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "34033366e932"
+  },
+  {
+    "title": "AWS Site-to-Site VPN",
+    "category": "ネットワーク",
+    "tags": [
+      "#ネットワーク",
+      "#ハイブリッド"
+    ],
+    "summary": "インターネット経由でオンプレミスと AWS を接続する VPN。",
+    "examPoint": "Direct Connect より安価だが、安定性と帯域は劣る。短期接続やコスト重視のハイブリッド構成でよく使う。",
+    "useCase": "拠点接続、PoC、DR 用の予備回線。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "a175b511cb63"
+  },
+  {
+    "title": "AWS Snow Family",
+    "category": "移行・転送",
+    "tags": [
+      "#移行",
+      "#データ転送"
+    ],
+    "summary": "物理デバイスで大容量データを AWS へ搬送するサービス群。",
+    "examPoint": "数十 TB〜PB 級でネットワーク転送が現実的でない時の定番。Storage Gateway や DataSync との差分が重要。",
+    "useCase": "初回データ移行、遠隔地の大量バックアップ搬送、帯域制約回避。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "4c169d38576e"
+  },
+  {
+    "title": "Amazon SNS",
+    "category": "メッセージング",
+    "tags": [
+      "#運用上の優秀性",
+      "#疎結合",
+      "#通知"
+    ],
+    "summary": "Pub/Sub 型のメッセージ配信サービス。複数の購読先へ同時通知できる。",
+    "examPoint": "SQS とのファンアウト構成が頻出。2026 時点ではメッセージデータ保護により PII/PHI の監査・マスキング・拒否も可能。",
+    "useCase": "メール/SMS 通知、イベントの同報配信、疎結合な通知ハブ。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "dbc1bcaf9443"
+  },
+  {
+    "title": "Amazon SQS",
+    "category": "メッセージング",
+    "tags": [
+      "#運用上の優秀性",
+      "#疎結合",
+      "#耐障害性"
+    ],
+    "summary": "非同期処理のためのメッセージキューサービス。",
+    "examPoint": "標準は高スループット、FIFO は順序保証。CloudWatch 監視と Auto Scaling の連携もよく出る。",
+    "useCase": "バックエンドのバッファリング、注文処理の非同期化、ワーカー分散。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "dc4a2c61a57a"
+  },
+  {
+    "title": "AWS STS",
+    "category": "認証・認可",
+    "tags": [
+      "#セキュリティ",
+      "#アクセス制御"
+    ],
+    "summary": "一時的な認証情報を発行するサービス。",
+    "examPoint": "AssumeRole、フェデレーション、Cognito の ID プールなどの裏側で使われる。長期アクセスキー削減の本命。",
+    "useCase": "クロスアカウントアクセス、一時クレデンシャル発行、外部 ID 連携。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "73b9a8080737"
+  },
+  {
+    "title": "AWS Step Functions",
+    "category": "アプリケーション統合",
+    "tags": [
+      "#サーバーレス",
+      "#運用上の優秀性"
+    ],
+    "summary": "複数サービスを状態遷移付きワークフローでつなぐサービス。",
+    "examPoint": "Lambda の連鎖を見やすく制御したい時の正解。分岐、再試行、人手承認などを実装しやすい。",
+    "useCase": "バッチ処理オーケストレーション、承認フロー、分散ワークフロー。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "783ab530fe0d"
+  },
+  {
+    "title": "AWS Storage Gateway",
+    "category": "ハイブリッドストレージ",
+    "tags": [
+      "#ハイブリッド",
+      "#Backup&Restore"
+    ],
+    "summary": "オンプレミスから AWS ストレージへ接続するゲートウェイサービス。",
+    "examPoint": "File / Volume / Tape Gateway の違いが基本。常設ハイブリッド連携でよく出る。",
+    "useCase": "バックアップ保管、既存アプリからの S3 連携、仮想テープ移行。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "07a032d9a4b2"
+  },
+  {
+    "title": "AWS Systems Manager",
+    "category": "運用管理",
+    "tags": [
+      "#運用上の優秀性",
+      "#セキュリティ"
+    ],
+    "summary": "EC2 やオンプレサーバーの運用管理を一元化するサービス。",
+    "examPoint": "Patch Manager、Session Manager、Run Command、Parameter Store の使い分けが重要。踏み台なしの運用もよく問われる。",
+    "useCase": "パッチ適用、リモート実行、サーバ構成管理、運用自動化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "8e0b38841417"
+  },
+  {
+    "title": "AWS Trusted Advisor",
+    "category": "最適化",
+    "tags": [
+      "#コスト最適化",
+      "#セキュリティ",
+      "#運用上の優秀性"
+    ],
+    "summary": "AWS 環境をベストプラクティス観点で点検するサービス。",
+    "examPoint": "何かを自動で修復するより、改善提案を出す診断役。Compute Optimizer との役割差を押さえる。",
+    "useCase": "不要リソース発見、公開ポート点検、サービス制限確認。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "3937dfe09765"
+  },
+  {
+    "title": "Amazon VPC",
+    "category": "ネットワーク",
+    "tags": [
+      "#ネットワーク",
+      "#セキュリティ"
+    ],
+    "summary": "論理的に分離された仮想ネットワークを作るサービス。",
+    "examPoint": "サブネット分割、ルートテーブル、NAT Gateway、VPC エンドポイント、SG/NACL の関係が SAA の中核。ここを外すと点が伸びにくい。",
+    "useCase": "AWS 上のネットワーク基盤、公開/非公開分離、セキュアなシステム配置。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "c53696d5d4a9"
+  },
+  {
+    "title": "VPC Endpoint",
+    "category": "ネットワーク",
+    "tags": [
+      "#セキュリティ",
+      "#コスト最適化",
+      "#ネットワーク"
+    ],
+    "summary": "AWS サービスへのアクセスをインターネット非経由で行うための接続機能。",
+    "examPoint": "S3/DynamoDB はゲートウェイ型、それ以外は多くがインターフェイス型。NAT Gateway コスト削減とセキュリティ強化の両方で出やすい。",
+    "useCase": "プライベートサブネットから S3 アクセス、PrivateLink 接続、閉域通信。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "5d9f768a9ea6"
+  },
+  {
+    "title": "VPC Flow Logs",
+    "category": "監視",
+    "tags": [
+      "#セキュリティ",
+      "#ネットワーク"
+    ],
+    "summary": "VPC 内の通信メタデータを記録する機能。",
+    "examPoint": "ネットワーク通信の追跡では有効だが、パケット本文までは見ない。GuardDuty や CloudTrail との役割差が大切。",
+    "useCase": "通信経路の調査、アクセス分析、セキュリティ監査。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "3ec18d42b30b"
+  },
+  {
+    "title": "AWS WAF",
+    "category": "セキュリティ",
+    "tags": [
+      "#セキュリティ",
+      "#Web保護"
+    ],
+    "summary": "Web アプリケーションへの HTTP/S リクエストをルールベースで制御するサービス。",
+    "examPoint": "SQL インジェクション、XSS、レート制限、IP 制限が中心。ALB、CloudFront、API Gateway と連携する。",
+    "useCase": "Web 攻撃対策、Bot 制御、API の入口保護。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "d1421bb1f445"
+  },
+  {
+    "title": "AWS X-Ray",
+    "category": "監視",
+    "tags": [
+      "#パフォーマンス効率",
+      "#運用上の優秀性"
+    ],
+    "summary": "分散アプリケーションのリクエストをトレースし、ボトルネックを可視化するサービス。",
+    "examPoint": "CloudWatch がメトリクス/ログ、X-Ray が分散トレース。マイクロサービスの遅延特定で選ばせる問題に強い。",
+    "useCase": "API 連鎖の遅延調査、マイクロサービス障害解析、依存関係可視化。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "5780f1ab7104"
+  },
+  {
+    "title": "アシュームロール（AssumeRole）",
+    "category": "AWS 共通概念",
+    "tags": [
+      "#セキュリティ",
+      "#クロスアカウント"
+    ],
+    "summary": "STS を使って別の IAM ロールを一時的に引き受ける仕組み。",
+    "examPoint": "クロスアカウントアクセスの本命。長期アクセスキー共有より安全な設計として頻出する。",
+    "useCase": "共有アカウント経由アクセス、監査ロール、運用者の一時昇格。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "bf54d04c0c50"
+  },
+  {
+    "title": "ウォームスタンバイ",
+    "category": "DR 戦略",
+    "tags": [
+      "#Warmup Standby",
+      "#信頼性"
+    ],
+    "summary": "DR 側で縮小版環境を常時稼働させる DR 戦略。",
+    "examPoint": "パイロットライトより高コストだが復旧が速い。「最小台数で常時稼働」がキーワード。",
+    "useCase": "数分単位復旧が必要な業務システム、Web サービス DR。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "2a58bcbebdee"
+  },
+  {
+    "title": "加重ルーティング",
+    "category": "DNS・トラフィック制御",
+    "tags": [
+      "#Route53",
+      "#Warmup Standby"
+    ],
+    "summary": "Route 53 で各エンドポイントへ割り当てる流量比率を制御する方式。",
+    "examPoint": "Blue/Green、段階的移行、ウォームスタンバイで登場しやすい。単純なフェイルオーバーとは違う。",
+    "useCase": "新旧環境の段階移行、A/B 配信、縮小版 DR 環境への一部流量送出。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "a8c83b3b004b"
+  },
+  {
+    "title": "キャッシュアサイド（Cache Aside）",
+    "category": "キャッシュ設計",
+    "tags": [
+      "#ElastiCache",
+      "#パフォーマンス効率"
+    ],
+    "summary": "キャッシュミス時のみ DB を読み、結果をキャッシュへ格納する方式。",
+    "examPoint": "ElastiCache 問題で最も出やすい戦略。キャッシュ汚染を抑えやすく、実務でも標準的。",
+    "useCase": "商品詳細表示、ランキング参照、読取中心アプリ。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "53983d0207f8"
+  },
+  {
+    "title": "クラスタープレイスメントグループ",
+    "category": "EC2 設計",
+    "tags": [
+      "#EC2",
+      "#パフォーマンス効率"
+    ],
+    "summary": "EC2 インスタンスを近接配置し、低レイテンシ・高スループット通信を狙う配置方式。",
+    "examPoint": "HPC や分散計算で有効。耐障害性より性能重視である点を理解する。",
+    "useCase": "HPC、ノード間通信が多い分析基盤、MPI 系ワークロード。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "1b7d046ed5c8"
+  },
+  {
+    "title": "クロスリージョンリードレプリカ",
+    "category": "データベース設計",
+    "tags": [
+      "#RDS",
+      "#Pilot Light"
+    ],
+    "summary": "別リージョンに非同期複製する RDS の読み取り専用レプリカ。",
+    "examPoint": "DR 時には昇格して書き込み可能にする。Multi-AZ と違ってリージョン DR 用であり、通常は非同期。",
+    "useCase": "低コスト DR、海外読取、災害時の昇格先。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "fd92f05e7724"
+  },
+  {
+    "title": "コスト配分タグ",
+    "category": "コスト管理",
+    "tags": [
+      "#コスト最適化",
+      "#ガバナンス"
+    ],
+    "summary": "コストを部門・案件・環境ごとに分類して追跡するためのタグ。",
+    "examPoint": "Organizations や CUR と組み合わせて使う。請求可視化の基本設計として出やすい。",
+    "useCase": "部門別原価管理、案件別課金、環境別コスト分析。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "c1ba00304eaf"
+  },
+  {
+    "title": "コントロールプレーン",
+    "category": "AWS 共通概念",
+    "tags": [
+      "#運用設計",
+      "#Multi Site"
+    ],
+    "summary": "リソースを作成・変更・削除する管理操作面。",
+    "examPoint": "DR の切替時はコントロールプレーン依存を減らし、Route 53 などのデータプレーン操作を優先する考え方が問われる。",
+    "useCase": "CloudFormation での構築、設定変更、自動化 API 呼び出し。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "4e73c5547c3c"
+  },
+  {
+    "title": "サービスコントロールポリシー（SCP）",
+    "category": "ガバナンス",
+    "tags": [
+      "#Organizations",
+      "#セキュリティ"
+    ],
+    "summary": "Organizations 配下のアカウントに対し、使えるサービスや操作の上限を定めるポリシー。",
+    "examPoint": "権限付与ではなく「上限を絞る」仕組み。IAM Allow があっても SCP が拒否すれば使えない。",
+    "useCase": "本番アカウントで特定リージョン禁止、危険操作の抑止、標準ガードレール。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "c21656f0ada7"
+  },
+  {
+    "title": "署名付き URL",
+    "category": "配信制御",
+    "tags": [
+      "#S3",
+      "#CloudFront",
+      "#セキュリティ"
+    ],
+    "summary": "期限付きで限定公開コンテンツへアクセスさせる仕組み。",
+    "examPoint": "非公開オブジェクトを一時公開したい時に定番。S3 直接か CloudFront 経由かで設計が変わる。",
+    "useCase": "会員向けファイル配布、限定ダウンロード、動画視聴制御。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "7f8987d5d9db"
+  },
+  {
+    "title": "セキュリティグループ（SG）",
+    "category": "ネットワークセキュリティ",
+    "tags": [
+      "#VPC",
+      "#セキュリティ"
+    ],
+    "summary": "ENI / インスタンス単位に適用するステートフルファイアウォール。",
+    "examPoint": "戻り通信は自動許可、拒否ルールは書けない、インスタンス単位という点が NACL との違い。",
+    "useCase": "EC2 や RDS の通信制御、アプリ層の許可設計。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "c9767cfbe10e"
+  },
+  {
+    "title": "地理的ルーティング",
+    "category": "DNS・トラフィック制御",
+    "tags": [
+      "#Route53",
+      "#グローバル"
+    ],
+    "summary": "ユーザーの地理的位置に応じて応答先を分ける Route 53 のルーティング方式。",
+    "examPoint": "低レイテンシ最優先ではなく、地域ごとの法令対応やコンテンツ分離で使う。",
+    "useCase": "国別配信制御、地域別サイト出し分け、法規制対応。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "d10b26354109"
+  },
+  {
+    "title": "データプレーン",
+    "category": "AWS 共通概念",
+    "tags": [
+      "#運用設計",
+      "#Multi Site"
+    ],
+    "summary": "既存リソースを使って実際にトラフィックを流す処理面。",
+    "examPoint": "Route 53 のフェイルオーバーはデータプレーンで動くため、障害時にも有効な切替手段として出やすい。",
+    "useCase": "DNS 切替、ロードバランサ経由通信、既存経路での運用継続。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "398ec48cdffa"
+  },
+  {
+    "title": "ネットワーク ACL（NACL）",
+    "category": "ネットワークセキュリティ",
+    "tags": [
+      "#VPC",
+      "#セキュリティ"
+    ],
+    "summary": "サブネット単位に適用するステートレスフィルタ。",
+    "examPoint": "明示的拒否ができ、戻り通信も個別許可が必要。特定 IP ブロックの定番。",
+    "useCase": "サブネット境界の粗い制御、悪性 IP の拒否、追加防御層。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "00959ed411cd"
+  },
+  {
+    "title": "バケットポリシー",
+    "category": "ストレージセキュリティ",
+    "tags": [
+      "#S3",
+      "#セキュリティ"
+    ],
+    "summary": "S3 バケット単位に付けるリソースベースポリシー。",
+    "examPoint": "クロスアカウントアクセスや公開制御で頻出。IAM ポリシーとの評価関係を理解しておくと強い。",
+    "useCase": "特定アカウントへの共有、アクセス元制限、公開/非公開制御。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "b40224f354f4"
+  },
+  {
+    "title": "バックアップ & リストア",
+    "category": "DR 戦略",
+    "tags": [
+      "#Backup&Restore",
+      "#信頼性"
+    ],
+    "summary": "バックアップだけを保持し、災害時に環境を再作成して復元する DR 戦略。",
+    "examPoint": "4 戦略の中で最も安価だが RTO/RPO は長い。開発環境や停止許容が大きい業務に向く。",
+    "useCase": "低重要度システム、長時間停止を許容できる内部システム。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "7cef5ad50cab"
+  },
+  {
+    "title": "パイロットライト",
+    "category": "DR 戦略",
+    "tags": [
+      "#Pilot Light",
+      "#信頼性"
+    ],
+    "summary": "DB などコアだけを DR 側で常時稼働し、アプリ層は停止しておく DR 戦略。",
+    "examPoint": "「コアのみ稼働」「最小コストでそこそこ短い復旧」がキーワード。ウォームスタンバイとの差を狙われやすい。",
+    "useCase": "中規模業務システム、コストを抑えたい DR。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "6664d1a8aec8"
+  },
+  {
+    "title": "フェイルオーバー",
+    "category": "可用性設計",
+    "tags": [
+      "#信頼性",
+      "#Multi Site"
+    ],
+    "summary": "障害発生時に待機系へ切り替える仕組み。",
+    "examPoint": "自動か手動か、同一リージョンかクロスリージョンか、DNS ベースか DB 昇格かを区別して問われる。",
+    "useCase": "DB 切替、リージョン障害時の切替、ロードバランサ障害回避。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "0338863da686"
+  },
+  {
+    "title": "フェイルオーバールーティング",
+    "category": "DNS・トラフィック制御",
+    "tags": [
+      "#Route53",
+      "#Multi Site"
+    ],
+    "summary": "正常系が落ちたら待機系へ送る Route 53 のルーティング方式。",
+    "examPoint": "ヘルスチェックとの組み合わせが前提。DR 問題では最頻出クラス。",
+    "useCase": "プライマリ/セカンダリ構成、リージョン DR、Web サービス切替。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "6ba7f153c3e8"
+  },
+  {
+    "title": "ヘルスチェック",
+    "category": "可用性設計",
+    "tags": [
+      "#Route53",
+      "#ELB",
+      "#信頼性"
+    ],
+    "summary": "対象リソースが正常かを確認する仕組み。",
+    "examPoint": "ELB はターゲット単位、Route 53 はエンドポイント/リージョン切替判断で使う。用途が違う。",
+    "useCase": "自動フェイルオーバー、死活監視、異常系の切離し。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "75cb238a7e11"
+  },
+  {
+    "title": "マルチサイト",
+    "category": "DR 戦略",
+    "tags": [
+      "#Multi Site",
+      "#信頼性"
+    ],
+    "summary": "複数リージョンで本番同等環境を同時稼働させる DR 戦略。",
+    "examPoint": "RPO/RTO が最小だが最も高価。 Global Tables、Global Accelerator、Route 53、Aurora Global Database と組み合わせて問われやすい。",
+    "useCase": "ミッションクリティカルなグローバルサービス、停止許容がほぼない業務。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "5805573aab44"
+  },
+  {
+    "title": "ユーザープール",
+    "category": "認証",
+    "tags": [
+      "#Cognito",
+      "#セキュリティ"
+    ],
+    "summary": "Cognito でユーザー登録・サインイン・MFA などを担う認証機能。",
+    "examPoint": "ID プールとの違いを必ず押さえる。ユーザー管理と認証そのものを担うのがユーザープール。",
+    "useCase": "会員登録、ログイン、パスワード管理、MFA。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "937e9a0bf28c"
+  },
+  {
+    "title": "ライトスルー（Write Through）",
+    "category": "キャッシュ設計",
+    "tags": [
+      "#ElastiCache",
+      "#パフォーマンス効率"
+    ],
+    "summary": "更新時に DB とキャッシュを同時更新する方式。",
+    "examPoint": "読取一貫性を保ちやすいが、書込負荷が高い場面では不利。 Cache Aside との比較で出る。",
+    "useCase": "読取即時反映が重要な参照系キャッシュ。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "c9cf1942ec82"
+  },
+  {
+    "title": "リードレプリカ",
+    "category": "データベース設計",
+    "tags": [
+      "#RDS",
+      "#Aurora",
+      "#パフォーマンス効率"
+    ],
+    "summary": "読み取り専用の複製先 DB。",
+    "examPoint": "読み取りスケールアウトと DR 補助が役割。Multi-AZ の待機系とは目的が違う。",
+    "useCase": "読取負荷分散、分析系参照、DR 先の準備。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "3c0816a30a39"
+  },
+  {
+    "title": "レイテンシールーティング",
+    "category": "DNS・トラフィック制御",
+    "tags": [
+      "#Route53",
+      "#パフォーマンス効率"
+    ],
+    "summary": "ユーザーに最も低遅延なリージョンへ誘導する Route 53 の方式。",
+    "examPoint": "地理的ルーティングとの違いが頻出。目的は「近い地域」ではなく「応答が速い先」。",
+    "useCase": "グローバル Web サービス、海外ユーザー向け低遅延配信。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "60c86e510c4e"
+  },
+  {
+    "title": "ロールベースアクセス制御用 SAML",
+    "category": "認証連携",
+    "tags": [
+      "#IAMIdentityCenter",
+      "#セキュリティ"
+    ],
+    "summary": "異なる認証ドメイン間で認証・認可情報をやり取りする標準。",
+    "examPoint": "社内 IdP と AWS の連携で出やすい。 LDAP そのものではなく、SSO 連携の標準として理解する。",
+    "useCase": "企業 SSO、外部 IdP 連携、AWS へのフェデレーション。",
+    "section": "その他の重要用語（五十音順）",
+    "type": "concept",
+    "id": "88db3f711b87"
+  }
+]

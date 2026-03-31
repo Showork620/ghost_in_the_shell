@@ -25,7 +25,7 @@ Thumbs.db
 .idea/
 
 # --- Node.js（必要に応じて有効化） ---
-# node_modules/
-# dist/
-# .env
-# .env.local
+node_modules/
+dist/
+.env
+.env.local

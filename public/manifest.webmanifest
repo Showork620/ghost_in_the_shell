@@ -1,0 +1,19 @@
+{
+  "name": "AWS SAA Cards",
+  "short_name": "SAA Cards",
+  "description": "AWS SAA 2026年版の学習辞書をカード形式で復習できるスマホ向けPWA",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDFCF8",
+  "theme_color": "#FAF9F6",
+  "icons": [
+    {
+      "src": "pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
