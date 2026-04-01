@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from 'react';
+import { useEffect, useRef, useState, type MouseEvent, type PointerEvent } from 'react';
 import type { CardFlagState, DictionaryCard } from '../types';
 
 type FlashcardProps = {
@@ -17,6 +17,29 @@ const flagMeta = [
 export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: FlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [copiedField, setCopiedField] = useState<'title' | 'examPoint' | null>(null);
+  const shellRef = useRef<HTMLElement | null>(null);
+  const dragStateRef = useRef({ x: 0, y: 0, moved: false });
+
+  useEffect(() => {
+    if (!isFlipped || !shellRef.current) {
+      return;
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      const topbar = document.querySelector('.topbar-wrap') as HTMLElement | null;
+      const topbarHeight = topbar?.getBoundingClientRect().height ?? 0;
+      const top = window.scrollY + shellRef.current!.getBoundingClientRect().top - topbarHeight - 16;
+
+      window.scrollTo({
+        top: Math.max(top, 0),
+        behavior: 'smooth',
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [isFlipped]);
 
   async function handleCopy(
     event: MouseEvent<HTMLButtonElement>,
@@ -36,17 +59,49 @@ export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: Fla
     }
   }
 
+  function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
+    dragStateRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      moved: false,
+    };
+  }
+
+  function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
+    const deltaX = Math.abs(event.clientX - dragStateRef.current.x);
+    const deltaY = Math.abs(event.clientY - dragStateRef.current.y);
+
+    if (deltaX > 8 || deltaY > 8) {
+      dragStateRef.current.moved = true;
+    }
+  }
+
+  function handleCardClick(event: MouseEvent<HTMLDivElement>) {
+    if (dragStateRef.current.moved) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+    if (target.closest('button, input, textarea, label')) {
+      return;
+    }
+
+    setIsFlipped((current) => !current);
+  }
+
   return (
-    <article className="flashcard-shell">
+    <article ref={shellRef} className="flashcard-shell">
       <div
         className={`flashcard ${isFlipped ? 'is-flipped' : ''}`}
-        onClick={() => setIsFlipped((current) => !current)}
+        onClick={handleCardClick}
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
             setIsFlipped((current) => !current);
           }
         }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
         role="button"
         tabIndex={0}
         aria-pressed={isFlipped}

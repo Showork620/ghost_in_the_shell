@@ -420,11 +420,14 @@ button {
   border-radius: 12px;
   backface-visibility: hidden;
   box-shadow: 0 4px 18px rgba(57, 42, 20, 0.09);
+  pointer-events: none;
 }
 
 .flashcard-front {
   background: #fffaf0;
   border: 1px solid rgba(59, 47, 31, 0.16);
+  overflow: hidden;
+  touch-action: pan-y;
 }
 
 .flashcard-back {
@@ -434,6 +437,14 @@ button {
   transform: rotateY(180deg);
   overflow: auto;
   font-size: 1.03rem;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.flashcard:not(.is-flipped) .flashcard-front,
+.flashcard.is-flipped .flashcard-back {
+  pointer-events: auto;
 }
 
 .card-section,
