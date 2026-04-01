@@ -62,21 +62,26 @@ button {
 
 .topbar-wrap {
   position: sticky;
-  top: 10px;
+  top: 0;
   z-index: 30;
+  margin: -24px calc(50% - 50vw) 18px;
+  padding: max(10px, env(safe-area-inset-top)) 0 10px;
+  background: rgba(236, 226, 205, 0.96);
+  border-bottom: 1px solid rgba(59, 47, 31, 0.16);
+  box-shadow: 0 1px 0 rgba(255, 250, 240, 0.5), 0 8px 18px rgba(57, 42, 20, 0.06);
+  backdrop-filter: blur(12px);
   margin-bottom: 18px;
 }
 
 .topbar {
   display: grid;
   grid-template-columns: minmax(92px, auto) minmax(0, 1fr) minmax(92px, auto);
+  width: min(1180px, calc(100vw - 24px));
+  margin: 0 auto;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(250, 246, 236, 0.94);
-  border: 1px solid rgba(59, 47, 31, 0.18);
-  box-shadow: 0 2px 8px rgba(57, 42, 20, 0.08), 0 10px 24px rgba(57, 42, 20, 0.08);
+  padding: 0 12px;
+  background: transparent;
 }
 
 .topbar-title {
@@ -379,6 +384,8 @@ button {
 
 .cards-area {
   min-width: 0;
+  padding-bottom: calc(100vh + 24px);
+  padding-bottom: calc(100dvh + 24px);
 }
 
 .cards-grid {
@@ -391,17 +398,19 @@ button {
   display: grid;
   gap: 10px;
   perspective: 1200px;
+  overflow-anchor: none;
+  transition: height 300ms ease;
 }
 
 .flashcard {
   position: relative;
   width: 100%;
-  min-height: 460px;
+  height: 100%;
   padding: 0;
   border-radius: 12px;
   background: transparent;
   transform-style: preserve-3d;
-  transition: transform 260ms ease;
+  transition: transform 300ms ease;
   text-align: left;
   cursor: pointer;
 }
@@ -424,10 +433,22 @@ button {
 }
 
 .flashcard-front {
+  align-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 20px;
   background: #fffaf0;
   border: 1px solid rgba(59, 47, 31, 0.16);
   overflow: hidden;
+  text-align: center;
   touch-action: pan-y;
+}
+
+.flashcard-front-content {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  width: 100%;
 }
 
 .flashcard-back {
@@ -487,7 +508,8 @@ button {
 }
 
 .card-inline-actions {
-  margin-top: 8px;
+  justify-content: center;
+  margin-top: 0;
 }
 
 .card-detail {
@@ -753,6 +775,10 @@ button {
   }
 
   .flashcard {
+    transition: none;
+  }
+
+  .flashcard-shell {
     transition: none;
   }
 }

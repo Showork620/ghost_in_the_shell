@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type MouseEvent, type PointerEvent } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+  type PointerEvent,
+} from 'react';
 import type { CardFlagState, DictionaryCard } from '../types';
 
 type FlashcardProps = {
@@ -17,18 +24,62 @@ const flagMeta = [
 export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: FlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [copiedField, setCopiedField] = useState<'title' | 'examPoint' | null>(null);
+  const [cardHeight, setCardHeight] = useState<number>(220);
   const shellRef = useRef<HTMLElement | null>(null);
+  const frontContentRef = useRef<HTMLSpanElement | null>(null);
+  const shouldScrollIntoViewRef = useRef(false);
   const dragStateRef = useRef({ x: 0, y: 0, moved: false });
 
+  function measureFrontHeight() {
+    if (!frontContentRef.current) {
+      return 220;
+    }
+
+    return Math.ceil(frontContentRef.current.scrollHeight + 40);
+  }
+
+  function measureBackHeight(frontHeight: number) {
+    const topbar = document.querySelector('.topbar-wrap') as HTMLElement | null;
+    const topbarHeight = topbar?.getBoundingClientRect().height ?? 0;
+    const viewportHeight = window.innerHeight;
+    const availableHeight = viewportHeight - topbarHeight - 32;
+
+    return Math.max(frontHeight, availableHeight);
+  }
+
+  useLayoutEffect(() => {
+    const frontHeight = measureFrontHeight();
+    setCardHeight(isFlipped ? measureBackHeight(frontHeight) : frontHeight);
+  }, [flags.reviewLater, flags.unknown, isFlipped]);
+
   useEffect(() => {
-    if (!isFlipped || !shellRef.current) {
+    if (typeof ResizeObserver === 'undefined' || !frontContentRef.current || isFlipped) {
       return;
     }
+
+    const updateFrontHeight = () => {
+      setCardHeight(measureFrontHeight());
+    };
+
+    const resizeObserver = new ResizeObserver(() => updateFrontHeight());
+    resizeObserver.observe(frontContentRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [flags.reviewLater, flags.unknown, isFlipped]);
+
+  useEffect(() => {
+    if (!isFlipped || !shouldScrollIntoViewRef.current || !shellRef.current) {
+      return;
+    }
+
+    shouldScrollIntoViewRef.current = false;
 
     const frameId = window.requestAnimationFrame(() => {
       const topbar = document.querySelector('.topbar-wrap') as HTMLElement | null;
       const topbarHeight = topbar?.getBoundingClientRect().height ?? 0;
-      const top = window.scrollY + shellRef.current!.getBoundingClientRect().top - topbarHeight - 16;
+      const top = window.scrollY + shellRef.current!.getBoundingClientRect().top - topbarHeight - 12;
 
       window.scrollTo({
         top: Math.max(top, 0),
@@ -86,17 +137,23 @@ export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: Fla
       return;
     }
 
+    shouldScrollIntoViewRef.current = !isFlipped;
     setIsFlipped((current) => !current);
   }
 
   return (
-    <article ref={shellRef} className="flashcard-shell">
+    <article
+      ref={shellRef}
+      className={`flashcard-shell ${isFlipped ? 'is-flipped' : 'is-front'}`}
+      style={{ height: `${cardHeight}px` }}
+    >
       <div
         className={`flashcard ${isFlipped ? 'is-flipped' : ''}`}
         onClick={handleCardClick}
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
+            shouldScrollIntoViewRef.current = !isFlipped;
             setIsFlipped((current) => !current);
           }
         }}
@@ -111,29 +168,31 @@ export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: Fla
         </span>
 
         <span className="flashcard-face flashcard-front">
-          <strong className="card-title">{card.title}</strong>
+          <span ref={frontContentRef} className="flashcard-front-content">
+            <strong className="card-title">{card.title}</strong>
 
-          <span
-            className="card-inline-actions"
-            role="group"
-            aria-label={`${card.title} のフラグ`}
-            onClick={(event) => event.stopPropagation()}
-          >
-            {flagMeta.map((flag) => (
-              <label key={flag.key} className="checkbox-chip">
-                <input
-                  type="checkbox"
-                  checked={flags[flag.key]}
-                  onChange={(event) =>
-                    onFlagChange(card.id, {
-                      ...flags,
-                      [flag.key]: event.target.checked,
-                    })
-                  }
-                />
-                <span>{flag.label}</span>
-              </label>
-            ))}
+            <span
+              className="card-inline-actions"
+              role="group"
+              aria-label={`${card.title} のフラグ`}
+              onClick={(event) => event.stopPropagation()}
+            >
+              {flagMeta.map((flag) => (
+                <label key={flag.key} className="checkbox-chip">
+                  <input
+                    type="checkbox"
+                    checked={flags[flag.key]}
+                    onChange={(event) =>
+                      onFlagChange(card.id, {
+                        ...flags,
+                        [flag.key]: event.target.checked,
+                      })
+                    }
+                  />
+                  <span>{flag.label}</span>
+                </label>
+              ))}
+            </span>
           </span>
         </span>
 
