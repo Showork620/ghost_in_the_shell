@@ -1473,6 +1473,30 @@
     "id": "8e0b38841417"
   },
   {
+    "title": "AWS Transfer Family",
+    "category": "アプリ統合",
+    "tags": [
+      "#運用上の優秀性"
+    ],
+    "summary": "SFTP / FTPS / FTP プロトコルを使って S3 または EFS へファイルを転送できるフルマネージドサービス。",
+    "examPoint": "既存の SFTP クライアントやワークフローをそのまま流用して AWS へ移行したい場合の正解。DataSync（エージェント常駐型・スケジュール同期）や Snow Family（物理輸送）との違いで出やすい。",
+    "useCase": "取引先からの EDI ファイル受信、レガシー FTP サーバーの S3 移行、パートナー企業との SFTP ファイル連携。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "178f8d9de816"
+  },
+  {
+    "title": "AWS Transit Gateway",
+    "category": "ネットワーク",
+    "tags": [],
+    "summary": "複数の VPC・オンプレミスネットワーク（VPN/Direct Connect）をハブ型で接続するリージョンレベルのネットワークルーター。",
+    "examPoint": "VPC Peering は 1 対 1 の接続で推移的なルーティング不可。VPC が 3 つ以上になると Transit Gateway のほうが管理しやすく、VPC 追加時のスケーラビリティも高い。マルチアカウント環境では Resource Access Manager（RAM）で TGW を共有する構成が頻出。",
+    "useCase": "マルチ VPC 環境の集中ルーティング、オンプレ接続の一元化（VPN/Direct Connect の集約）、クロスアカウントの VPC 接続共有。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "id": "8d900eae5ac0"
+  },
+  {
     "title": "AWS Trusted Advisor",
     "category": "運用・ガバナンス",
     "tags": [

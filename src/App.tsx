@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import dictionaryData from './data/generated/dictionary.json';
+import comparisonPagesData from './data/generated/comparison-pages.json';
 import { Flashcard } from './components/Flashcard';
+import { ComparisonOverlay } from './components/ComparisonOverlay';
 import { STORAGE_KEYS, defaultFlags } from './lib/storage';
 import './styles.css';
 import type {
   CardFlagState,
+  ComparisonPage,
   DictionaryCard,
   FilterFlagKey,
   FilterMode,
@@ -28,11 +31,23 @@ type InstallPromptEvent = Event & {
 };
 
 const cards = dictionaryData as DictionaryCard[];
+const comparisonPages = comparisonPagesData as ComparisonPage[];
 const allCategories = [...new Set(cards.map((card) => card.category))].sort((left, right) =>
   left.localeCompare(right, 'ja'),
 );
 const allTags = [...new Set(cards.flatMap((card) => card.tags))].sort((left, right) =>
   left.localeCompare(right, 'ja'),
+);
+const comparisonPagesByCardId = comparisonPages.reduce<Record<string, ComparisonPage[]>>(
+  (accumulator, page) => {
+    page.relatedCardIds.forEach((cardId) => {
+      accumulator[cardId] ??= [];
+      accumulator[cardId].push(page);
+    });
+
+    return accumulator;
+  },
+  {},
 );
 const defaultFilters: PersistedFilters = {
   query: '',
@@ -59,6 +74,10 @@ function App() {
   const [isHydrated, setIsHydrated] = useState(false);
   const [isHeroOpen, setIsHeroOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [activeComparisonPageId, setActiveComparisonPageId] = useState<string | null>(null);
+  const [isComparisonNamesHidden, setIsComparisonNamesHidden] = useState(true);
+  const activeComparisonPage =
+    comparisonPages.find((page) => page.id === activeComparisonPageId) ?? null;
 
   useEffect(() => {
     const savedFlags = window.localStorage.getItem(STORAGE_KEYS.flags);
@@ -138,6 +157,7 @@ function App() {
       if (event.key === 'Escape') {
         setIsHeroOpen(false);
         setIsFiltersOpen(false);
+        setActiveComparisonPageId(null);
       }
     };
 
@@ -149,12 +169,17 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isHeroOpen || isFiltersOpen ? 'hidden' : '';
+    document.body.style.overflow =
+      isHeroOpen || isFiltersOpen || activeComparisonPageId ? 'hidden' : '';
 
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isFiltersOpen, isHeroOpen]);
+  }, [activeComparisonPageId, isFiltersOpen, isHeroOpen]);
+
+  useEffect(() => {
+    setIsComparisonNamesHidden(true);
+  }, [activeComparisonPageId]);
 
   const filteredCards = cards.filter((card) => {
     const cardFlags = flagState[card.id] ?? defaultFlags();
@@ -336,6 +361,30 @@ function App() {
                   </div>
                 </div>
 
+                {comparisonPages.length > 0 && (
+                  <div className="hero-comparisons">
+                    <h3 style={{ marginTop: '8px', marginBottom: '12px', fontSize: '1.1rem' }}>
+                      比較チートシート一覧
+                    </h3>
+                    <div className="comparison-link-list">
+                      {comparisonPages.map((page) => (
+                        <button
+                          key={page.id}
+                          type="button"
+                          className="comparison-link-button"
+                          onClick={() => {
+                            setIsHeroOpen(false);
+                            setActiveComparisonPageId(page.id);
+                          }}
+                        >
+                          <span className="comparison-link-title">{page.title}</span>
+                          <span className="comparison-link-section">{page.section}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {installPrompt && installStatus === 'ready' && (
                   <button type="button" className="install-button" onClick={handleInstall}>
                     ホーム画面に追加
@@ -355,14 +404,6 @@ function App() {
               onClick={() => setIsFiltersOpen(false)}
             />
             <aside className="overlay-panel filters-overlay-panel filters-panel" id="filters-overlay">
-          <button
-            type="button"
-            className="overlay-close overlay-close-corner"
-            aria-label="絞り込みを閉じる"
-            onClick={() => setIsFiltersOpen(false)}
-          >
-            ×
-          </button>
           <div className="overlay-header filters-overlay-header">
             <div className="overlay-title-group">
               <p className="eyebrow">Filter Studio</p>
@@ -374,6 +415,14 @@ function App() {
               <span className="result-count-chip">表示 {stats.filtered} 件</span>
               <button type="button" className="ghost-button" onClick={resetFilters}>
                 リセット
+              </button>
+              <button
+                type="button"
+                className="overlay-close"
+                aria-label="絞り込みを閉じる"
+                onClick={() => setIsFiltersOpen(false)}
+              >
+                ×
               </button>
             </div>
           </div>
@@ -524,8 +573,12 @@ function App() {
                 <Flashcard
                   key={card.id}
                   card={card}
+                  comparisonPages={comparisonPagesByCardId[card.id] ?? []}
                   flags={flagState[card.id] ?? defaultFlags()}
                   note={noteState[card.id] ?? ''}
+                  onOpenComparison={(comparisonPageId) =>
+                    setActiveComparisonPageId(comparisonPageId)
+                  }
                   onFlagChange={(cardId, nextFlags) =>
                     setFlagState((current) => ({ ...current, [cardId]: nextFlags }))
                   }
@@ -538,6 +591,15 @@ function App() {
           )}
         </section>
       </main>
+
+      {activeComparisonPage && (
+        <ComparisonOverlay
+          page={activeComparisonPage}
+          isServiceNamesHidden={isComparisonNamesHidden}
+          onToggleServiceNames={() => setIsComparisonNamesHidden((current) => !current)}
+          onClose={() => setActiveComparisonPageId(null)}
+        />
+      )}
     </div>
   );
 }

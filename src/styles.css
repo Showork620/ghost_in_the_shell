@@ -216,6 +216,7 @@ button {
 .segmented-control button,
 .chip,
 .flashcard,
+.comparison-link-button,
 .checkbox-chip {
   min-height: 44px;
 }
@@ -223,7 +224,8 @@ button {
 .install-button,
 .ghost-button,
 .segmented-control button,
-.chip {
+.chip,
+.comparison-link-button {
   cursor: pointer;
   transition:
     transform 180ms ease,
@@ -297,6 +299,7 @@ button {
 .ghost-button:focus-visible,
 .install-button:focus-visible,
 .topbar-button:focus-visible,
+.comparison-link-button:focus-visible,
 .checkbox-chip:focus-within,
 .flashcard:focus-visible {
   outline: 3px solid rgba(74, 107, 93, 0.4);
@@ -517,6 +520,10 @@ button {
   gap: 6px;
 }
 
+.comparison-links-detail {
+  gap: 12px;
+}
+
 .detail-header {
   display: flex;
   align-items: center;
@@ -535,6 +542,38 @@ button {
   background: rgba(74, 107, 93, 0.12);
   color: #1E2A25;
   cursor: pointer;
+}
+
+.comparison-link-list {
+  display: grid;
+  gap: 10px;
+}
+
+.comparison-link-button {
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(74, 107, 93, 0.08);
+  border: 1px solid rgba(74, 107, 93, 0.14);
+  color: #1E2A25;
+  text-align: left;
+}
+
+.comparison-link-button:hover,
+.comparison-toggle.is-active {
+  background: rgba(74, 107, 93, 0.16);
+}
+
+.comparison-link-title {
+  font-weight: 700;
+}
+
+.comparison-link-section {
+  color: rgba(30, 42, 37, 0.68);
+  font-size: 0.84rem;
 }
 
 .note-field textarea {
@@ -609,6 +648,11 @@ button {
   max-width: 980px;
 }
 
+.comparison-overlay-panel {
+  max-width: 1080px;
+  gap: 24px;
+}
+
 .overlay-header {
   display: flex;
   align-items: flex-start;
@@ -618,6 +662,17 @@ button {
 }
 
 .filters-overlay-header {
+  position: sticky;
+  top: -20px;
+  z-index: 2;
+  margin: -20px -20px 0;
+  padding: 20px 20px 16px;
+  background: #f4ecd9;
+  border-bottom: 1px solid rgba(59, 47, 31, 0.12);
+}
+
+.comparison-overlay-header {
+  align-items: end;
   position: sticky;
   top: -20px;
   z-index: 2;
@@ -646,6 +701,11 @@ button {
   line-height: 1;
 }
 
+.comparison-section-label {
+  margin: 2px 0 0;
+  color: rgba(30, 42, 37, 0.68);
+}
+
 .result-count-chip {
   display: inline-flex;
   align-items: center;
@@ -664,6 +724,10 @@ button {
   align-items: center;
   gap: 10px;
   flex-wrap: nowrap;
+}
+
+.comparison-toggle {
+  white-space: nowrap;
 }
 
 .overlay-close {
@@ -687,6 +751,118 @@ button {
   top: 16px;
   right: 16px;
   z-index: 4;
+}
+
+.comparison-table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(59, 47, 31, 0.12);
+  background: rgba(255, 252, 244, 0.78);
+}
+
+.comparison-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(59, 47, 31, 0.1);
+  vertical-align: top;
+  text-align: left;
+}
+
+.comparison-table thead th {
+  background: rgba(74, 107, 93, 0.12);
+  font-size: 0.88rem;
+}
+
+.comparison-table tbody th {
+  width: 160px;
+  background: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+
+.comparison-table tbody tr:last-child th,
+.comparison-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.comparison-guide-section {
+  display: grid;
+  gap: 16px;
+}
+
+.comparison-guide-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.comparison-guide-header h3 {
+  margin: 0;
+  font-family: "Avenir Next Condensed", "Avenir Next", "Hiragino Sans", sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.comparison-guide-header .helper-text {
+  max-width: 32rem;
+  text-align: right;
+}
+
+.comparison-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.comparison-guide-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #fffaf0;
+  border: 1px solid rgba(59, 47, 31, 0.14);
+  box-shadow: 0 10px 22px rgba(57, 42, 20, 0.08);
+}
+
+.comparison-guide-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.comparison-item-name {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(74, 107, 93, 0.12);
+  font-weight: 700;
+}
+
+.comparison-guide-body {
+  display: grid;
+  gap: 14px;
+}
+
+.comparison-guide-block {
+  display: grid;
+  gap: 6px;
+}
+
+.comparison-guide-block p,
+.comparison-answer {
+  margin: 0;
+}
+
+.comparison-answer {
+  color: #395347;
 }
 
 .checkbox-chip input {
@@ -757,6 +933,15 @@ button {
 
   .overlay-actions {
     justify-content: flex-end;
+  }
+
+  .comparison-guide-header {
+    display: grid;
+  }
+
+  .comparison-guide-header .helper-text {
+    max-width: none;
+    text-align: left;
   }
 
   .overlay-close-corner {

@@ -1,0 +1,2523 @@
+[
+  {
+    "id": "1a6d1b6d3ed9",
+    "section": "1. コンピューティング・サーバーレス系",
+    "title": "EC2 vs Lambda vs Fargate vs Elastic Beanstalk",
+    "table": {
+      "headers": [
+        "観点",
+        "EC2",
+        "Lambda",
+        "Fargate",
+        "Elastic Beanstalk"
+      ],
+      "rows": [
+        {
+          "label": "**実行単位**",
+          "values": [
+            "VM（インスタンス）",
+            "関数（コード）",
+            "コンテナ",
+            "アプリケーション環境"
+          ]
+        },
+        {
+          "label": "**サーバー管理**",
+          "values": [
+            "自分で管理",
+            "不要",
+            "不要（ECS/EKS 上）",
+            "大半を自動化（裏は EC2/ALB/ASG）"
+          ]
+        },
+        {
+          "label": "**実行時間上限**",
+          "values": [
+            "無制限",
+            "最大 15 分",
+            "無制限",
+            "無制限"
+          ]
+        },
+        {
+          "label": "**課金イメージ**",
+          "values": [
+            "インスタンス稼働",
+            "リクエスト数 + 実行時間",
+            "vCPU/メモリ/実行時間",
+            "裏の EC2/EBS/ALB 等"
+          ]
+        },
+        {
+          "label": "**向く処理**",
+          "values": [
+            "常駐、長時間、特殊要件",
+            "短時間イベント処理",
+            "コンテナ化済みアプリ",
+            "既存 Web アプリを手早く PaaS 風に運用"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "EC2",
+        "aliases": [
+          "Amazon EC2"
+        ],
+        "clue": "OS レベルの設定変更、独自エージェント導入、SSH 保守、長時間バッチ、特殊ドライバやライセンスが必要なら本命。",
+        "examplePrompt": "「サードパーティ製ソフトをインストールし、毎晩 3 時間の処理を実行。カーネル設定も変更したい」",
+        "exampleAnswer": "EC2。",
+        "relatedCardIds": [
+          "aa08ee1815b0",
+          "b27eee8ce46c",
+          "bdaa2a18d3ea"
+        ]
+      },
+      {
+        "name": "Lambda",
+        "aliases": [
+          "AWS Lambda"
+        ],
+        "clue": "「イベント駆動」「短時間」「サーバー管理不要」「アクセスがないときは課金を抑えたい」が見えたら最有力。",
+        "examplePrompt": "「S3 に画像が置かれたら自動でサムネイルを作成。通常はほぼ実行されない」",
+        "exampleAnswer": "Lambda。",
+        "relatedCardIds": [
+          "0b7a6b9bc54e"
+        ]
+      },
+      {
+        "name": "Fargate",
+        "aliases": [
+          "AWS Fargate"
+        ],
+        "clue": "コンテナ要件はあるがノード管理はしたくない、というときの答え。",
+        "examplePrompt": "「Docker 化された API を ECS で動かしたいが、EC2 キャパシティや AMI 更新を考えたくない」",
+        "exampleAnswer": "Fargate。",
+        "relatedCardIds": [
+          "6715030bd6e8"
+        ]
+      },
+      {
+        "name": "Elastic Beanstalk",
+        "aliases": [],
+        "clue": "アプリをすぐにデプロイしたいが、コード中心で環境構築を簡略化したいときに刺さる。",
+        "examplePrompt": "「Java Web アプリを最小運用負荷でデプロイし、Auto Scaling と負荷分散も自動設定したい」",
+        "exampleAnswer": "Elastic Beanstalk。",
+        "relatedCardIds": [
+          "48aa91135b36"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "aa08ee1815b0",
+      "b27eee8ce46c",
+      "bdaa2a18d3ea",
+      "0b7a6b9bc54e",
+      "6715030bd6e8",
+      "48aa91135b36"
+    ]
+  },
+  {
+    "id": "dc623794c4d2",
+    "section": "2. コンテナ・オーケストレーション系",
+    "title": "ECS vs EKS",
+    "table": {
+      "headers": [
+        "観点",
+        "ECS",
+        "EKS"
+      ],
+      "rows": [
+        {
+          "label": "**オーケストレーター**",
+          "values": [
+            "AWS 独自",
+            "Kubernetes"
+          ]
+        },
+        {
+          "label": "**学習コスト**",
+          "values": [
+            "低い",
+            "高い"
+          ]
+        },
+        {
+          "label": "**AWS 統合**",
+          "values": [
+            "非常に強い",
+            "強い"
+          ]
+        },
+        {
+          "label": "**可搬性**",
+          "values": [
+            "AWS 寄り",
+            "Kubernetes 標準に乗りやすい"
+          ]
+        },
+        {
+          "label": "**起動方法**",
+          "values": [
+            "EC2 or Fargate",
+            "EC2 or Fargate"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "ECS",
+        "aliases": [
+          "Amazon ECS"
+        ],
+        "clue": "問題文に Kubernetes が出ず、AWS ネイティブでシンプルにコンテナ実行したいなら ECS を優先する。",
+        "examplePrompt": "「社内チームは k8s 経験が薄く、AWS のマネージドサービスと素直に統合したい」",
+        "exampleAnswer": "ECS。",
+        "relatedCardIds": [
+          "d2d2d3568b03"
+        ]
+      },
+      {
+        "name": "EKS",
+        "aliases": [
+          "Amazon EKS"
+        ],
+        "clue": "「既存 Kubernetes マニフェスト」「Helm」「複数クラウドで統一」「k8s エコシステム活用」が見えたら EKS。",
+        "examplePrompt": "「オンプレ Kubernetes のワークロードをできるだけ同じ運用モデルで AWS に移したい」",
+        "exampleAnswer": "EKS。",
+        "relatedCardIds": [
+          "817fe3520176"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "d2d2d3568b03",
+      "817fe3520176"
+    ]
+  },
+  {
+    "id": "93bd28017554",
+    "section": "3. ストレージ・データ移行系",
+    "title": "ブロック・ファイル・オブジェクトストレージ比較",
+    "table": {
+      "headers": [
+        "観点",
+        "S3",
+        "EBS",
+        "EFS",
+        "FSx",
+        "インスタンスストア"
+      ],
+      "rows": [
+        {
+          "label": "**種別**",
+          "values": [
+            "オブジェクト",
+            "ブロック",
+            "ファイル（NFS）",
+            "マネージドファイル",
+            "ローカルブロック"
+          ]
+        },
+        {
+          "label": "**共有性**",
+          "values": [
+            "HTTP/S 経由",
+            "通常は単一 EC2 にアタッチ",
+            "複数 EC2 で共有",
+            "ワークロード別に共有可能",
+            "単一ホスト"
+          ]
+        },
+        {
+          "label": "**永続性**",
+          "values": [
+            "永続",
+            "永続",
+            "永続",
+            "永続",
+            "インスタンス停止/終了で消失"
+          ]
+        },
+        {
+          "label": "**代表用途**",
+          "values": [
+            "静的配信、バックアップ、データレイク",
+            "起動ディスク、DB ディスク",
+            "共有ファイル",
+            "Windows/NetApp/Lustre など特化要件",
+            "キャッシュ、スクラッチ領域"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "S3",
+        "aliases": [
+          "Amazon S3"
+        ],
+        "clue": "「無制限」「オブジェクト」「静的ファイル」「バックアップ」「ログ保管」「イベント通知」が出たら S3。",
+        "examplePrompt": "「Web サイトの画像を高耐久かつ低コストで保管し、必要ならライフサイクルでアーカイブしたい」",
+        "exampleAnswer": "S3。",
+        "relatedCardIds": [
+          "7b11a4234011",
+          "9502be8041e2",
+          "236140aa11c3",
+          "7dea86992ad8"
+        ]
+      },
+      {
+        "name": "EBS",
+        "aliases": [
+          "Amazon EBS"
+        ],
+        "clue": "単一 EC2 に低レイテンシな永続ブロックストレージを付ける場面で選ぶ。",
+        "examplePrompt": "「EC2 上のリレーショナル DB 用に、再起動や置換後も残るディスクが必要」",
+        "exampleAnswer": "EBS。",
+        "relatedCardIds": [
+          "6bab7c4514a3",
+          "f7a92e992e57"
+        ]
+      },
+      {
+        "name": "EFS",
+        "aliases": [
+          "Amazon EFS"
+        ],
+        "clue": "Linux 系インスタンスから同時マウントできる共有ファイルストレージが必要なら EFS。",
+        "examplePrompt": "「複数 AZ の Web サーバー群でユーザーアップロードを共用したい」",
+        "exampleAnswer": "EFS。",
+        "relatedCardIds": [
+          "3dc383c4231c"
+        ]
+      },
+      {
+        "name": "FSx",
+        "aliases": [
+          "Amazon FSx"
+        ],
+        "clue": "プロトコルやワークロードが明確なときに選ぶサービス群で、Windows SMB、Lustre、NetApp ONTAP、OpenZFS などが対象。",
+        "examplePrompt": "「Windows サーバー群から SMB 共有が必要」",
+        "exampleAnswer": "FSx for Windows File Server。",
+        "relatedCardIds": [
+          "3748105e7ef9"
+        ]
+      },
+      {
+        "name": "インスタンスストア",
+        "aliases": [],
+        "clue": "最高速だが揮発性でよいデータ向け。",
+        "examplePrompt": "「再生成できる中間ファイルやキャッシュを、できるだけ高速なローカルディスクに置きたい」",
+        "exampleAnswer": "インスタンスストア。",
+        "relatedCardIds": []
+      }
+    ],
+    "relatedCardIds": [
+      "7b11a4234011",
+      "9502be8041e2",
+      "236140aa11c3",
+      "7dea86992ad8",
+      "6bab7c4514a3",
+      "f7a92e992e57",
+      "3dc383c4231c",
+      "3748105e7ef9"
+    ]
+  },
+  {
+    "id": "d96b7bd626be",
+    "section": "3. ストレージ・データ移行系",
+    "title": "S3 ストレージクラス比較",
+    "table": {
+      "headers": [
+        "ストレージクラス",
+        "向く用途",
+        "取り出し特性"
+      ],
+      "rows": [
+        {
+          "label": "**Standard**",
+          "values": [
+            "頻繁にアクセスする本番データ",
+            "即時"
+          ]
+        },
+        {
+          "label": "**Intelligent-Tiering**",
+          "values": [
+            "アクセス頻度が読めないデータ",
+            "即時（アーカイブ層を除く）"
+          ]
+        },
+        {
+          "label": "**Standard-IA**",
+          "values": [
+            "低頻度アクセスだが必要時は即時",
+            "即時"
+          ]
+        },
+        {
+          "label": "**One Zone-IA**",
+          "values": [
+            "再作成可能で AZ 単位冗長を落としてよい低頻度データ",
+            "即時"
+          ]
+        },
+        {
+          "label": "**Glacier Instant Retrieval**",
+          "values": [
+            "まれに読む長期保管データ",
+            "ミリ秒"
+          ]
+        },
+        {
+          "label": "**Glacier Flexible Retrieval**",
+          "values": [
+            "取り出しに分〜時間を許容できるアーカイブ",
+            "即時ではない"
+          ]
+        },
+        {
+          "label": "**Glacier Deep Archive**",
+          "values": [
+            "ほぼ読まない超長期保管",
+            "時間単位"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "ストレージクラス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "S3 Standard",
+        "aliases": [],
+        "clue": "頻繁アクセスの現役データ、静的サイト配信元、アプリ本番データならまずこれ。",
+        "examplePrompt": "「モバイルアプリが日常的に参照する画像を保存」",
+        "exampleAnswer": "Standard。",
+        "relatedCardIds": [
+          "7b11a4234011"
+        ]
+      },
+      {
+        "name": "S3 Intelligent-Tiering",
+        "aliases": [],
+        "clue": "アクセスパターンが読めず、自動最適化したいときに強い。",
+        "examplePrompt": "「どのファイルが来月も読まれるか予測できない文書保管庫」",
+        "exampleAnswer": "Intelligent-Tiering。",
+        "relatedCardIds": [
+          "7b11a4234011",
+          "236140aa11c3"
+        ]
+      },
+      {
+        "name": "S3 Standard-IA",
+        "aliases": [],
+        "clue": "低頻度アクセスだが、必要時は即取り出したいバックアップや DR コピー向け。",
+        "examplePrompt": "「月 1 回程度参照する監査ログ」",
+        "exampleAnswer": "Standard-IA。",
+        "relatedCardIds": [
+          "7b11a4234011"
+        ]
+      },
+      {
+        "name": "S3 One Zone-IA",
+        "aliases": [],
+        "clue": "コスト重視で、AZ 障害時に失っても再作成できるデータ向け。",
+        "examplePrompt": "「他リージョンに原本がある一時コピー」",
+        "exampleAnswer": "One Zone-IA。",
+        "relatedCardIds": [
+          "7b11a4234011"
+        ]
+      },
+      {
+        "name": "S3 Glacier Instant Retrieval",
+        "aliases": [],
+        "clue": "アーカイブ寄りだがミリ秒アクセスは欲しい、という設問で使う。",
+        "examplePrompt": "「医療画像を長期保管するが、急な参照にも即応したい」",
+        "exampleAnswer": "Glacier Instant Retrieval。",
+        "relatedCardIds": [
+          "7b11a4234011"
+        ]
+      },
+      {
+        "name": "S3 Glacier Flexible Retrieval",
+        "aliases": [],
+        "clue": "取り出しが数分〜時間でよければコストをさらに下げられる。",
+        "examplePrompt": "「年次監査時だけ参照するアーカイブ」",
+        "exampleAnswer": "Glacier Flexible Retrieval。",
+        "relatedCardIds": [
+          "7b11a4234011"
+        ]
+      },
+      {
+        "name": "S3 Glacier Deep Archive",
+        "aliases": [],
+        "clue": "最安クラスで、取り出しを急がない法定保存や長期バックアップ向け。",
+        "examplePrompt": "「7 年保存が必要だが、ほぼ閲覧しない」",
+        "exampleAnswer": "Glacier Deep Archive。",
+        "relatedCardIds": [
+          "7b11a4234011"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "7b11a4234011",
+      "236140aa11c3"
+    ]
+  },
+  {
+    "id": "95744dd37943",
+    "section": "3. ストレージ・データ移行系",
+    "title": "転送・ハイブリッド系",
+    "table": {
+      "headers": [
+        "サービス",
+        "主な用途",
+        "特徴"
+      ],
+      "rows": [
+        {
+          "label": "**DataSync**",
+          "values": [
+            "オンプレ/他クラウド/AWS 間のデータ転送",
+            "高速転送、スケジュール、検証、AWS 間転送ではエージェント不要なケースあり"
+          ]
+        },
+        {
+          "label": "**Storage Gateway**",
+          "values": [
+            "オンプレと AWS ストレージの橋渡し",
+            "File/Volume/Tape 系のハイブリッド接続"
+          ]
+        },
+        {
+          "label": "**Snow Family**",
+          "values": [
+            "大量データの物理輸送",
+            "帯域不足、閉域、遠隔地に強い"
+          ]
+        },
+        {
+          "label": "**Transfer Family**",
+          "values": [
+            "SFTP/FTP/FTPS で S3/EFS に接続",
+            "既存ファイル転送ワークフロー移行向け"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "DataSync",
+        "aliases": [
+          "AWS DataSync"
+        ],
+        "clue": "継続的なデータ移行・同期・増分コピー・整合性検証が欲しいときに選ぶ。",
+        "examplePrompt": "「オンプレ NAS のデータを毎晩 EFS に同期したい」",
+        "exampleAnswer": "DataSync。",
+        "relatedCardIds": [
+          "82c3a0d5e860"
+        ]
+      },
+      {
+        "name": "Storage Gateway",
+        "aliases": [
+          "AWS Storage Gateway"
+        ],
+        "clue": "オンプレ側から既存プロトコルで使いながら、裏を AWS に逃がしたいときの答え。",
+        "examplePrompt": "「既存バックアップソフトはテープ前提だが、実体は AWS に置きたい」",
+        "exampleAnswer": "Tape Gateway。",
+        "relatedCardIds": [
+          "07a032d9a4b2"
+        ]
+      },
+      {
+        "name": "Snow Family",
+        "aliases": [
+          "AWS Snow Family"
+        ],
+        "clue": "「数百 TB〜PB」「回線が細い」「船舶・工場・遠隔地」「オフライン搬送」が出たら Snow を疑う。",
+        "examplePrompt": "「ペタバイト級映像データを短期間で AWS に移したい」",
+        "exampleAnswer": "Snowball Edge や Snowmobile。",
+        "relatedCardIds": [
+          "a89d1e3ce962",
+          "4c169d38576e"
+        ]
+      },
+      {
+        "name": "Transfer Family",
+        "aliases": [
+          "AWS Transfer Family"
+        ],
+        "clue": "既存の SFTP/FTP クライアントや取引先連携を変えずに AWS に持ち込みたいときに刺さる。",
+        "examplePrompt": "「取引先は SFTP しか話せないが、保存先は S3 にしたい」",
+        "exampleAnswer": "Transfer Family。",
+        "relatedCardIds": [
+          "a89d1e3ce962",
+          "178f8d9de816"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "82c3a0d5e860",
+      "07a032d9a4b2",
+      "a89d1e3ce962",
+      "4c169d38576e",
+      "178f8d9de816"
+    ]
+  },
+  {
+    "id": "f49015f56e5e",
+    "section": "4. データベース・キャッシュ系",
+    "title": "RDB vs NoSQL",
+    "table": {
+      "headers": [
+        "観点",
+        "RDS（MySQL/PostgreSQL 等）",
+        "Aurora",
+        "DynamoDB",
+        "DocumentDB"
+      ],
+      "rows": [
+        {
+          "label": "**種別**",
+          "values": [
+            "リレーショナル DB",
+            "クラウドネイティブ RDB",
+            "キー値/ドキュメント",
+            "ドキュメント DB"
+          ]
+        },
+        {
+          "label": "**スケール**",
+          "values": [
+            "主に垂直、読取レプリカあり",
+            "高性能、読取スケール、ストレージ自動拡張",
+            "水平・自動",
+            "読取レプリカで読取拡張"
+          ]
+        },
+        {
+          "label": "**可用性**",
+          "values": [
+            "Multi-AZ 構成可",
+            "ストレージは 3 AZ に 6 コピー",
+            "マルチ AZ 前提サービス",
+            "6 コピーのクラスタボリューム"
+          ]
+        },
+        {
+          "label": "**互換性**",
+          "values": [
+            "各エンジンそのもの",
+            "MySQL/PostgreSQL 互換",
+            "AWS 独自 API",
+            "MongoDB 互換"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "RDS",
+        "aliases": [
+          "Amazon RDS"
+        ],
+        "clue": "一般的な RDB をマネージド化したいが、必ずしも Aurora 級の性能や設計変更は要らない場面で選ぶ。",
+        "examplePrompt": "「既存の MySQL アプリを最小変更でマネージド移行したい」",
+        "exampleAnswer": "RDS for MySQL。",
+        "relatedCardIds": [
+          "49524aa56edb",
+          "54b51ca2bbce",
+          "4689761bf10e"
+        ]
+      },
+      {
+        "name": "Aurora",
+        "aliases": [
+          "Amazon Aurora"
+        ],
+        "clue": "「高可用」「高性能」「RDS より読取性能」「グローバル DB」「高速フェイルオーバー」が見えたら最有力。",
+        "examplePrompt": "「ミッションクリティカルな PostgreSQL 互換 DB を高可用で運用したい」",
+        "exampleAnswer": "Aurora PostgreSQL。",
+        "relatedCardIds": [
+          "c5c4bcf8bf0f",
+          "a21f5f489321"
+        ]
+      },
+      {
+        "name": "DynamoDB",
+        "aliases": [
+          "Amazon DynamoDB"
+        ],
+        "clue": "キー設計中心、ミリ秒未満〜数ミリ秒、サーバーレス、急なスパイク、巨大スケールなら DynamoDB。",
+        "examplePrompt": "「ゲームのセッション状態を超高スループットで保存し、運用負荷を極小化したい」",
+        "exampleAnswer": "DynamoDB。",
+        "relatedCardIds": [
+          "54863632d137",
+          "f8f58d586778",
+          "02d0319b73c8",
+          "2068e88aaa57"
+        ]
+      },
+      {
+        "name": "DocumentDB",
+        "aliases": [
+          "Amazon DocumentDB"
+        ],
+        "clue": "「MongoDB 互換」「JSON ドキュメント」「既存 Mongo ドライバ資産」が問題文にあると候補になる。",
+        "examplePrompt": "「MongoDB ベースのアプリをマネージド化したい」",
+        "exampleAnswer": "DocumentDB。",
+        "relatedCardIds": [
+          "8964124e9b3f"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "49524aa56edb",
+      "54b51ca2bbce",
+      "4689761bf10e",
+      "c5c4bcf8bf0f",
+      "a21f5f489321",
+      "54863632d137",
+      "f8f58d586778",
+      "02d0319b73c8",
+      "2068e88aaa57",
+      "8964124e9b3f"
+    ]
+  },
+  {
+    "id": "7e6d50ba149e",
+    "section": "4. データベース・キャッシュ系",
+    "title": "グローバル DB・DR 系",
+    "table": {
+      "headers": [
+        "サービス",
+        "用途",
+        "特徴"
+      ],
+      "rows": [
+        {
+          "label": "**Aurora Global Database**",
+          "values": [
+            "Aurora のクロスリージョン DR/読取分散",
+            "低 RPO、短い RTO"
+          ]
+        },
+        {
+          "label": "**DynamoDB Global Tables**",
+          "values": [
+            "DynamoDB のマルチリージョン Active-Active",
+            "ほぼリアルタイム複製"
+          ]
+        },
+        {
+          "label": "**ElastiCache Global Datastore**",
+          "values": [
+            "Redis/Valkey のグローバル読取",
+            "非同期レプリケーション"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "Aurora Global Database",
+        "aliases": [],
+        "clue": "RDB でクロスリージョン DR を短い RTO/RPO で求めるならこれ。",
+        "examplePrompt": "「北米リージョン障害時、1 分未満で Aurora を昇格したい」",
+        "exampleAnswer": "Aurora Global Database。",
+        "relatedCardIds": [
+          "c5c4bcf8bf0f",
+          "a21f5f489321"
+        ]
+      },
+      {
+        "name": "DynamoDB Global Tables",
+        "aliases": [],
+        "clue": "各リージョンからローカル書き込みしたい Active-Active 要件なら本命。",
+        "examplePrompt": "「世界各地のユーザーが最寄りリージョンに書き込み、同一テーブルを共有したい」",
+        "exampleAnswer": "DynamoDB Global Tables。",
+        "relatedCardIds": [
+          "54863632d137",
+          "02d0319b73c8"
+        ]
+      },
+      {
+        "name": "ElastiCache Global Datastore",
+        "aliases": [],
+        "clue": "グローバルキャッシュや DR 用リードレプリカの文脈で出る。",
+        "examplePrompt": "「海外リージョンにも低遅延で参照させたい Redis キャッシュ」",
+        "exampleAnswer": "ElastiCache Global Datastore。",
+        "relatedCardIds": [
+          "c15219ffeea2",
+          "57a3069c710c"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "c5c4bcf8bf0f",
+      "a21f5f489321",
+      "54863632d137",
+      "02d0319b73c8",
+      "c15219ffeea2",
+      "57a3069c710c"
+    ]
+  },
+  {
+    "id": "01c489858b5b",
+    "section": "4. データベース・キャッシュ系",
+    "title": "インメモリキャッシュ比較",
+    "table": {
+      "headers": [
+        "観点",
+        "ElastiCache for Redis/Valkey",
+        "ElastiCache for Memcached",
+        "DAX"
+      ],
+      "rows": [
+        {
+          "label": "**対象**",
+          "values": [
+            "汎用キャッシュ、データ構造活用",
+            "単純キャッシュ",
+            "DynamoDB 専用キャッシュ"
+          ]
+        },
+        {
+          "label": "**永続化**",
+          "values": [
+            "あり",
+            "なし",
+            "なし"
+          ]
+        },
+        {
+          "label": "**レプリケーション**",
+          "values": [
+            "あり",
+            "なし",
+            "あり"
+          ]
+        },
+        {
+          "label": "**得意分野**",
+          "values": [
+            "セッション、Pub/Sub、ランキング",
+            "単純で軽い分散キャッシュ",
+            "DynamoDB 読取高速化"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "Redis/Valkey",
+        "aliases": [
+          "ElastiCache for Redis",
+          "Valkey",
+          "Amazon ElastiCache"
+        ],
+        "clue": "セッション共有、Pub/Sub、Sorted Set、永続化、レプリケーションが必要ならこちら。",
+        "examplePrompt": "「EC サイトのログインセッションとランキングを同じキャッシュ基盤で持ちたい」",
+        "exampleAnswer": "ElastiCache for Redis/Valkey。",
+        "relatedCardIds": [
+          "c15219ffeea2",
+          "57a3069c710c"
+        ]
+      },
+      {
+        "name": "Memcached",
+        "aliases": [],
+        "clue": "単純なキー値キャッシュを水平分散できれば十分で、永続化も複雑な機能も不要なとき向き。",
+        "examplePrompt": "「DB クエリ結果の使い捨てキャッシュだけを低コストで持ちたい」",
+        "exampleAnswer": "Memcached。",
+        "relatedCardIds": [
+          "c15219ffeea2"
+        ]
+      },
+      {
+        "name": "DAX",
+        "aliases": [
+          "DynamoDB Accelerator",
+          "DynamoDB Accelerator (DAX)"
+        ],
+        "clue": "DynamoDB の読み取り遅延をマイクロ秒級に下げたい、という設問で見抜く。",
+        "examplePrompt": "「既存 DynamoDB のコード変更を最小にして読取性能だけ上げたい」",
+        "exampleAnswer": "DAX。",
+        "relatedCardIds": [
+          "54863632d137",
+          "f8f58d586778"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "c15219ffeea2",
+      "57a3069c710c",
+      "54863632d137",
+      "f8f58d586778"
+    ]
+  },
+  {
+    "id": "758cb304831e",
+    "section": "5. ネットワーク・配信・ロードバランス系",
+    "title": "マルチ VPC 接続",
+    "table": {
+      "headers": [
+        "観点",
+        "VPC Peering",
+        "Transit Gateway",
+        "PrivateLink",
+        "VPC エンドポイント"
+      ],
+      "rows": [
+        {
+          "label": "**接続形態**",
+          "values": [
+            "VPC 間 1 対 1",
+            "ハブ型",
+            "サービス単位の私設接続",
+            "AWS サービス/自社サービスへの私設接続"
+          ]
+        },
+        {
+          "label": "**推移的ルーティング**",
+          "values": [
+            "不可",
+            "可能",
+            "N/A",
+            "N/A"
+          ]
+        },
+        {
+          "label": "**向く規模**",
+          "values": [
+            "少数 VPC",
+            "多数 VPC/ハイブリッド",
+            "サービス提供/利用",
+            "個別サービスアクセス"
+          ]
+        },
+        {
+          "label": "**代表用途**",
+          "values": [
+            "シンプル接続",
+            "多拠点集約",
+            "SaaS/共有サービス公開",
+            "S3/DynamoDB/各種 AWS API へ私設アクセス"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "VPC Peering",
+        "aliases": [],
+        "clue": "VPC が少数で、単純に 2 つをつなぐだけなら最も素直。",
+        "examplePrompt": "「開発 VPC と共有サービス VPC のみを低コストで接続したい」",
+        "exampleAnswer": "VPC Peering。",
+        "relatedCardIds": [
+          "c53696d5d4a9"
+        ]
+      },
+      {
+        "name": "Transit Gateway",
+        "aliases": [],
+        "clue": "VPC 数が増え、接続関係がメッシュ化して管理破綻しそうなら TGW。",
+        "examplePrompt": "「数十の VPC とオンプレ接続を 1 か所で集約したい」",
+        "exampleAnswer": "Transit Gateway。",
+        "relatedCardIds": [
+          "8d900eae5ac0",
+          "c53696d5d4a9"
+        ]
+      },
+      {
+        "name": "PrivateLink",
+        "aliases": [
+          "AWS PrivateLink"
+        ],
+        "clue": "相手 VPC 全体ではなく、特定サービスだけをプライベートに公開・利用したいときに選ぶ。",
+        "examplePrompt": "「SaaS 提供者として顧客 VPC から自社サービスへ私設接続させたい」",
+        "exampleAnswer": "PrivateLink。",
+        "relatedCardIds": [
+          "94e53f8bd898"
+        ]
+      },
+      {
+        "name": "VPC エンドポイント",
+        "aliases": [],
+        "clue": "AWS サービスへインターネットを経由せずにアクセスしたいときの総称。",
+        "examplePrompt": "「プライベートサブネットの EC2 から S3 に NAT なしでアクセスしたい」",
+        "exampleAnswer": "Gateway Endpoint。",
+        "relatedCardIds": [
+          "c53696d5d4a9"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "c53696d5d4a9",
+      "8d900eae5ac0",
+      "94e53f8bd898"
+    ]
+  },
+  {
+    "id": "68e596adcab9",
+    "section": "5. ネットワーク・配信・ロードバランス系",
+    "title": "ロードバランサ比較",
+    "table": {
+      "headers": [
+        "観点",
+        "ALB",
+        "NLB",
+        "Gateway Load Balancer"
+      ],
+      "rows": [
+        {
+          "label": "**レイヤー**",
+          "values": [
+            "L7（HTTP/HTTPS/gRPC）",
+            "L4（TCP/UDP/TLS）",
+            "L3/L4"
+          ]
+        },
+        {
+          "label": "**得意分野**",
+          "values": [
+            "URL/ホストベース振り分け",
+            "超低レイテンシ、高スループット、固定 IP",
+            "仮想アプライアンス透過配置"
+          ]
+        },
+        {
+          "label": "**特徴**",
+          "values": [
+            "パス/ホスト条件、認証連携",
+            "静的 IP、ソース IP 保持、TLS/UDP 対応",
+            "セキュリティ製品をインライン挿入"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "ALB",
+        "aliases": [
+          "Application Load Balancer"
+        ],
+        "clue": "Web アプリで「パスベース」「ホストベース」「HTTP ヘッダー」「WebSocket/gRPC」「Lambda ターゲット」が出たら ALB。",
+        "examplePrompt": "「`/api` は API 群へ、`/images` は別ターゲットへ振り分けたい」",
+        "exampleAnswer": "ALB。",
+        "relatedCardIds": [
+          "80ddb681f673"
+        ]
+      },
+      {
+        "name": "NLB",
+        "aliases": [
+          "Network Load Balancer"
+        ],
+        "clue": "固定 IP、超低レイテンシ、TCP/UDP/TLS、急激なスパイク耐性が欲しいときに選ぶ。",
+        "examplePrompt": "「UDP ベースのゲームトラフィックを固定 IP で受けたい」",
+        "exampleAnswer": "NLB。",
+        "relatedCardIds": [
+          "80ddb681f673"
+        ]
+      },
+      {
+        "name": "Gateway Load Balancer",
+        "aliases": [],
+        "clue": "ファイアウォール、IDS/IPS、DPI 製品などを通過させたい文脈ならこれ。",
+        "examplePrompt": "「複数 VPC の通信をサードパーティ製 FW で一元検査したい」",
+        "exampleAnswer": "Gateway Load Balancer。",
+        "relatedCardIds": [
+          "80ddb681f673"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "80ddb681f673"
+    ]
+  },
+  {
+    "id": "614cc63dd973",
+    "section": "5. ネットワーク・配信・ロードバランス系",
+    "title": "グローバル・ハイブリッド接続",
+    "table": {
+      "headers": [
+        "観点",
+        "CloudFront",
+        "Global Accelerator",
+        "Site-to-Site VPN",
+        "Direct Connect"
+      ],
+      "rows": [
+        {
+          "label": "**目的**",
+          "values": [
+            "HTTP/S コンテンツ配信",
+            "TCP/UDP のグローバル最適化",
+            "暗号化トンネル",
+            "専用線"
+          ]
+        },
+        {
+          "label": "**特徴**",
+          "values": [
+            "エッジキャッシュ、署名 URL/WAF と相性良",
+            "Anycast IP、最寄りエッジ入口",
+            "すぐ始められる、安価",
+            "安定帯域、予測しやすい性能"
+          ]
+        },
+        {
+          "label": "**キャッシュ**",
+          "values": [
+            "あり",
+            "なし",
+            "なし",
+            "なし"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "CloudFront",
+        "aliases": [
+          "Amazon CloudFront"
+        ],
+        "clue": "キャッシュ、静的/動的コンテンツ配信、Signed URL/Cookie、エッジ最適化が必要なら CloudFront。",
+        "examplePrompt": "「世界中のユーザーへ画像と動画を低遅延で配信したい」",
+        "exampleAnswer": "CloudFront。",
+        "relatedCardIds": [
+          "921f7c700989"
+        ]
+      },
+      {
+        "name": "Global Accelerator",
+        "aliases": [
+          "AWS Global Accelerator"
+        ],
+        "clue": "キャッシュではなく、グローバルな入口 IP と TCP/UDP 経路最適化が欲しいときに選ぶ。",
+        "examplePrompt": "「複数リージョンの ALB/NLB へ単一 Anycast IP で振り分けたい」",
+        "exampleAnswer": "Global Accelerator。",
+        "relatedCardIds": [
+          "e494799573ca"
+        ]
+      },
+      {
+        "name": "Site-to-Site VPN",
+        "aliases": [
+          "AWS Site-to-Site VPN"
+        ],
+        "clue": "まず早く安く暗号化接続したいときの標準解。",
+        "examplePrompt": "「今週中にオンプレと AWS を接続したいが専用線は間に合わない」",
+        "exampleAnswer": "Site-to-Site VPN。",
+        "relatedCardIds": [
+          "a175b511cb63"
+        ]
+      },
+      {
+        "name": "Direct Connect",
+        "aliases": [
+          "AWS Direct Connect"
+        ],
+        "clue": "安定した帯域、低揺らぎ、長期利用、コンプライアンス要件が重いなら DX。",
+        "examplePrompt": "「常時大容量データをオンプレから AWS へ流し、インターネットを避けたい」",
+        "exampleAnswer": "Direct Connect。",
+        "relatedCardIds": [
+          "62a6b68d8538"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "921f7c700989",
+      "e494799573ca",
+      "a175b511cb63",
+      "62a6b68d8538"
+    ]
+  },
+  {
+    "id": "5c7fd3f696e9",
+    "section": "5. ネットワーク・配信・ロードバランス系",
+    "title": "インターネット接続経路の見分け方",
+    "table": {
+      "headers": [
+        "観点",
+        "Internet Gateway",
+        "NAT Gateway",
+        "Egress-only Internet Gateway"
+      ],
+      "rows": [
+        {
+          "label": "**対象**",
+          "values": [
+            "パブリックサブネット",
+            "プライベートサブネットの外向き IPv4",
+            "プライベートサブネットの外向き IPv6"
+          ]
+        },
+        {
+          "label": "**受信**",
+          "values": [
+            "可能",
+            "不可",
+            "不可"
+          ]
+        },
+        {
+          "label": "**主な用途**",
+          "values": [
+            "公開 Web サーバー",
+            "パッチ取得、外部 API 呼び出し",
+            "IPv6 の外向き専用通信"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "Internet Gateway",
+        "aliases": [],
+        "clue": "パブリック IP を持つリソースをインターネット公開するときに使う。",
+        "examplePrompt": "「公開 ALB を VPC にぶら下げて外部ユーザーからアクセスさせたい」",
+        "exampleAnswer": "Internet Gateway。",
+        "relatedCardIds": [
+          "c53696d5d4a9"
+        ]
+      },
+      {
+        "name": "NAT Gateway",
+        "aliases": [
+          "NAT"
+        ],
+        "clue": "プライベートサブネットの EC2/Lambda から外へは出したいが、外からは入れたくないときの答え。",
+        "examplePrompt": "「アプリサーバーは非公開のまま OS パッチを取得したい」",
+        "exampleAnswer": "NAT Gateway。",
+        "relatedCardIds": [
+          "fd41d542945a"
+        ]
+      },
+      {
+        "name": "Egress-only Internet Gateway",
+        "aliases": [],
+        "clue": "IPv6 版の外向き専用出口として出る。",
+        "examplePrompt": "「IPv6 のみのプライベートサブネットから外部へ更新通信を出したい」",
+        "exampleAnswer": "Egress-only Internet Gateway。",
+        "relatedCardIds": [
+          "c53696d5d4a9"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "c53696d5d4a9",
+      "fd41d542945a"
+    ]
+  },
+  {
+    "id": "e3f9c808e89a",
+    "section": "5. ネットワーク・配信・ロードバランス系",
+    "title": "VPC セキュリティ",
+    "table": {
+      "headers": [
+        "観点",
+        "セキュリティグループ（SG）",
+        "ネットワーク ACL（NACL）"
+      ],
+      "rows": [
+        {
+          "label": "**適用対象**",
+          "values": [
+            "ENI/インスタンス",
+            "サブネット"
+          ]
+        },
+        {
+          "label": "**状態管理**",
+          "values": [
+            "ステートフル",
+            "ステートレス"
+          ]
+        },
+        {
+          "label": "**ルール種別**",
+          "values": [
+            "許可のみ",
+            "許可・拒否"
+          ]
+        },
+        {
+          "label": "**評価**",
+          "values": [
+            "すべての許可ルールの総和",
+            "ルール番号順に最初に一致したもの"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "セキュリティグループ",
+        "aliases": [],
+        "clue": "基本はまず SG。インスタンス単位で許可ベース制御をしたい設問で選ぶ。",
+        "examplePrompt": "「Web サーバーだけ 443 を許可し、DB にはアプリサーバーからの 3306 のみ許可」",
+        "exampleAnswer": "SG。",
+        "relatedCardIds": [
+          "c53696d5d4a9",
+          "c9767cfbe10e"
+        ]
+      },
+      {
+        "name": "NACL",
+        "aliases": [
+          "Network ACL",
+          "ネットワーク ACL"
+        ],
+        "clue": "明示的 deny が必要、サブネット単位の粗い境界制御が必要なら NACL。",
+        "examplePrompt": "「特定の送信元 IP レンジを明示的に拒否したい」",
+        "exampleAnswer": "NACL。",
+        "relatedCardIds": [
+          "c53696d5d4a9",
+          "00959ed411cd"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "c53696d5d4a9",
+      "c9767cfbe10e",
+      "00959ed411cd"
+    ]
+  },
+  {
+    "id": "da49b9679076",
+    "section": "6. セキュリティ・暗号化・監査系",
+    "title": "脅威検知・設定管理・調査系",
+    "table": {
+      "headers": [
+        "サービス",
+        "役割",
+        "主な対象"
+      ],
+      "rows": [
+        {
+          "label": "**GuardDuty**",
+          "values": [
+            "脅威検知",
+            "アカウント、VPC、EKS、S3、RDS など"
+          ]
+        },
+        {
+          "label": "**Inspector**",
+          "values": [
+            "脆弱性管理/露出診断",
+            "EC2、ECR、Lambda"
+          ]
+        },
+        {
+          "label": "**Macie**",
+          "values": [
+            "S3 機密データ検出",
+            "S3"
+          ]
+        },
+        {
+          "label": "**Security Hub**",
+          "values": [
+            "所見の集約/標準準拠",
+            "各種セキュリティサービス"
+          ]
+        },
+        {
+          "label": "**Detective**",
+          "values": [
+            "事後調査・関係分析",
+            "GuardDuty 所見など"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "GuardDuty",
+        "aliases": [
+          "Amazon GuardDuty"
+        ],
+        "clue": "「脅威検知」「異常 API 呼び出し」「怪しい通信」「マルウェア兆候」なら GuardDuty。",
+        "examplePrompt": "「盗まれた認証情報による不審な API 利用を検出したい」",
+        "exampleAnswer": "GuardDuty。",
+        "relatedCardIds": [
+          "043fc98b000c"
+        ]
+      },
+      {
+        "name": "Inspector",
+        "aliases": [
+          "Amazon Inspector"
+        ],
+        "clue": "「脆弱性」「CVE」「未修正パッケージ」「公開ポート露出評価」が見えたら Inspector。",
+        "examplePrompt": "「ECR イメージと EC2 を継続的にスキャンしたい」",
+        "exampleAnswer": "Inspector。",
+        "relatedCardIds": [
+          "7417f2c347a0"
+        ]
+      },
+      {
+        "name": "Macie",
+        "aliases": [
+          "Amazon Macie"
+        ],
+        "clue": "S3 内の PII、機密文書、個人情報を見つけたいときに選ぶ。",
+        "examplePrompt": "「S3 バケットに保存された顧客 CSV の個人情報漏えいリスクを把握したい」",
+        "exampleAnswer": "Macie。",
+        "relatedCardIds": [
+          "eefcc034d911"
+        ]
+      },
+      {
+        "name": "Security Hub",
+        "aliases": [
+          "AWS Security Hub"
+        ],
+        "clue": "GuardDuty や Inspector の所見を 1 か所に集めて優先度付けしたいなら Security Hub。",
+        "examplePrompt": "「複数アカウントのセキュリティ所見を統合ダッシュボードで管理したい」",
+        "exampleAnswer": "Security Hub。",
+        "relatedCardIds": [
+          "d9262a66214f",
+          "5a54a65130a0"
+        ]
+      },
+      {
+        "name": "Detective",
+        "aliases": [
+          "Amazon Detective"
+        ],
+        "clue": "インシデント後の因果関係調査、アクティビティの掘り下げに使う。",
+        "examplePrompt": "「GuardDuty の所見が出た後、どのロールが何にアクセスしたかを時系列で調べたい」",
+        "exampleAnswer": "Detective。",
+        "relatedCardIds": [
+          "7a693349df32"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "043fc98b000c",
+      "7417f2c347a0",
+      "eefcc034d911",
+      "d9262a66214f",
+      "5a54a65130a0",
+      "7a693349df32"
+    ]
+  },
+  {
+    "id": "3c9e593b33e0",
+    "section": "6. セキュリティ・暗号化・監査系",
+    "title": "暗号化・シークレット管理",
+    "table": {
+      "headers": [
+        "観点",
+        "KMS",
+        "CloudHSM",
+        "Secrets Manager",
+        "Parameter Store"
+      ],
+      "rows": [
+        {
+          "label": "**用途**",
+          "values": [
+            "鍵管理と暗号化 API",
+            "専用 HSM",
+            "シークレット保管とローテーション",
+            "設定値/シークレット保管"
+          ]
+        },
+        {
+          "label": "**運用形態**",
+          "values": [
+            "フルマネージド",
+            "専用 HSM クラスタ運用",
+            "フルマネージド",
+            "フルマネージド"
+          ]
+        },
+        {
+          "label": "**自動ローテーション**",
+          "values": [
+            "対象キーで可",
+            "なし",
+            "可",
+            "標準機能では不可"
+          ]
+        },
+        {
+          "label": "**向く場面**",
+          "values": [
+            "S3/EBS/RDS 暗号化全般",
+            "専有 HSM 必須",
+            "DB パスワードや API キー",
+            "安価な設定集中管理"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "KMS",
+        "aliases": [
+          "AWS KMS"
+        ],
+        "clue": "AWS サービス統合で暗号化鍵を管理したいならまず KMS。",
+        "examplePrompt": "「S3 と EBS を顧客管理キーで暗号化し、アクセス制御と監査も行いたい」",
+        "exampleAnswer": "KMS。",
+        "relatedCardIds": [
+          "300938a3efda"
+        ]
+      },
+      {
+        "name": "CloudHSM",
+        "aliases": [
+          "AWS CloudHSM"
+        ],
+        "clue": "専有ハードウェア HSM、より強いコンプライアンス、独自暗号要件が必要ならこちら。",
+        "examplePrompt": "「共有マルチテナント HSM では要件を満たせず、専用 HSM が必要」",
+        "exampleAnswer": "CloudHSM。",
+        "relatedCardIds": [
+          "9e68dbe397f8"
+        ]
+      },
+      {
+        "name": "Secrets Manager",
+        "aliases": [
+          "AWS Secrets Manager"
+        ],
+        "clue": "シークレットの自動ローテーションが問題文に出たら最優先。",
+        "examplePrompt": "「RDS の認証情報を 30 日ごとに自動更新したい」",
+        "exampleAnswer": "Secrets Manager。",
+        "relatedCardIds": [
+          "b0cae7423e9c"
+        ]
+      },
+      {
+        "name": "Parameter Store",
+        "aliases": [
+          "Systems Manager Parameter Store",
+          "SSM Parameter Store"
+        ],
+        "clue": "設定値や機密値を階層管理したいが、ローテーション要件は薄くコストを抑えたいとき向き。",
+        "examplePrompt": "「アプリ設定と SecureString を一元管理したい」",
+        "exampleAnswer": "Parameter Store。",
+        "relatedCardIds": [
+          "72a9a2eb51fb",
+          "8e0b38841417"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "300938a3efda",
+      "9e68dbe397f8",
+      "b0cae7423e9c",
+      "72a9a2eb51fb",
+      "8e0b38841417"
+    ]
+  },
+  {
+    "id": "d5ecc7cb7f97",
+    "section": "6. セキュリティ・暗号化・監査系",
+    "title": "監視・監査系",
+    "table": {
+      "headers": [
+        "サービス",
+        "主目的",
+        "典型質問"
+      ],
+      "rows": [
+        {
+          "label": "**CloudWatch**",
+          "values": [
+            "メトリクス/ログ/アラーム監視",
+            "今の状態はどうか"
+          ]
+        },
+        {
+          "label": "**CloudTrail**",
+          "values": [
+            "API 操作履歴",
+            "誰が何をしたか"
+          ]
+        },
+        {
+          "label": "**AWS Config**",
+          "values": [
+            "設定変更履歴と準拠評価",
+            "あるべき設定から逸脱していないか"
+          ]
+        },
+        {
+          "label": "**Artifact**",
+          "values": [
+            "AWS の監査レポート入手",
+            "AWS 側の証跡資料を入手したい"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "CloudWatch",
+        "aliases": [
+          "Amazon CloudWatch"
+        ],
+        "clue": "CPU 使用率、エラーレート、アラーム、ログ監視、ダッシュボードなら CloudWatch。",
+        "examplePrompt": "「Lambda のエラー回数が閾値を超えたら SNS 通知したい」",
+        "exampleAnswer": "CloudWatch Alarm。",
+        "relatedCardIds": [
+          "9dae94b56d62",
+          "886b7826665f"
+        ]
+      },
+      {
+        "name": "CloudTrail",
+        "aliases": [
+          "AWS CloudTrail"
+        ],
+        "clue": "監査ログで「誰が EC2 を停止したか」「どの API が呼ばれたか」を知りたいときに使う。",
+        "examplePrompt": "「本番 SG を変更した IAM ユーザーを特定したい」",
+        "exampleAnswer": "CloudTrail。",
+        "relatedCardIds": [
+          "8f7e6ad81a1d"
+        ]
+      },
+      {
+        "name": "AWS Config",
+        "aliases": [],
+        "clue": "現在/過去のリソース設定、ルール準拠、ドリフト監視がテーマなら Config。",
+        "examplePrompt": "「S3 バケットが公開設定になったら即検知したい」",
+        "exampleAnswer": "AWS Config。",
+        "relatedCardIds": [
+          "3162078fc5d6"
+        ]
+      },
+      {
+        "name": "Artifact",
+        "aliases": [
+          "AWS Artifact"
+        ],
+        "clue": "AWS 自身の SOC/PCI/DSS などのレポートが欲しいときの窓口。",
+        "examplePrompt": "「監査部門へ AWS のコンプライアンス報告書を提出したい」",
+        "exampleAnswer": "Artifact。",
+        "relatedCardIds": [
+          "b782ca691d1f"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "9dae94b56d62",
+      "886b7826665f",
+      "8f7e6ad81a1d",
+      "3162078fc5d6",
+      "b782ca691d1f"
+    ]
+  },
+  {
+    "id": "58d5d189f9ef",
+    "section": "7. IAM・認証・AD 連携系",
+    "title": "認証・認可系",
+    "table": {
+      "headers": [
+        "観点",
+        "Cognito User Pool",
+        "Cognito Identity Pool",
+        "IAM Identity Center",
+        "STS AssumeRole"
+      ],
+      "rows": [
+        {
+          "label": "**役割**",
+          "values": [
+            "アプリユーザー認証",
+            "一時 AWS 認証情報払い出し",
+            "Workforce SSO",
+            "一時的な IAM 権限委譲"
+          ]
+        },
+        {
+          "label": "**主な利用者**",
+          "values": [
+            "顧客/会員",
+            "顧客アプリ",
+            "社員/管理者",
+            "AWS ワークロード/アカウント間"
+          ]
+        },
+        {
+          "label": "**認証源**",
+          "values": [
+            "内蔵ディレクトリ or 外部 IdP 連携",
+            "User Pool/OIDC/SAML/ソーシャル IdP 等",
+            "Identity Center Directory / 外部 IdP / AD",
+            "IAM ロール"
+          ]
+        },
+        {
+          "label": "**典型用途**",
+          "values": [
+            "サインアップ/サインイン",
+            "S3/DynamoDB へ直接アクセス",
+            "複数 AWS アカウントへ SSO",
+            "クロスアカウントアクセス"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "Cognito User Pool",
+        "aliases": [
+          "Amazon Cognito",
+          "Cognito"
+        ],
+        "clue": "顧客向けログイン、サインアップ、MFA、JWT 発行が欲しいなら User Pool。",
+        "examplePrompt": "「モバイルアプリに会員登録とサインイン機能を持たせたい」",
+        "exampleAnswer": "Cognito User Pool。",
+        "relatedCardIds": [
+          "d5552aa3d3a5",
+          "21a0cf7f2202"
+        ]
+      },
+      {
+        "name": "Cognito Identity Pool",
+        "aliases": [
+          "Identity Pool",
+          "ID プール",
+          "Identity Pool (ID プール)"
+        ],
+        "clue": "認証後のアプリユーザーへ一時 AWS 認証情報を払い出す用途で使う。",
+        "examplePrompt": "「ログイン済みユーザーに本人用 S3 プレフィックスだけ直接操作させたい」",
+        "exampleAnswer": "Cognito Identity Pool。",
+        "relatedCardIds": [
+          "d5552aa3d3a5",
+          "77491833ecb3"
+        ]
+      },
+      {
+        "name": "IAM Identity Center",
+        "aliases": [
+          "Identity Center"
+        ],
+        "clue": "社員が複数 AWS アカウントや SaaS に SSO したいなら本命。",
+        "examplePrompt": "「Okta と連携して、開発者へ複数アカウントのロールを割り当てたい」",
+        "exampleAnswer": "IAM Identity Center。",
+        "relatedCardIds": [
+          "a89d1e3ce962",
+          "d4ade53b8fb0",
+          "873d9995634f"
+        ]
+      },
+      {
+        "name": "STS AssumeRole",
+        "aliases": [],
+        "clue": "AWS 内の権限委譲、特にクロスアカウントや一時権限取得ならこれ。",
+        "examplePrompt": "「監査アカウントの Lambda から本番アカウントの S3 を読ませたい」",
+        "exampleAnswer": "STS AssumeRole。",
+        "relatedCardIds": [
+          "73b9a8080737"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "d5552aa3d3a5",
+      "21a0cf7f2202",
+      "77491833ecb3",
+      "a89d1e3ce962",
+      "d4ade53b8fb0",
+      "873d9995634f",
+      "73b9a8080737"
+    ]
+  },
+  {
+    "id": "c2e84f68a7cc",
+    "section": "7. IAM・認証・AD 連携系",
+    "title": "AD 連携系",
+    "table": {
+      "headers": [
+        "サービス",
+        "用途",
+        "特徴"
+      ],
+      "rows": [
+        {
+          "label": "**AWS Managed Microsoft AD**",
+          "values": [
+            "フルマネージド AD",
+            "本物の Microsoft AD、信頼関係可"
+          ]
+        },
+        {
+          "label": "**AD Connector**",
+          "values": [
+            "既存 AD へのプロキシ",
+            "資格情報を複製しない"
+          ]
+        },
+        {
+          "label": "**Simple AD**",
+          "values": [
+            "軽量ディレクトリ",
+            "Samba 4 ベース、機能は限定的"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "AWS Managed Microsoft AD",
+        "aliases": [],
+        "clue": "AWS 側に本格 AD を持ち、信頼関係や AD 互換性を重視するならこれ。",
+        "examplePrompt": "「オンプレ AD と双方向信頼を張りつつ、AWS でも Windows 認証基盤を運用したい」",
+        "exampleAnswer": "AWS Managed Microsoft AD。",
+        "relatedCardIds": [
+          "d104de266583"
+        ]
+      },
+      {
+        "name": "AD Connector",
+        "aliases": [],
+        "clue": "認証情報を AWS に置かず、既存オンプレ AD をそのまま使いたい設問で見抜く。",
+        "examplePrompt": "「ユーザー情報を複製せず、既存 AD の資格情報で WorkSpaces にログインさせたい」",
+        "exampleAnswer": "AD Connector。",
+        "relatedCardIds": [
+          "d104de266583"
+        ]
+      },
+      {
+        "name": "Simple AD",
+        "aliases": [],
+        "clue": "基本機能だけで十分な小規模環境向け。",
+        "examplePrompt": "「小規模な Windows/Linux ワークロード向けに、安価な AD 互換ディレクトリが欲しい」",
+        "exampleAnswer": "Simple AD。",
+        "relatedCardIds": [
+          "d104de266583"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "d104de266583"
+    ]
+  },
+  {
+    "id": "756df0db8f7d",
+    "section": "8. メッセージング・イベント駆動・アプリ統合系",
+    "title": "SQS vs SNS vs EventBridge vs Kinesis Data Streams",
+    "table": {
+      "headers": [
+        "観点",
+        "SQS",
+        "SNS",
+        "EventBridge",
+        "Kinesis Data Streams"
+      ],
+      "rows": [
+        {
+          "label": "**モデル**",
+          "values": [
+            "キュー",
+            "Pub/Sub",
+            "イベントバス",
+            "ストリーム"
+          ]
+        },
+        {
+          "label": "**配信**",
+          "values": [
+            "Pull",
+            "Push",
+            "Push",
+            "Pull"
+          ]
+        },
+        {
+          "label": "**順序**",
+          "values": [
+            "FIFO で可",
+            "FIFO Topic で可",
+            "なし",
+            "シャード内で保証"
+          ]
+        },
+        {
+          "label": "**主用途**",
+          "values": [
+            "バッファリング/疎結合",
+            "一斉通知",
+            "イベントルーティング",
+            "リアルタイム分析"
+          ]
+        },
+        {
+          "label": "**保持**",
+          "values": [
+            "最大 14 日",
+            "配信中心",
+            "標準では保持前提でない（必要なら Archive）",
+            "最大 365 日"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "SQS",
+        "aliases": [
+          "Amazon SQS"
+        ],
+        "clue": "コンシューマの処理速度と切り離したい、再試行したい、ワーカーに順番に読ませたいなら SQS。",
+        "examplePrompt": "「注文処理が一時的に詰まってもリクエストを失わず後続処理したい」",
+        "exampleAnswer": "SQS。",
+        "relatedCardIds": [
+          "dc4a2c61a57a"
+        ]
+      },
+      {
+        "name": "SNS",
+        "aliases": [
+          "Amazon SNS"
+        ],
+        "clue": "1 つのイベントを複数宛先へ即時配信したいときに使う。",
+        "examplePrompt": "「注文確定をメール通知、Lambda 起動、SQS 投入へ同時に配りたい」",
+        "exampleAnswer": "SNS。",
+        "relatedCardIds": [
+          "dbc1bcaf9443"
+        ]
+      },
+      {
+        "name": "EventBridge",
+        "aliases": [
+          "Amazon EventBridge"
+        ],
+        "clue": "AWS サービスイベントや SaaS イベントをルールベースで振り分けたいときに強い。",
+        "examplePrompt": "「EC2 状態変更イベントを受けて Step Functions を起動したい」",
+        "exampleAnswer": "EventBridge。",
+        "relatedCardIds": [
+          "06f1e2380365"
+        ]
+      },
+      {
+        "name": "Kinesis Data Streams",
+        "aliases": [],
+        "clue": "高頻度データを順序付きでリアルタイム処理したいなら KDS。",
+        "examplePrompt": "「クリックストリームを数秒以内に集計基盤へ流したい」",
+        "exampleAnswer": "Kinesis Data Streams。",
+        "relatedCardIds": [
+          "de7b0a585a96"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "dc4a2c61a57a",
+      "dbc1bcaf9443",
+      "06f1e2380365",
+      "de7b0a585a96"
+    ]
+  },
+  {
+    "id": "b34ed1f882f7",
+    "section": "8. メッセージング・イベント駆動・アプリ統合系",
+    "title": "Kinesis Data Streams vs Data Firehose",
+    "table": {
+      "headers": [
+        "観点",
+        "Kinesis Data Streams",
+        "Data Firehose"
+      ],
+      "rows": [
+        {
+          "label": "**主目的**",
+          "values": [
+            "ストリームを自前/柔軟に消費",
+            "宛先へほぼ自動配信"
+          ]
+        },
+        {
+          "label": "**消費者**",
+          "values": [
+            "アプリが読む",
+            "Firehose が配信"
+          ]
+        },
+        {
+          "label": "**保持**",
+          "values": [
+            "長い",
+            "バッファ後に配送"
+          ]
+        },
+        {
+          "label": "**向く用途**",
+          "values": [
+            "複数消費者、独自処理、再読",
+            "S3/Redshift/OpenSearch への配送"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "Kinesis Data Streams",
+        "aliases": [],
+        "clue": "シャード、コンシューマ、再読、複数アプリ処理、順序制御が出たら KDS。",
+        "examplePrompt": "「同じログストリームを不正検知とリアルタイム分析の 2 系統で読む」",
+        "exampleAnswer": "Kinesis Data Streams。",
+        "relatedCardIds": [
+          "de7b0a585a96"
+        ]
+      },
+      {
+        "name": "Data Firehose",
+        "aliases": [],
+        "clue": "配信先が S3/Redshift/OpenSearch/Splunk などで、運用を極力減らしたいなら Firehose。",
+        "examplePrompt": "「アプリログをほぼリアルタイムで S3 に蓄積し、変換後に OpenSearch へも届けたい」",
+        "exampleAnswer": "Data Firehose。",
+        "relatedCardIds": [
+          "fb977242782c"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "de7b0a585a96",
+      "fb977242782c"
+    ]
+  },
+  {
+    "id": "f0aa88878802",
+    "section": "9. コスト・請求管理系",
+    "title": "Cost Explorer vs Budgets vs Cost Anomaly Detection vs CUR",
+    "table": {
+      "headers": [
+        "サービス",
+        "役割",
+        "主な用途"
+      ],
+      "rows": [
+        {
+          "label": "**Cost Explorer**",
+          "values": [
+            "可視化と予測",
+            "傾向分析、RI/SP 推奨"
+          ]
+        },
+        {
+          "label": "**AWS Budgets**",
+          "values": [
+            "予算管理",
+            "閾値通知"
+          ]
+        },
+        {
+          "label": "**Cost Anomaly Detection**",
+          "values": [
+            "異常検知",
+            "急増コストの早期検知"
+          ]
+        },
+        {
+          "label": "**CUR**",
+          "values": [
+            "生データ出力",
+            "Athena/BI で詳細分析"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "Cost Explorer",
+        "aliases": [
+          "AWS Cost Explorer"
+        ],
+        "clue": "グラフで傾向を見たい、過去比較や将来予測をしたいときに使う。",
+        "examplePrompt": "「サービス別コストを月次で可視化し、来月予測も見たい」",
+        "exampleAnswer": "Cost Explorer。",
+        "relatedCardIds": [
+          "be08d7467c88"
+        ]
+      },
+      {
+        "name": "AWS Budgets",
+        "aliases": [],
+        "clue": "「閾値を超えたら通知」「チームごとの予算管理」が出たら Budgets。",
+        "examplePrompt": "「月 1000 ドルを超えそうになった時点でメール通知したい」",
+        "exampleAnswer": "AWS Budgets。",
+        "relatedCardIds": [
+          "40f82d6d831a"
+        ]
+      },
+      {
+        "name": "Cost Anomaly Detection",
+        "aliases": [
+          "AWS Cost Anomaly Detection"
+        ],
+        "clue": "明細を毎日見たくはないが、異常増加だけ自動検知したいとき向き。",
+        "examplePrompt": "「普段 20 ドル/日なのに急増したら自動で知りたい」",
+        "exampleAnswer": "Cost Anomaly Detection。",
+        "relatedCardIds": [
+          "609f2e9810a4"
+        ]
+      },
+      {
+        "name": "CUR",
+        "aliases": [
+          "AWS Cost and Usage Report",
+          "Cost and Usage Report"
+        ],
+        "clue": "最も細かい請求データを自前分析したいときに使う。",
+        "examplePrompt": "「タグ単位で原価配賦するため、Athena で生データ集計したい」",
+        "exampleAnswer": "CUR。",
+        "relatedCardIds": [
+          "d9262a66214f",
+          "5a54a65130a0"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "be08d7467c88",
+      "40f82d6d831a",
+      "609f2e9810a4",
+      "d9262a66214f",
+      "5a54a65130a0"
+    ]
+  },
+  {
+    "id": "ba05903032bf",
+    "section": "10. 分析系",
+    "title": "Athena vs Redshift vs EMR vs OpenSearch",
+    "table": {
+      "headers": [
+        "観点",
+        "Athena",
+        "Redshift",
+        "EMR",
+        "OpenSearch"
+      ],
+      "rows": [
+        {
+          "label": "**主役**",
+          "values": [
+            "S3 上の SQL 分析",
+            "DWH",
+            "ビッグデータ処理基盤",
+            "検索/分析エンジン"
+          ]
+        },
+        {
+          "label": "**運用形態**",
+          "values": [
+            "サーバーレス",
+            "マネージド DWH（Provisioned/Serverless）",
+            "マネージド Hadoop/Spark（クラスタ/Serverless）",
+            "マネージド検索基盤"
+          ]
+        },
+        {
+          "label": "**向く処理**",
+          "values": [
+            "アドホッククエリ",
+            "定期 BI 集計",
+            "Spark/Hive/Presto 等",
+            "全文検索、ログ分析"
+          ]
+        },
+        {
+          "label": "**代表データ**",
+          "values": [
+            "S3 のファイル",
+            "構造化データ",
+            "大規模分散処理対象",
+            "インデックス済みドキュメント"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "Athena",
+        "aliases": [
+          "Amazon Athena"
+        ],
+        "clue": "「S3 上のデータをすぐ SQL で分析」「サーバーレス」「使った分だけ」が見えたら Athena。",
+        "examplePrompt": "「ALB アクセスログを S3 に置き、すぐに SQL で調べたい」",
+        "exampleAnswer": "Athena。",
+        "relatedCardIds": [
+          "59b398871c21"
+        ]
+      },
+      {
+        "name": "Redshift",
+        "aliases": [],
+        "clue": "DWH、BI、定期集計、大規模な分析クエリ基盤なら Redshift。",
+        "examplePrompt": "「経営ダッシュボード向けに大量の売上データを高速集計したい」",
+        "exampleAnswer": "Redshift。",
+        "relatedCardIds": [
+          "eeac5ed1e11c"
+        ]
+      },
+      {
+        "name": "EMR",
+        "aliases": [
+          "Amazon EMR"
+        ],
+        "clue": "Spark/Hive/Hadoop エコシステムそのものを使いたい問題で選ぶ。",
+        "examplePrompt": "「既存 Spark ジョブをほぼそのまま AWS で実行したい」",
+        "exampleAnswer": "EMR。",
+        "relatedCardIds": [
+          "9964ccb846c7"
+        ]
+      },
+      {
+        "name": "OpenSearch",
+        "aliases": [
+          "Amazon OpenSearch Service"
+        ],
+        "clue": "全文検索、ログ検索、検索ダッシュボードが要件ならこれ。",
+        "examplePrompt": "「アプリログをインデックス化し、キーワードと期間で高速検索したい」",
+        "exampleAnswer": "OpenSearch。",
+        "relatedCardIds": [
+          "5f2af888b0ff"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "59b398871c21",
+      "eeac5ed1e11c",
+      "9964ccb846c7",
+      "5f2af888b0ff"
+    ]
+  },
+  {
+    "id": "5de8305e825f",
+    "section": "11. 可用性・DR 設計",
+    "title": "DR 4 戦略比較",
+    "table": {
+      "headers": [
+        "戦略",
+        "RTO",
+        "RPO",
+        "コスト",
+        "概要"
+      ],
+      "rows": [
+        {
+          "label": "**バックアップ & リストア**",
+          "values": [
+            "高",
+            "高",
+            "最低",
+            "障害時に再構築"
+          ]
+        },
+        {
+          "label": "**パイロットライト**",
+          "values": [
+            "中",
+            "低〜中",
+            "低",
+            "コアのみ常時待機"
+          ]
+        },
+        {
+          "label": "**ウォームスタンバイ**",
+          "values": [
+            "低",
+            "低",
+            "中",
+            "縮小構成を常時稼働"
+          ]
+        },
+        {
+          "label": "**マルチサイト Active-Active**",
+          "values": [
+            "最低",
+            "最低",
+            "最高",
+            "複数環境を常時本番利用"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "戦略別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "バックアップ & リストア",
+        "aliases": [],
+        "clue": "コスト最優先で、復旧に時間がかかってもよいときの選択肢。",
+        "examplePrompt": "「災害はまれで、数時間〜数日の停止は許容」",
+        "exampleAnswer": "バックアップ & リストア。",
+        "relatedCardIds": [
+          "7cef5ad50cab"
+        ]
+      },
+      {
+        "name": "パイロットライト",
+        "aliases": [],
+        "clue": "データベースなど中核だけは生かしておき、アプリ層は災害時に起動する考え方。",
+        "examplePrompt": "「DB は常時複製したいが、アプリサーバーは平常時不要」",
+        "exampleAnswer": "パイロットライト。",
+        "relatedCardIds": [
+          "6664d1a8aec8"
+        ]
+      },
+      {
+        "name": "ウォームスタンバイ",
+        "aliases": [],
+        "clue": "ある程度動く縮小環境を常時持ち、障害時にスケールアップする。",
+        "examplePrompt": "「数分で切り替えたいが Active-Active ほどの予算はない」",
+        "exampleAnswer": "ウォームスタンバイ。",
+        "relatedCardIds": [
+          "2a58bcbebdee"
+        ]
+      },
+      {
+        "name": "マルチサイト Active-Active",
+        "aliases": [],
+        "clue": "ダウンタイムほぼ不可、両リージョンで常時処理したいならこれ。",
+        "examplePrompt": "「グローバルサービスでリージョン障害時も即時継続が必須」",
+        "exampleAnswer": "Active-Active。",
+        "relatedCardIds": [
+          "5805573aab44"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "7cef5ad50cab",
+      "6664d1a8aec8",
+      "2a58bcbebdee",
+      "5805573aab44"
+    ]
+  },
+  {
+    "id": "cca069f01ba1",
+    "section": "11. 可用性・DR 設計",
+    "title": "バックアップ最適化・自動化",
+    "table": {
+      "headers": [
+        "サービス",
+        "対象",
+        "自動化",
+        "向く用途"
+      ],
+      "rows": [
+        {
+          "label": "**EBS Snapshot**",
+          "values": [
+            "EBS",
+            "手動中心",
+            "単発/基本操作"
+          ]
+        },
+        {
+          "label": "**Data Lifecycle Manager**",
+          "values": [
+            "EC2/EBS",
+            "スケジュール自動化",
+            "EBS ライフサイクル管理"
+          ]
+        },
+        {
+          "label": "**AWS Backup**",
+          "values": [
+            "複数サービス",
+            "ポリシー管理",
+            "組織横断バックアップ統制"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "サービス別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "EBS Snapshot",
+        "aliases": [],
+        "clue": "単発のポイントインタイム保存や、まず基本のバックアップを取りたい問題で使う。",
+        "examplePrompt": "「本番移行前に EBS ボリュームを一度だけ保全したい」",
+        "exampleAnswer": "EBS Snapshot。",
+        "relatedCardIds": [
+          "6bab7c4514a3",
+          "f7a92e992e57"
+        ]
+      },
+      {
+        "name": "Data Lifecycle Manager",
+        "aliases": [],
+        "clue": "EC2/EBS 限定で、スナップショットの定期取得と世代管理を自動化したいとき向き。",
+        "examplePrompt": "「毎日深夜に EBS スナップショットを取り、30 日で削除したい」",
+        "exampleAnswer": "DLM。",
+        "relatedCardIds": [
+          "a83cc404dc68"
+        ]
+      },
+      {
+        "name": "AWS Backup",
+        "aliases": [],
+        "clue": "RDS/EFS/DynamoDB/S3 など複数リソースをまとめてポリシー管理したいなら AWS Backup。",
+        "examplePrompt": "「複数アカウントのバックアップポリシーを統一したい」",
+        "exampleAnswer": "AWS Backup。",
+        "relatedCardIds": [
+          "ab7368751267"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "6bab7c4514a3",
+      "f7a92e992e57",
+      "a83cc404dc68",
+      "ab7368751267"
+    ]
+  },
+  {
+    "id": "221cf55fc945",
+    "section": "11. 可用性・DR 設計",
+    "title": "Route 53 ルーティングポリシー",
+    "table": {
+      "headers": [
+        "ポリシー",
+        "用途",
+        "特徴"
+      ],
+      "rows": [
+        {
+          "label": "**フェイルオーバー**",
+          "values": [
+            "DR/HA",
+            "主系障害時に待機系へ切替"
+          ]
+        },
+        {
+          "label": "**加重（Weighted）**",
+          "values": [
+            "段階移行/A-B",
+            "重み比率で分散"
+          ]
+        },
+        {
+          "label": "**レイテンシ（Latency）**",
+          "values": [
+            "低遅延",
+            "最低レイテンシリージョンへ"
+          ]
+        },
+        {
+          "label": "**地理的（Geolocation）**",
+          "values": [
+            "地域別固定",
+            "国/地域で振り分け"
+          ]
+        },
+        {
+          "label": "**地理的近接性（Geoproximity）**",
+          "values": [
+            "地域範囲調整",
+            "バイアスで範囲調整"
+          ]
+        },
+        {
+          "label": "**複数値回答（Multivalue Answer）**",
+          "values": [
+            "簡易可用性向上",
+            "複数 IP を返す"
+          ]
+        }
+      ]
+    },
+    "guideTitle": "ポリシー別の見分け方と出題例",
+    "guideItems": [
+      {
+        "name": "フェイルオーバー",
+        "aliases": [],
+        "clue": "プライマリが落ちたらセカンダリへ自動切替、という文脈そのもの。",
+        "examplePrompt": "「東京リージョン障害時のみ大阪リージョンへ向けたい」",
+        "exampleAnswer": "フェイルオーバー。",
+        "relatedCardIds": [
+          "0c16f93c12bc",
+          "0338863da686",
+          "6ba7f153c3e8"
+        ]
+      },
+      {
+        "name": "Weighted",
+        "aliases": [],
+        "clue": "徐々に新環境へ流す、10% だけ新バージョンへ送る、という問題で使う。",
+        "examplePrompt": "「新 API へトラフィックの 5% だけ流して様子を見たい」",
+        "exampleAnswer": "Weighted。",
+        "relatedCardIds": [
+          "0c16f93c12bc"
+        ]
+      },
+      {
+        "name": "Latency",
+        "aliases": [],
+        "clue": "地域ではなく実測レイテンシで最適先を選ぶ。",
+        "examplePrompt": "「世界中のユーザーを最も応答の速いリージョンへ送りたい」",
+        "exampleAnswer": "Latency。",
+        "relatedCardIds": [
+          "0c16f93c12bc"
+        ]
+      },
+      {
+        "name": "Geolocation",
+        "aliases": [],
+        "clue": "国・地域・大陸など属性で固定的にルーティングしたいならこちら。",
+        "examplePrompt": "「EU ユーザーは必ず EU 内エンドポイントへ送る」",
+        "exampleAnswer": "Geolocation。",
+        "relatedCardIds": [
+          "0c16f93c12bc"
+        ]
+      },
+      {
+        "name": "Geoproximity",
+        "aliases": [],
+        "clue": "地理的距離に加えてバイアス調整までしたい、という少し高度な設問向け。",
+        "examplePrompt": "「特定リージョンの集客範囲を意図的に広げたい」",
+        "exampleAnswer": "Geoproximity。",
+        "relatedCardIds": [
+          "0c16f93c12bc"
+        ]
+      },
+      {
+        "name": "Multivalue Answer",
+        "aliases": [],
+        "clue": "ELB ほどではないが、複数 IP とヘルスチェックで簡易分散したいときに使う。",
+        "examplePrompt": "「少数の Web サーバーへシンプルに分散し、死活監視もしたい」",
+        "exampleAnswer": "Multivalue Answer。",
+        "relatedCardIds": [
+          "0c16f93c12bc"
+        ]
+      }
+    ],
+    "relatedCardIds": [
+      "0c16f93c12bc",
+      "0338863da686",
+      "6ba7f153c3e8"
+    ]
+  }
+]

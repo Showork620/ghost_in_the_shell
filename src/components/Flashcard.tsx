@@ -6,12 +6,14 @@ import {
   type MouseEvent,
   type PointerEvent,
 } from 'react';
-import type { CardFlagState, DictionaryCard } from '../types';
+import type { CardFlagState, ComparisonPage, DictionaryCard } from '../types';
 
 type FlashcardProps = {
   card: DictionaryCard;
   flags: CardFlagState;
   note: string;
+  comparisonPages: Pick<ComparisonPage, 'id' | 'section' | 'title'>[];
+  onOpenComparison: (comparisonPageId: string) => void;
   onFlagChange: (cardId: string, nextFlags: CardFlagState) => void;
   onNoteChange: (cardId: string, nextNote: string) => void;
 };
@@ -21,7 +23,15 @@ const flagMeta = [
   { key: 'unknown', label: '知らない' },
 ] as const;
 
-export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: FlashcardProps) {
+export function Flashcard({
+  card,
+  flags,
+  note,
+  comparisonPages,
+  onOpenComparison,
+  onFlagChange,
+  onNoteChange,
+}: FlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [copiedField, setCopiedField] = useState<'title' | 'examPoint' | null>(null);
   const [cardHeight, setCardHeight] = useState<number>(220);
@@ -151,6 +161,11 @@ export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: Fla
         className={`flashcard ${isFlipped ? 'is-flipped' : ''}`}
         onClick={handleCardClick}
         onKeyDown={(event) => {
+          const target = event.target as HTMLElement;
+          if (target.closest('button, input, textarea, label')) {
+            return;
+          }
+
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
             shouldScrollIntoViewRef.current = !isFlipped;
@@ -253,6 +268,30 @@ export function Flashcard({ card, flags, note, onFlagChange, onNoteChange }: Fla
             <span className="detail-label">使う場面</span>
             <span>{card.useCase}</span>
           </span>
+          {comparisonPages.length > 0 && (
+            <span className="card-detail comparison-links-detail">
+              <span className="detail-header">
+                <span className="detail-label">比較チートシート</span>
+                <span className="helper-chip">{comparisonPages.length}件</span>
+              </span>
+              <span className="comparison-link-list">
+                {comparisonPages.map((page) => (
+                  <button
+                    key={page.id}
+                    type="button"
+                    className="comparison-link-button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onOpenComparison(page.id);
+                    }}
+                  >
+                    <span className="comparison-link-title">{page.title}</span>
+                    <span className="comparison-link-section">{page.section}</span>
+                  </button>
+                ))}
+              </span>
+            </span>
+          )}
           <label
             className="card-detail note-field"
             onClick={(event) => event.stopPropagation()}
