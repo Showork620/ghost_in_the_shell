@@ -170,16 +170,23 @@ const pushCurrentCard = () => {
     throw new Error(`Incomplete card detected: ${currentCard.title}`);
   }
 
+  const { category, parentCategory } = normalizeCategory(currentCard.category);
   cards.push({
     ...currentCard,
-    category: normalizeCategory(currentCard.category),
+    category,
+    parentCategory,
     tags: normalizeTags(currentCard.tags),
     id: createHash('sha1').update(currentCard.title).digest('hex').slice(0, 12),
   });
 };
 
 function normalizeCategory(category) {
-  return CATEGORY_MAP[category] ?? category;
+  const normalized = CATEGORY_MAP[category] ?? category;
+  if (normalized.includes('/')) {
+    const [parent, child] = normalized.split('/');
+    return { parentCategory: parent.trim(), category: child.trim() };
+  }
+  return { category: normalized.trim() };
 }
 
 function normalizeTags(tags) {

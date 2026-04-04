@@ -1,5 +1,47 @@
 [
   {
+    "title": "ABAC (Attribute-Based Access Control)",
+    "category": "認証・認可系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "ユーザーやリソースに付加された「属性（タグ）」に基づいてアクセス権限を決定する認可モデル。",
+    "examPoint": "2026年試験では、タグを利用した柔軟なスケーリングが鍵。職務（Job Function）が変わってもポリ修を直接変更せず、ユーザーのタグを更新するだけで権限を管理できるメリットが問われる。",
+    "useCase": "大規模組織での動的な権限管理、リソース作成者のみに操作を許可する設計。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "cd944397200b"
+  },
+  {
+    "title": "AWS IAM Access Analyzer",
+    "category": "検知・監査系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "S3 バケットや IAM ロールなどが意図せず外部（パブリックや他アカウント）からアクセス可能になっていないかを自動分析するツール。",
+    "examPoint": "「意図しない外部公開の検知」と「実際の使用履歴に基づいたポリシー生成」の 2 点が重要。最小権限の原則を実現するための強力な味方。",
+    "useCase": "ポリシーの公開設定確認、最小権限のポリシー作成支援。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "fded3804aca3"
+  },
+  {
+    "title": "ALB listener rule (ALB リスナールール)",
+    "category": "トラフィック制御系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "ALB が受信したトラフィックをどのターゲットグループへ転送するかを定義する条件セット。",
+    "examPoint": "送信元 IP アドレス、HTTP ヘッダー、ホスト名、パスなどに基づく詳細な制御が可能。WAF を入れるまでもない簡易的な IP 制限や、特定のパスに対する認証（Cognito連携）のトリガーとして重要。",
+    "useCase": "パスベースルーティング、簡易的な IP 制限、特定のパスへの Cognito 認証適用。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "e40f8b12880e"
+  },
+  {
     "title": "AMI (Amazon Machine Image)",
     "category": "コンピューティング",
     "tags": [
@@ -69,7 +111,7 @@
   },
   {
     "title": "AWS Artifact",
-    "category": "セキュリティ",
+    "category": "組織ガバナンス・予防統制系",
     "tags": [
       "#セキュリティ"
     ],
@@ -78,6 +120,7 @@
     "useCase": "SOC 報告書の提出、監査対応、規制業界の証跡確認。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "b782ca691d1f"
   },
   {
@@ -165,7 +208,7 @@
   },
   {
     "title": "AWS Certificate Manager (ACM)",
-    "category": "セキュリティ",
+    "category": "暗号化・秘密情報管理系",
     "tags": [
       "#セキュリティ"
     ],
@@ -174,6 +217,7 @@
     "useCase": "Web サイトの HTTPS 化、API の TLS 証明書管理。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "186084dd07ea"
   },
   {
@@ -219,8 +263,22 @@
     "id": "921f7c700989"
   },
   {
+    "title": "CloudFront + AWS WAF",
+    "category": "トラフィック制御系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "CloudFront のエッジロケーションで WAF を動作させ、悪意のあるリクエストがオリジン（S3やALB）に到達する前にブロックする構成。",
+    "examPoint": "2026 年試験では「エッジでの保護」によるオリジンの負荷軽減と防御の最大化が頻出。地理的制限（ジオブロッキング）が WAF 側でも詳細に設定できる点に注目。",
+    "useCase": "DDoS 対策、SQL インジェクション・XSS 防御、国別アクセス制限。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "821b61ca2d1b"
+  },
+  {
     "title": "AWS CloudHSM",
-    "category": "セキュリティ",
+    "category": "暗号化・秘密情報管理系",
     "tags": [
       "#セキュリティ"
     ],
@@ -229,11 +287,12 @@
     "useCase": "厳格な規制要件、専有 HSM が必要な暗号基盤。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "9e68dbe397f8"
   },
   {
     "title": "AWS CloudTrail",
-    "category": "セキュリティ",
+    "category": "検知・監査系",
     "tags": [
       "#運用上の優秀性",
       "#セキュリティ"
@@ -243,6 +302,7 @@
     "useCase": "操作履歴監査、不正操作の追跡、コンプライアンス証跡。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "8f7e6ad81a1d"
   },
   {
@@ -275,7 +335,7 @@
   },
   {
     "title": "Amazon Cognito",
-    "category": "セキュリティ",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
@@ -284,6 +344,7 @@
     "useCase": "Web アプリのログイン、モバイルアプリの認証、SNS ログイン連携。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "d5552aa3d3a5"
   },
   {
@@ -341,7 +402,7 @@
   },
   {
     "title": "AWS Config",
-    "category": "運用・ガバナンス",
+    "category": "検知・監査系",
     "tags": [
       "#運用上の優秀性",
       "#セキュリティ"
@@ -351,11 +412,26 @@
     "useCase": "暗号化必須ルールの監視、S3 公開設定の検知、構成ドリフトの把握。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "3162078fc5d6"
   },
   {
+    "title": "AWS Config Rules",
+    "category": "組織ガバナンス・予防統制系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "AWS リソースが特定のガイドライン（例：EBS が暗号化されているか）に準拠しているかを自動でチェックする機能。",
+    "examPoint": "2026年試験でも「継続的なコンプライアンス監視」の主役。Organizations 全体へのルール適用や、Systems Manager Automation を使った自動修復 (Remediation) とのセットが頻出。",
+    "useCase": "全 EBS の暗号化強制チェック、不要な EIP の検知、特定のタグ付与の監視。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "f82a766ae512"
+  },
+  {
     "title": "AWS Control Tower",
-    "category": "運用・ガバナンス",
+    "category": "組織ガバナンス・予防統制系",
     "tags": [
       "#運用上の優秀性",
       "#セキュリティ"
@@ -365,6 +441,7 @@
     "useCase": "複数アカウントの標準化、セキュアな初期セットアップ、統制強化。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "b45936d528db"
   },
   {
@@ -447,7 +524,7 @@
   },
   {
     "title": "Amazon Detective",
-    "category": "セキュリティ",
+    "category": "検知・監査系",
     "tags": [
       "#セキュリティ"
     ],
@@ -456,6 +533,7 @@
     "useCase": "インシデント調査、侵害経路の可視化、原因分析。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "7a693349df32"
   },
   {
@@ -473,7 +551,7 @@
   },
   {
     "title": "AWS Directory Service",
-    "category": "セキュリティ",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
@@ -482,6 +560,7 @@
     "useCase": "AD 認証のクラウド延伸、FSx for Windows 連携、社内 Windows 認証統合。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "d104de266583"
   },
   {
@@ -577,6 +656,20 @@
     "section": "A-Z のサービス・英字用語",
     "type": "service",
     "id": "f7a92e992e57"
+  },
+  {
+    "title": "EBS / RDS / S3 暗号化",
+    "category": "暗号化・秘密情報管理系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "AWS の各主要ストレージサービスで KMS (AWSマネージド型またはカスタマー管理型) を利用して保存データを暗号化する機能。",
+    "examPoint": "2026 年時点では「デフォルトでの暗号化」および「KMS キーの使い分け（AWS管理/カスタマー管理/BYOK）」が重要な判断基準。暗号化されていないスナップショットを暗号化するには、一度コピーが必要になる点は試験の定番。",
+    "useCase": "保存データの保護要件、規制準拠、マルチアカウント間での安全なデータ共有。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "827360be2a28"
   },
   {
     "title": "Amazon EC2",
@@ -787,7 +880,7 @@
   },
   {
     "title": "AWS Firewall Manager",
-    "category": "セキュリティ",
+    "category": "組織ガバナンス・予防統制系",
     "tags": [
       "#セキュリティ"
     ],
@@ -796,6 +889,7 @@
     "useCase": "Organizations 全体でのセキュリティルール標準化。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "24704a466336"
   },
   {
@@ -853,7 +947,7 @@
   },
   {
     "title": "Amazon GuardDuty",
-    "category": "セキュリティ",
+    "category": "検知・監査系",
     "tags": [
       "#セキュリティ"
     ],
@@ -862,6 +956,7 @@
     "useCase": "不審 API、異常 DNS、侵害兆候の可視化。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "043fc98b000c"
   },
   {
@@ -879,7 +974,7 @@
   },
   {
     "title": "IAM",
-    "category": "セキュリティ",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
@@ -888,6 +983,7 @@
     "useCase": "EC2 から S3 アクセス、管理者権限の制御、他アカウント連携。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "d4ade53b8fb0"
   },
   {
@@ -905,18 +1001,19 @@
   },
   {
     "title": "Identity Pool (ID プール)",
-    "category": "セキュリティ",
+    "category": "認証・認可系",
     "tags": [],
     "summary": "Cognito で認証済み/未認証ユーザーへ AWS 一時認証情報を払い出す機能。",
     "examPoint": "ユーザープールで認証し、ID プールで AWS リソースアクセス権を与える流れが典型。",
     "useCase": "アプリ利用者に S3 直接アップロードを許可する時など。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "77491833ecb3"
   },
   {
     "title": "Amazon Inspector",
-    "category": "セキュリティ",
+    "category": "検知・監査系",
     "tags": [
       "#セキュリティ"
     ],
@@ -925,6 +1022,7 @@
     "useCase": "OS パッケージ脆弱性確認、イメージスキャン、継続的な脆弱性管理。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "7417f2c347a0"
   },
   {
@@ -942,7 +1040,7 @@
   },
   {
     "title": "AWS KMS",
-    "category": "セキュリティ",
+    "category": "暗号化・秘密情報管理系",
     "tags": [
       "#セキュリティ"
     ],
@@ -951,7 +1049,22 @@
     "useCase": "保存データ暗号化、アプリ秘密鍵管理、監査付き鍵利用。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "300938a3efda"
+  },
+  {
+    "title": "KMS Key Policy (キーポリシー)",
+    "category": "認証・認可系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "KMS キーに対するアクセス制御を定義するリソースベースポリシー。",
+    "examPoint": "KMS キーを利用するには、IAM ポリシーだけでなく、キーポリシー側での許可も必須。デフォルトでは「ルートアカウント」に全権限を委譲する設定が含まれる。クロスアカウントでのキー利用時は、双方（相手のIAMポリとこちらのキーポリ）の許可が必要。",
+    "useCase": "KMS キーの細粒度アクセス制御、クロスアカウントでの暗号化リソース共有。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "5501b16ec6b0"
   },
   {
     "title": "AWS Lake Formation",
@@ -982,7 +1095,7 @@
   },
   {
     "title": "Amazon Macie",
-    "category": "セキュリティ",
+    "category": "検知・監査系",
     "tags": [
       "#セキュリティ"
     ],
@@ -991,6 +1104,7 @@
     "useCase": "PII 検出、機密データ棚卸し、S3 の情報漏えい対策。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "eefcc034d911"
   },
   {
@@ -1019,7 +1133,7 @@
   },
   {
     "title": "AWS Network Firewall",
-    "category": "セキュリティ",
+    "category": "トラフィック制御系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1028,6 +1142,7 @@
     "useCase": "東西/南北トラフィック検査、IDS/IPS 的な制御、VPC 境界保護。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "91e62012c84d"
   },
   {
@@ -1045,7 +1160,7 @@
   },
   {
     "title": "AWS Organizations",
-    "category": "運用・ガバナンス",
+    "category": "組織ガバナンス・予防統制系",
     "tags": [
       "#セキュリティ",
       "#コスト最適化"
@@ -1055,11 +1170,12 @@
     "useCase": "開発/本番分離、部門別アカウント管理、統制強化。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "5d73f39fc7a9"
   },
   {
     "title": "Systems Manager Parameter Store",
-    "category": "運用・ガバナンス",
+    "category": "暗号化・秘密情報管理系",
     "tags": [
       "#運用上の優秀性",
       "#セキュリティ"
@@ -1069,6 +1185,7 @@
     "useCase": "アプリ設定、簡易シークレット保存、環境変数集中管理。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "72a9a2eb51fb"
   },
   {
@@ -1086,7 +1203,7 @@
   },
   {
     "title": "AWS PrivateLink",
-    "category": "ネットワーク",
+    "category": "トラフィック制御系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1095,6 +1212,7 @@
     "useCase": "SaaS の私設公開、インターネット非経由のサービス接続、共有サービス基盤。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "94e53f8bd898"
   },
   {
@@ -1107,6 +1225,20 @@
     "section": "A-Z のサービス・英字用語",
     "type": "service",
     "id": "6d3eb082d797"
+  },
+  {
+    "title": "Resource-based Policy (リソースベースポリシー)",
+    "category": "認証・認可系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "S3 バケット、SQS キュー、KMS キーなど、特定のリソースに直接アタッチするポリシー。",
+    "examPoint": "IAM ポリシー (Identity-based) との違いを明確にする。リソースに対して「誰が」アクセスできるかを「リソース側」で定義する。クロスアカウントアクセスを許可したい場合、多くの場合でリソースベースポリシーが必要になる。",
+    "useCase": "S3 バケットのクロスアカウント共有、Lambda 関数の外部呼び出し許可。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "df78aacb490f"
   },
   {
     "title": "Reserved Instances (RI)",
@@ -1307,7 +1439,7 @@
   },
   {
     "title": "AWS Secrets Manager",
-    "category": "セキュリティ",
+    "category": "暗号化・秘密情報管理系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1316,11 +1448,12 @@
     "useCase": "RDS 認証情報、外部 API キー、機密設定値の保管。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "b0cae7423e9c"
   },
   {
     "title": "AWS Security Hub",
-    "category": "セキュリティ",
+    "category": "検知・監査系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1329,11 +1462,12 @@
     "useCase": "GuardDuty/Inspector/Macie の統合表示、セキュリティ運用センター。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "5a54a65130a0"
   },
   {
     "title": "AWS Service Catalog",
-    "category": "運用・ガバナンス",
+    "category": "組織ガバナンス・予防統制系",
     "tags": [
       "#運用上の優秀性"
     ],
@@ -1342,6 +1476,7 @@
     "useCase": "承認済み VPC の配布、標準開発環境のセルフサービス提供。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "02a61b08c70f"
   },
   {
@@ -1360,7 +1495,7 @@
   },
   {
     "title": "AWS Shield",
-    "category": "セキュリティ",
+    "category": "トラフィック制御系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1369,6 +1504,7 @@
     "useCase": "公開 Web サービスの DDoS 防御、ミッションクリティカル API の保護。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "34033366e932"
   },
   {
@@ -1421,7 +1557,7 @@
   },
   {
     "title": "AWS STS",
-    "category": "セキュリティ",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1430,6 +1566,7 @@
     "useCase": "クロスアカウントアクセス、一時クレデンシャル発行、外部 ID 連携。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "73b9a8080737"
   },
   {
@@ -1526,7 +1663,7 @@
   },
   {
     "title": "VPC Endpoint",
-    "category": "ネットワーク",
+    "category": "トラフィック制御系",
     "tags": [
       "#セキュリティ",
       "#コスト最適化"
@@ -1536,11 +1673,26 @@
     "useCase": "プライベートサブネットから S3 アクセス、PrivateLink 接続、閉域通信。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "5d9f768a9ea6"
   },
   {
+    "title": "VPC Endpoint Policy (VPC エンドポイントポリシー)",
+    "category": "トラフィック制御系",
+    "tags": [
+      "#セキュリティ"
+    ],
+    "summary": "VPC エンドポイントに付与できる IAM 形式のアクセスポリシー。",
+    "examPoint": "通信の「経路（エンドポイント）」を通過できるリソースやアクションを制限する。特定の S3 バケットへのアクセスのみを許可する、特定のアカウントからのみアクセス可能にする、といった「出口対策」として非常に重要。",
+    "useCase": "VPC 内からの特定リソース限定アクセス、他アカウントへの情報持ち出し防止（情報漏えい対策）。",
+    "section": "A-Z のサービス・英字用語",
+    "type": "service",
+    "parentCategory": "セキュリティ",
+    "id": "1529e7f64cab"
+  },
+  {
     "title": "VPC Flow Logs",
-    "category": "運用・ガバナンス",
+    "category": "検知・監査系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1549,11 +1701,12 @@
     "useCase": "通信経路の調査、アクセス分析、セキュリティ監査。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "3ec18d42b30b"
   },
   {
     "title": "AWS WAF",
-    "category": "セキュリティ",
+    "category": "トラフィック制御系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1562,6 +1715,7 @@
     "useCase": "Web 攻撃対策、Bot 制御、API の入口保護。",
     "section": "A-Z のサービス・英字用語",
     "type": "service",
+    "parentCategory": "セキュリティ",
     "id": "d1421bb1f445"
   },
   {
@@ -1580,7 +1734,7 @@
   },
   {
     "title": "アシュームロール（AssumeRole）",
-    "category": "運用・ガバナンス",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1589,6 +1743,7 @@
     "useCase": "共有アカウント経由アクセス、監査ロール、運用者の一時昇格。",
     "section": "その他の重要用語（五十音順）",
     "type": "concept",
+    "parentCategory": "セキュリティ",
     "id": "bf54d04c0c50"
   },
   {
@@ -1685,7 +1840,7 @@
   },
   {
     "title": "サービスコントロールポリシー（SCP）",
-    "category": "運用・ガバナンス",
+    "category": "組織ガバナンス・予防統制系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1694,6 +1849,7 @@
     "useCase": "本番アカウントで特定リージョン禁止、危険操作の抑止、標準ガードレール。",
     "section": "その他の重要用語（五十音順）",
     "type": "concept",
+    "parentCategory": "セキュリティ",
     "id": "c21656f0ada7"
   },
   {
@@ -1711,7 +1867,7 @@
   },
   {
     "title": "セキュリティグループ（SG）",
-    "category": "ネットワーク",
+    "category": "トラフィック制御系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1720,6 +1876,7 @@
     "useCase": "EC2 や RDS の通信制御、アプリ層の許可設計。",
     "section": "その他の重要用語（五十音順）",
     "type": "concept",
+    "parentCategory": "セキュリティ",
     "id": "c9767cfbe10e"
   },
   {
@@ -1748,7 +1905,7 @@
   },
   {
     "title": "ネットワーク ACL（NACL）",
-    "category": "ネットワーク",
+    "category": "トラフィック制御系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1757,20 +1914,22 @@
     "useCase": "サブネット境界の粗い制御、悪性 IP の拒否、追加防御層。",
     "section": "その他の重要用語（五十音順）",
     "type": "concept",
+    "parentCategory": "セキュリティ",
     "id": "00959ed411cd"
   },
   {
-    "title": "バケットポリシー",
-    "category": "ストレージ",
+    "title": "バケットポリシー (S3 Bucket Policy)",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
-    "summary": "S3 バケット単位に付けるリソースベースポリシー。",
-    "examPoint": "クロスアカウントアクセスや公開制御で頻出。IAM ポリシーとの評価関係を理解しておくと強い。",
-    "useCase": "特定アカウントへの共有、アクセス元制限、公開/非公開制御。",
+    "summary": "S3 バケット単位に付与するリソースベースポリシー。JSON 形式で「誰（Principal）」が「何（Action）」をすることを許可・拒否するかを定義する。",
+    "examPoint": "クロスアカウントアクセス、パブリックアクセスの拒否、HTTPS 接続の強制、特定の VPC からのみのアクセス制限などが頻出。バケット所有者とオブジェクト所有者が異なる場合の挙動（S3 Object Ownership）も 2026 年時点の重要事項。",
+    "useCase": "外部組織へのデータ提供、セキュリティガードレールの適用、VPC エンドポイント経由のみのアクセス制限。",
     "section": "その他の重要用語（五十音順）",
     "type": "concept",
-    "id": "b40224f354f4"
+    "parentCategory": "セキュリティ",
+    "id": "8a4bc758dca3"
   },
   {
     "title": "バックアップ & リストア",
@@ -1856,7 +2015,7 @@
   },
   {
     "title": "ユーザープール",
-    "category": "セキュリティ",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1865,6 +2024,7 @@
     "useCase": "会員登録、ログイン、パスワード管理、MFA。",
     "section": "その他の重要用語（五十音順）",
     "type": "concept",
+    "parentCategory": "セキュリティ",
     "id": "937e9a0bf28c"
   },
   {
@@ -1908,7 +2068,7 @@
   },
   {
     "title": "ロールベースアクセス制御用 SAML",
-    "category": "セキュリティ",
+    "category": "認証・認可系",
     "tags": [
       "#セキュリティ"
     ],
@@ -1917,6 +2077,7 @@
     "useCase": "企業 SSO、外部 IdP 連携、AWS へのフェデレーション。",
     "section": "その他の重要用語（五十音順）",
     "type": "concept",
+    "parentCategory": "セキュリティ",
     "id": "88db3f711b87"
   }
 ]

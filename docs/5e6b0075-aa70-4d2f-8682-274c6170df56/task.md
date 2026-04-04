@@ -1,0 +1,14 @@
+- [ ] 辞書データ (`study-memo/AWSSAA_Dictionary_2026.md`) の更新
+    - [ ] 既存セキュリティ関連項目のカテゴリ名を「セキュリティ/子カテゴリ」形式に一括変換
+    - [ ] ユーザー指定の新規サービスカード (VPC Endpoint Policy, Config Rules 等) の追加
+- [ ] 型定義 (`src/types.ts`) の更新
+    - [ ] `DictionaryCard` インターフェースへの `parentCategory?: string` 追加
+- [ ] 生成スクリプト (`scripts/build-dictionary.mjs`) の改修
+    - [ ] カテゴリ文字列の `/` 区切りによる親子抽出ロジックの実装
+- [ ] フロントエンド UI (`src/App.tsx`) の改修
+    - [ ] 絞り込みオーバーレイ内でのカテゴリの見出し表示（親カテゴリ別）対応
+- [ ] フロントエンド UI (`src/components/Flashcard.tsx`) の改修
+    - [ ] 親カテゴリがある場合に小さく薄く表示するスタイルの追加
+- [ ] 動作確認
+    - [ ] `npm run build-dictionary` の実行とデータ整合性の確認
+    - [ ] UI表示の崩れや意図しない動作がないかの確認

@@ -231,7 +231,12 @@ export function Flashcard({
           </span>
           <span className="card-detail">
             <span className="detail-label">カテゴリ</span>
-            <span>{card.category}</span>
+            <span className="card-category-display">
+              {card.parentCategory && (
+                <span className="card-parent-category">{card.parentCategory} / </span>
+              )}
+              {card.category}
+            </span>
           </span>
           <span className="card-detail">
             <span className="detail-label">タグ</span>

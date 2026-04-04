@@ -32,12 +32,28 @@ type InstallPromptEvent = Event & {
 
 const cards = dictionaryData as DictionaryCard[];
 const comparisonPages = comparisonPagesData as ComparisonPage[];
-const allCategories = [...new Set(cards.map((card) => card.category))].sort((left, right) =>
-  left.localeCompare(right, 'ja'),
-);
 const allTags = [...new Set(cards.flatMap((card) => card.tags))].sort((left, right) =>
   left.localeCompare(right, 'ja'),
 );
+
+const categoriesByParent = cards.reduce<Record<string, string[]>>((acc, card) => {
+  const p = card.parentCategory || 'その他';
+  acc[p] ??= [];
+  if (!acc[p].includes(card.category)) {
+    acc[p].push(card.category);
+  }
+  return acc;
+}, {});
+
+const sortedParents = Object.keys(categoriesByParent).sort((a, b) => {
+  if (a === 'その他') return 1;
+  if (b === 'その他') return -1;
+  return a.localeCompare(b, 'ja');
+});
+
+for (const p of sortedParents) {
+  categoriesByParent[p].sort((a, b) => a.localeCompare(b, 'ja'));
+}
 const comparisonPagesByCardId = comparisonPages.reduce<Record<string, ComparisonPage[]>>(
   (accumulator, page) => {
     page.relatedCardIds.forEach((cardId) => {
@@ -542,16 +558,23 @@ function App() {
               <h3>カテゴリ</h3>
               <span className="helper-chip">{selectedCategories.length}件選択</span>
             </div>
-            <div className="chip-grid">
-              {allCategories.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  className={selectedCategories.includes(category) ? 'chip is-active' : 'chip'}
-                  onClick={() => setSelectedCategories(toggleValue(selectedCategories, category))}
-                >
-                  {category}
-                </button>
+            <div className="category-groups">
+              {sortedParents.map((parent) => (
+                <div key={parent} className="category-parent-group">
+                  <h4 className="category-parent-title">{parent}</h4>
+                  <div className="chip-grid">
+                    {categoriesByParent[parent].map((category) => (
+                      <button
+                        key={category}
+                        type="button"
+                        className={selectedCategories.includes(category) ? 'chip is-active' : 'chip'}
+                        onClick={() => setSelectedCategories(toggleValue(selectedCategories, category))}
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </section>

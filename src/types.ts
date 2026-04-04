@@ -2,6 +2,7 @@ export type DictionaryCard = {
   id: string;
   title: string;
   category: string;
+  parentCategory?: string;
   tags: string[];
   summary: string;
   examPoint: string;

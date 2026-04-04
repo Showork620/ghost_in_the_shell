@@ -266,10 +266,12 @@
         "examplePrompt": "「Web サイトの画像を高耐久かつ低コストで保管し、必要ならライフサイクルでアーカイブしたい」",
         "exampleAnswer": "S3。",
         "relatedCardIds": [
+          "827360be2a28",
           "7b11a4234011",
           "9502be8041e2",
           "236140aa11c3",
-          "7dea86992ad8"
+          "7dea86992ad8",
+          "8a4bc758dca3"
         ]
       },
       {
@@ -282,7 +284,8 @@
         "exampleAnswer": "EBS。",
         "relatedCardIds": [
           "6bab7c4514a3",
-          "f7a92e992e57"
+          "f7a92e992e57",
+          "827360be2a28"
         ]
       },
       {
@@ -319,10 +322,12 @@
       }
     ],
     "relatedCardIds": [
+      "827360be2a28",
       "7b11a4234011",
       "9502be8041e2",
       "236140aa11c3",
       "7dea86992ad8",
+      "8a4bc758dca3",
       "6bab7c4514a3",
       "f7a92e992e57",
       "3dc383c4231c",
@@ -634,6 +639,7 @@
         "examplePrompt": "「既存の MySQL アプリを最小変更でマネージド移行したい」",
         "exampleAnswer": "RDS for MySQL。",
         "relatedCardIds": [
+          "827360be2a28",
           "49524aa56edb",
           "54b51ca2bbce",
           "4689761bf10e"
@@ -681,6 +687,7 @@
       }
     ],
     "relatedCardIds": [
+      "827360be2a28",
       "49524aa56edb",
       "54b51ca2bbce",
       "4689761bf10e",
@@ -960,14 +967,16 @@
         "examplePrompt": "「プライベートサブネットの EC2 から S3 に NAT なしでアクセスしたい」",
         "exampleAnswer": "Gateway Endpoint。",
         "relatedCardIds": [
-          "c53696d5d4a9"
+          "c53696d5d4a9",
+          "1529e7f64cab"
         ]
       }
     ],
     "relatedCardIds": [
       "c53696d5d4a9",
       "8d900eae5ac0",
-      "94e53f8bd898"
+      "94e53f8bd898",
+      "1529e7f64cab"
     ]
   },
   {
@@ -1019,6 +1028,7 @@
         "examplePrompt": "「`/api` は API 群へ、`/images` は別ターゲットへ振り分けたい」",
         "exampleAnswer": "ALB。",
         "relatedCardIds": [
+          "e40f8b12880e",
           "80ddb681f673"
         ]
       },
@@ -1046,6 +1056,7 @@
       }
     ],
     "relatedCardIds": [
+      "e40f8b12880e",
       "80ddb681f673"
     ]
   },
@@ -1102,7 +1113,8 @@
         "examplePrompt": "「世界中のユーザーへ画像と動画を低遅延で配信したい」",
         "exampleAnswer": "CloudFront。",
         "relatedCardIds": [
-          "921f7c700989"
+          "921f7c700989",
+          "821b61ca2d1b"
         ]
       },
       {
@@ -1144,6 +1156,7 @@
     ],
     "relatedCardIds": [
       "921f7c700989",
+      "821b61ca2d1b",
       "e494799573ca",
       "a175b511cb63",
       "62a6b68d8538"
@@ -1485,7 +1498,8 @@
         "examplePrompt": "「S3 と EBS を顧客管理キーで暗号化し、アクセス制御と監査も行いたい」",
         "exampleAnswer": "KMS。",
         "relatedCardIds": [
-          "300938a3efda"
+          "300938a3efda",
+          "5501b16ec6b0"
         ]
       },
       {
@@ -1529,6 +1543,7 @@
     ],
     "relatedCardIds": [
       "300938a3efda",
+      "5501b16ec6b0",
       "9e68dbe397f8",
       "b0cae7423e9c",
       "72a9a2eb51fb",
@@ -1610,7 +1625,8 @@
         "examplePrompt": "「S3 バケットが公開設定になったら即検知したい」",
         "exampleAnswer": "AWS Config。",
         "relatedCardIds": [
-          "3162078fc5d6"
+          "3162078fc5d6",
+          "f82a766ae512"
         ]
       },
       {
@@ -1631,6 +1647,7 @@
       "886b7826665f",
       "8f7e6ad81a1d",
       "3162078fc5d6",
+      "f82a766ae512",
       "b782ca691d1f"
     ]
   },
