@@ -4,16 +4,16 @@
 `study-memo/investigation_report_categories.md` のマッピング案に基づき、`study-memo/AWSSAA_Dictionary_2026.md` のカテゴリを一括置換し、重要サービスを追加します。
 
 ## ステータス
-- Status: TODO
+- Status: DONE
 - Source: `implementation_plan.md` (Phase: Execute)
 
 ## 完了条件
-1. [ ] `AWSSAA_Dictionary_2026.md` の全 156 件の既存カテゴリが、レポート記載の `Parent/Child` 形式に置換されていること。
-2. [ ] 以下の2つのサービスが `AWSSAA_Dictionary_2026.md` に A-Z 順で追加されていること。
+1. [x] `AWSSAA_Dictionary_2026.md` の全 156 件の既存カテゴリが、レポート記載の `Parent/Child` 形式に置換されていること。
+2. [x] 以下の2つのサービスが `AWSSAA_Dictionary_2026.md` に A-Z 順で追加されていること。
     - **Amazon Bedrock** (Category: AI_ML/GenAI)
     - **AWS Database Migration Service (DMS)** (Category: Migration/Database)
-3. [ ] 置換後と追加後にそれぞれ `git commit` を実行すること。
-4. [ ] `node scripts/build-dictionary.mjs` を実行し、パースエラーが出ないことを確認すること。
+3. [x] 置換後と追加後にそれぞれ `git commit` を実行すること。
+4. [x] `node scripts/build-dictionary.mjs` を実行し、パースエラーが出ないことを確認すること。
 
 ## 作業指示（SHELL向け）
 
